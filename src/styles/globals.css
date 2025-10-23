@@ -1,0 +1,59 @@
+/* Global base only — page styles moved to CSS Modules */
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+* { box-sizing: border-box; padding: 0; margin: 0; }
+
+html, body { max-width: 100vw; overflow-x: hidden; }
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  color: #222;
+  background-image: url("https://assets.pokemon.com/static2/_ui/img/chrome/body_bg.png");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  background-position: center;
+  background-attachment: fixed;
+  background-color: #f8f8f8;
+}
+
+/* Background de tela específico da página Select Pokémon */
+body.bg-select-pokemon {
+  background-image: url('/select-pokemon.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* Background da Home */
+body.bg-home {
+  background-image: url('/home.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+/* Background da Select Team */
+body.bg-select-team {
+  background-image: url('/select-team.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+a { color: inherit; text-decoration: none; }
+
+@media (prefers-color-scheme: dark) { html { color-scheme: dark; } }

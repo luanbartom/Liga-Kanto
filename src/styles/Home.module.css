@@ -1,0 +1,167 @@
+/* Container principal */
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+/* Títulos */
+.title {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  color: #4b4b4b;
+  text-shadow: 2px 1px 2px #2e2e2e;
+  margin-bottom: 1vh;
+  z-index: 2;
+  filter: drop-shadow(0 0 14px rgb(253, 253, 253));
+}
+
+.subtitle {
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  color: #6b6b6b;
+  text-shadow: 2px 1px 2px #2e2e2e;
+  margin-bottom: -4vh;
+  z-index: 2;
+  filter: drop-shadow(0 0 14px rgb(255, 255, 255));
+}
+
+/* Área dos treinadores */
+.trainerGrid {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 60px;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  top: 17vh; /* <<< move tudo mais pra baixo */
+  z-index: 1;
+}
+
+
+/* Cada treinador */
+.trainerCard {
+  width: clamp(180px, 25vw, 280px);
+  height: clamp(300px, 45vh, 480px);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  border-radius: 20px;
+  background: transparent;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.trainerCard img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.trainerCard:hover {
+  transform: scale(1.05);
+}
+
+.trainerCard.selected img {
+  filter: drop-shadow(0 0 12px rgba(255, 200, 0, 0.7));
+  animation: shadowPulse 2s infinite ease-in-out;
+}
+
+@keyframes shadowPulse {
+  0% { filter: drop-shadow(0 0 8px rgba(255, 200, 0, 0.5)); }
+  50% { filter: drop-shadow(0 0 16px rgba(255, 200, 0, 1)); }
+  100% { filter: drop-shadow(0 0 8px rgba(255, 200, 0, 0.5)); }
+}
+
+
+/* Painel lateral fixo à direita */
+.sidebar {
+  position: absolute;
+  right: 44%;
+  top: 55%;
+  transform: translateY(17%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 250px;
+  z-index: 3;
+}
+
+/* Campo de nome */
+.trainerName input {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 15px;
+  border: 3px solid #a2a2a2;
+  color: #3e3e3e;
+  background-color: #f8f8f8;
+  text-align: center;
+  transition: border-color 0.3s;
+}
+
+.trainerName input:focus {
+  border-color: #ffcb05;
+}
+
+/* Botão */
+.confirmFull {
+  width: 80%;
+}
+
+/* Responsivo */
+@media (max-width: 1024px) {
+  .sidebar {
+    right: 4%;
+  }
+}
+
+@media (max-width: 768px) {
+  .trainerGrid {
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  .trainerCard {
+    width: clamp(160px, 40vw, 220px);
+    height: clamp(260px, 40vh, 360px);
+  }
+
+  .sidebar {
+    position: static;
+    transform: none;
+    width: 100%;
+    max-width: 80%;
+    margin-top: 20px;
+  }
+}
+
+/* Animação */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.appear {
+  animation: fadeIn 680ms ease-out both;
+}
+
+.appearDelayed {
+  animation: fadeIn 680ms ease-out 420ms both;
+}

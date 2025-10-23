@@ -1,0 +1,236 @@
+/* Select Team page styles */
+
+.selectTeamContainer {
+  text-align: center;
+  margin: 12rem auto;
+  color: #333;
+}
+
+.panel {
+  background-color: #f8f8f8ca;
+  border: 3px solid #404040;
+  border-radius: 16px;
+  max-width: 180vh;
+  margin: -8vh auto;
+  padding: 24px 28px;
+  box-shadow: 0 8px 24px #0000001f;
+}
+
+/* Sprite preview row */
+.previewRow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: end;
+  gap: 24px;
+  margin: 8px 0 18px;
+}
+
+.teamSide {
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.vsBlock {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.trainer {
+  image-rendering: pixelated;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .15));
+  width: 196px;
+  height: 196px;
+}
+
+/* Layout principal */
+.lineup {
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
+  align-items: baseline;
+  gap: 0px;
+  height: 48vh;
+  padding: 115px 97px 0px;
+  display: flex;
+  overflow-x: auto;
+}
+
+.cta {
+  margin-top: 1.5rem;
+}
+
+/* Mirror para inimigos */
+.mirror {
+  transform: scaleX(-1);
+}
+
+/* Type color helpers */
+.fire {
+  background: #f08030;
+}
+
+.water {
+  background: #6890f0;
+}
+
+.grass {
+  background: #78c850;
+}
+
+.electric {
+  background: #f8d030;
+  color: #000;
+}
+
+.bug {
+  background: #a8b820;
+}
+
+.normal {
+  background: #a8a878;
+}
+
+.poison {
+  background: #a040a0;
+}
+
+.flying {
+  background: #a890f0;
+}
+
+.ground {
+  background: #e0c068;
+  color: #000;
+}
+
+.psychic {
+  background: #f85888;
+}
+
+.rock {
+  background: #b8a038;
+}
+
+.ghost {
+  background: #705898;
+}
+
+.ice {
+  background: #98d8d8;
+  color: #000;
+}
+
+.dragon {
+  background: #7038f8;
+}
+
+.fighting {
+  background: #c03028;
+}
+
+.steel {
+  background: #b8b8d0;
+  color: #000;
+}
+
+.fairy {
+  background: #ee99ac;
+  color: #000;
+}
+
+.dark {
+  background: #705848;
+}
+
+/* Pokémon container */
+.pokeThumb {
+  background: none;
+  border: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* Informações */
+.pokeMeta {
+  width: 100%;
+  text-align: center;
+  margin-top: 6px;
+}
+
+.pokeName {
+  font-weight: 700;
+  text-transform: capitalize;
+  font-size: 1rem;
+  color: #fff;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.pokeTypes {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.type {
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Status abaixo */
+.pokeStats {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: #eee;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.statLine {
+  font-weight: 600;
+}
+
+/* === Sprite styling === */
+.sprite {
+  transition: filter 0.2s ease, transform 0.2s ease;
+  image-rendering: pixelated;
+  transform-origin: center bottom;
+  z-index: 2;
+  max-width: 10vh;
+  max-height: 10vh;
+}
+
+/* Hover apenas na sprite do jogador */
+.pokeThumb:not(.enemy) .sprite:hover {
+  transform: scale(1.08);
+  filter: brightness(1.1);
+}
+
+.pokeThumb:not(.enemy) .sprite:hover.spriteSelected {
+  filter: drop-shadow(0 0 8px #1ecd97) drop-shadow(0 0 16px #1ecd97aa);
+}
+
+
+/* Sombra de seleção */
+.spriteSelected {
+  filter: drop-shadow(0 0 8px #1ecd97) drop-shadow(0 0 16px #1ecd97aa);
+}
+
+/* Inimigos sem hover nem sombra */
+.enemySprite {
+  pointer-events: none;
+  filter: none !important;
+}

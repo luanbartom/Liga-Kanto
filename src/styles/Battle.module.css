@@ -1,0 +1,712 @@
+﻿/* Battle page styles (moved from globals.css) */
+
+.battleContainer {
+  text-align: center;
+  padding: 40px 20px 180px;
+  /* menos espaço no fundo para subir a arena */
+  background: url("/arena.png") center/cover no-repeat fixed;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background-position: 0px -10px;
+}
+
+.arena {
+  flex: 1;
+  width: 100%;
+  max-width: 960px;
+  display: flex;
+  align-items: center;
+  /* centraliza verticalmente */
+  justify-content: space-between;
+  gap: 40px;
+  margin: 0 auto;
+}
+
+.enemySection,
+.playerSection {
+  text-align: center;
+  width: 46%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 260px;
+  /* padroniza altura para manter esquadro */
+  position: relative;
+  /* para posicionar HP no mesmo nível */
+}
+
+.battleLogBottom {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 56px;
+  /* levantado um pouco */
+  width: min(900px, 92%);
+  border: 3px solid #313131;
+  border-radius: 15px;
+  padding: 10px 12px;
+  max-height: 220px;
+  overflow-y: auto;
+  background: rgba(243, 243, 243, 0.978);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.515);
+  cursor: pointer;
+}
+
+/* collapsed view: show only the latest entry */
+.collapsed {
+  max-height: 70px;
+  overflow: hidden;
+}
+
+.collapsed ul li {
+  display: none;
+}
+
+.collapsed ul li:first-child {
+  display: list-item;
+}
+
+.sprite {
+  width: 180px;
+  height: 180px;
+  will-change: transform, filter, opacity;
+  position: relative;
+  z-index: 0;
+  /* sprites abaixo do HP */
+  margin-top: 0%;
+  image-rendering: pixelated;
+}
+
+/* Mirror wrapper to flip enemy towards player */
+.mirror {
+  display: inline-block;
+  transform: scaleX(-1);
+}
+
+.winner {
+  margin-top: 12px;
+}
+
+/* Sprite animations */
+@keyframes spriteAttackPlayer {
+  0% {
+    transform: translateX(0) translateY(0) scale(1);
+  }
+
+  30% {
+    transform: translateX(calc(-1 * var(--atkDist, 50px))) translateY(-8px) scale(1.25);
+  }
+
+  100% {
+    transform: translateX(0) translateY(0) scale(1);
+  }
+}
+
+@keyframes spriteAttackEnemy {
+  0% {
+    transform: translateX(0) translateY(0) scale(1);
+  }
+
+  30% {
+    transform: translateX(calc(-1 * var(--atkDist, 50px))) translateY(-8px) scale(1.25);
+  }
+
+  100% {
+    transform: translateX(0) translateY(0) scale(1);
+  }
+}
+
+@keyframes spriteDamage {
+  0% {
+    transform: translateX(0);
+    filter: brightness(1.1);
+    opacity: 1;
+  }
+
+  20% {
+    transform: translateX(calc(-1 * var(--shakeDist, 4px)));
+    opacity: 0.25;
+  }
+
+  40% {
+    transform: translateX(var(--shakeDist, 4px));
+    opacity: 1;
+  }
+
+  60% {
+    transform: translateX(calc(-1 * var(--shakeDist, 4px)));
+    opacity: 0.25;
+  }
+
+  80% {
+    transform: translateX(var(--shakeDist, 4px));
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(0);
+    filter: none;
+    opacity: 1;
+  }
+}
+
+.attackAnim {
+  animation: spriteAttackPlayer 1.4s ease;
+}
+
+.attackPlayer {
+  animation: spriteAttackPlayer 1.4s ease;
+}
+
+.attackEnemy {
+  animation: spriteAttackEnemy 1.4s ease;
+}
+
+.damageAnim {
+  animation: spriteDamage 1.6s ease;
+}
+
+/* HP panel wrapper */
+.hpPanel {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 3px solid #313131;
+  border-radius: 20px;
+  padding: 12px 14px;
+  min-width: 340px;
+  min-height: 82px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 370px;
+  /* fixa os HPs sempre acima das sprites maiores */
+  z-index: 5;
+}
+
+/* Coluna para empilhar nome + condição */
+.nameCol {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-width: 100px;
+}
+
+.hpText {
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+.pokeName {
+  margin-top: 6px;
+  text-transform: none;
+  color: #1f2937;
+}
+
+.hpName {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+  text-transform: capitalize;
+}
+
+.spriteBox {
+  height: 320px;
+  /* padroniza altura de sprite */
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  position: relative;
+}
+
+.spriteScale {
+  transform: scale(var(--pokeScale, 1));
+  transform-origin: center bottom;
+}
+
+/* --- Attack effects overlay --- */
+
+
+/* Primary actions under player sprite */
+.attackMenuToggle {
+  margin-top: 10px;
+}
+
+.switchTeam {
+  margin-top: 10px;
+}
+
+@media (max-width: 700px) {
+  .arena {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .enemySection,
+  .playerSection {
+    width: 100%;
+  }
+}
+
+/* Attack menu */
+.attackMenuToggle {
+  margin-top: 10px;
+  background: #ffffff;
+  border: 2px solid #616161;
+  color: #2d2d2d;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.attackMenu {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.moveItem {
+  text-align: left;
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.moveItem:hover {
+  border-color: #facc15;
+  background: #fffbe6;
+}
+
+.moveName {
+  font-weight: 700;
+}
+
+.moveStats {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.moveEffects {
+  font-size: 0.85rem;
+  color: #1f7a52;
+}
+
+.moveHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: #f8fafc;
+  padding: 6px 8px;
+  border-radius: 6px;
+  margin-bottom: 4px;
+}
+
+.moveName {
+  color: #1f2937;
+  flex: 1;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.moveMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.moveMult {
+  font-weight: 700;
+}
+
+.multGood {
+  color: #166534;
+}
+
+.multNeutral {
+  color: #475569;
+}
+
+.multBad {
+  color: #991b1b;
+}
+
+/* Reuse type badges from switch menu */
+.typeBadge {
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  text-transform: capitalize;
+  color: #fff;
+  font-weight: 600;
+}
+
+.switchTeam {
+  margin-top: 12px;
+}
+
+.teamBtn {
+  /* Override ConfirmButton defaults for compact team buttons */
+  min-width: auto !important;
+  height: 34px !important;
+  padding: 0 12px !important;
+  font-size: 12px !important;
+  margin: 4px;
+}
+
+/* Switch menu (mirrors attack menu) */
+.switchMenuToggle {
+  margin-top: 10px;
+  background: #ffcb05;
+  border: 2px solid #3b4cca;
+  color: #3b4cca;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.switchMenu {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.switchItem {
+  text-align: left;
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.switchItem:hover:not(:disabled) {
+  border-color: #facc15;
+  background: #fffbe6;
+}
+
+.switchItem:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.switchName {
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.2px;
+  color: #1f2937;
+}
+
+.switchStats {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.switchHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f8fafc;
+  padding: 6px 8px;
+  border-radius: 6px;
+  margin-bottom: 4px;
+}
+
+.switchIcon {
+  width: 40px;
+  height: 40px;
+  image-rendering: pixelated;
+}
+
+.switchInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.switchMeta {
+  margin-top: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.switchTypes {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.typeBadge {
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  text-transform: capitalize;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Type colors */
+.fire {
+  background: #f08030;
+}
+
+.water {
+  background: #6890f0;
+}
+
+.grass {
+  background: #78c850;
+}
+
+.electric {
+  background: #f8d030;
+  color: #000;
+}
+
+.bug {
+  background: #a8b820;
+}
+
+.normal {
+  background: #a8a878;
+}
+
+.poison {
+  background: #a040a0;
+}
+
+.flying {
+  background: #a890f0;
+}
+
+.ground {
+  background: #e0c068;
+  color: #000;
+}
+
+.psychic {
+  background: #f85888;
+}
+
+.rock {
+  background: #b8a038;
+}
+
+.ghost {
+  background: #705898;
+}
+
+.ice {
+  background: #98d8d8;
+  color: #000;
+}
+
+.dragon {
+  background: #7038f8;
+}
+
+.fighting {
+  background: #c03028;
+}
+
+.steel {
+  background: #b8b8d0;
+  color: #000;
+}
+
+.fairy {
+  background: #ee99ac;
+  color: #000;
+}
+
+.dark {
+  background: #705848;
+}
+
+/* New compact pokÃ©ball switch row */
+.switchRow {
+  margin-bottom: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  position: relative;
+}
+
+.playerSection .switchRow {
+  position: absolute;
+  left: 110%;
+  transform: translateX(-50%);
+  bottom: 330px;
+  z-index: 20;
+}
+
+.enemySection .switchRow {
+  position: absolute;
+  left: -10%;
+  transform: translateX(-50%);
+  bottom: 330px;
+  /* alinhado com o do jogador */
+  z-index: 20;
+  pointer-events: none;
+  /* apenas exibição, sem cliques */
+}
+
+.ballBtn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  padding: 0px;
+  background: #ffffff;
+  border: 3px solid #313131;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  line-height: 0;
+  box-sizing: content-box;
+}
+
+.ballBtn img {
+  width: 50px;
+  height: 50px;
+  image-rendering: pixelated;
+  display: block;
+}
+
+.ballBtn:hover {
+  border-color: #facc15;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.ballActive {
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25);
+}
+
+.ballDefeated {
+  filter: grayscale(100%);
+  opacity: 0.45;
+}
+
+.ballTooltip {
+  position: absolute;
+  bottom: 60px;
+  left: 0;
+  transform: translateX(0);
+  background: rgba(17, 24, 39, 0.95);
+  color: #fff;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  pointer-events: none;
+  text-transform: capitalize;
+}
+
+/* Confirm container above pokÃ©balls */
+.confirmSwap {
+  position: absolute;
+  bottom: -13px;
+  /* acima das pokÃ©bolas */
+  left: 190%;
+  transform: translateX(-50%);
+  background: #ffffff;
+  border: 3px solid #373737;
+  border-radius: 18px;
+  padding: 8px 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  min-width: 240px;
+  z-index: 30;
+}
+
+.confirmText {
+  font-size: 14px;
+  color: #111827;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.confirmActions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.confirmBtn {
+  background: #10b981;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.confirmBtn:hover {
+  filter: brightness(0.95);
+}
+
+.confirmBtnSecondary {
+  background: #e5e7eb;
+  color: #111827;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.confirmBtnSecondary:hover {
+  filter: brightness(0.95);
+}
+
+.attackSidebar {
+  position: fixed;
+  right: 150px;
+  top: 78%;
+  transform: translateY(-48%);
+  width: 313px;
+  z-index: 25;
+}
+
+/* Esconde o menu dentro da seÃ§Ã£o do player para evitar duplicidade */
+.playerSection .attackMenuToggle,
+.playerSection .attackMenu {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .attackSidebar {
+    top: auto;
+    right: 8px;
+    bottom: 92px;
+    /* acima do log */
+    transform: none;
+    width: min(92vw, 360px);
+  }
+}
