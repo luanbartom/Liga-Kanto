@@ -81,8 +81,8 @@ export default function SelectTeam() {
   useEffect(() => {
     try {
       document?.body?.classList?.add("bg-select-team");
-    } catch (e) { }
-
+    } catch (e) {}
+  
     const saved = localStorage.getItem("selectedTeam");
     if (saved) setTeam(JSON.parse(saved));
     const savedStarter = localStorage.getItem("starterIndex");
@@ -90,32 +90,25 @@ export default function SelectTeam() {
       const n = parseInt(savedStarter, 10);
       if (!Number.isNaN(n)) setStarterIndex(n);
     }
-
+  
+    // 🔥 Sempre gera novos inimigos
     (async () => {
       try {
-        const stored = localStorage.getItem("enemyTeam");
-        if (stored) {
-          const parsed = JSON.parse(stored);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            setEnemyPreview(parsed);
-            return;
-          }
-        }
         const ENEMIES = 3;
         const ids = Array.from({ length: ENEMIES }, () => Math.floor(Math.random() * 151) + 1);
         const enemies = await Promise.all(ids.map((id) => getPokemon(id)));
         const filtered = enemies.filter(Boolean);
         setEnemyPreview(filtered);
-        localStorage.setItem("enemyTeam", JSON.stringify(filtered));
-      } catch (e) { }
+      } catch (e) {}
     })();
-
+  
     return () => {
       try {
         document?.body?.classList?.remove("bg-select-team");
-      } catch (e) { }
+      } catch (e) {}
     };
   }, []);
+  
 
   const handleStartBattle = () => {
     if (team.length === 0) return alert("Selecione pelo menos 1 Pokémon!");
