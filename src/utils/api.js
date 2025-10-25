@@ -195,17 +195,33 @@ export async function getEvolutionStage(pokemonName) {
   }
 }
 
-// 🔹 Busca dados detalhados de um Pokémon específico
+// 🔹 Busca dados detalhados de um Pokémon específico (com cache local)
 export async function getPokemon(nameOrId) {
   try {
     const key = String(nameOrId).toLowerCase();
+    const cacheKey = `pokemon_${key}`;
+
+    // 🧩 1️⃣ Verificar cache local antes de consultar a API
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        if (parsed && parsed.id) return parsed; // ✅ retorna se estiver válido
+      } catch (e) {
+        localStorage.removeItem(cacheKey); // remove cache corrompido
+      }
+    }
+
+    // 🧩 2️⃣ Caso não tenha cache, busca na API normalmente
     const res = await pokeAPI.get(`pokemon/${key}`);
     const stats = res.data.stats;
     const id = res.data.id;
 
-    // Selecionar 4 golpes diversos de forma determinística por espécie
+    // Selecionar golpes
     const allMoveNames = (res.data.moves || []).map((m) => m.move?.name).filter(Boolean);
     const uniqueMoves = Array.from(new Set(allMoveNames));
+
+    // Gerador pseudoaleatório fixo
     function mulberry32(seed) {
       let a = seed >>> 0;
       return function () {
@@ -233,157 +249,89 @@ export async function getPokemon(nameOrId) {
       }
       return picked;
     }
-    const seedBase = (id * 1009) >>> 0;
-    let moves = uniqueMoves.length <= 4 ? uniqueMoves : seededSample(uniqueMoves, 4, seedBase);
 
-    // Priorizar: 2 do tipo principal, 1 do secundário (se houver) e 1 icônico
-    const types = res.data.types.map((t) => t.type.name);
-    const primary = types[0];
-    const secondary = types[1] || null;
-    const available = uniqueMoves;
-    const species = String(res.data.name).toLowerCase();
-    let chosen = uniqueInOrder((SIGNATURE_BY_SPECIES[species] || []).filter((n) => available.includes(n))).slice(0, 1);
+    // 🧩 3️⃣ Montar o objeto final com fallback
 
-    // Estágio para progressão de poder
-    const evoStage = await getEvolutionStage(res.data.name);
-    const stage = Math.min(3, Math.max(1, parseInt(evoStage || 1, 10)));
+const staticSprite = res.data.sprites.front_default;
+const animatedSprite = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${id}.gif`;
+const fallbackSprite = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
 
-    async function ensureFromType(type, minCount) {
-      if (!type) return;
-      const pref = (PREFERRED_BY_TYPE[type] || []).filter((n) => available.includes(n) && !chosen.includes(n));
-      if (pref.length === 0) return;
-      // Ordenação por estágio usando dicas locais de poder (evita N chamadas de rede)
-      const scored = pref.map((name) => ({ name, power: MOVE_POWER_HINTS[name] ?? 60 }));
-      if (stage === 1) {
-        scored.sort((a, b) => (a.power || 0) - (b.power || 0));
-      } else if (stage === 2) {
-        scored.sort((a, b) => Math.abs((a.power || 70) - 70) - Math.abs((b.power || 70) - 70));
-      } else {
-        scored.sort((a, b) => (b.power || 0) - (a.power || 0));
-      }
-      for (const item of scored) {
-        if (chosen.length >= 4) break;
-        if (!chosen.includes(item.name)) chosen.push(item.name);
-        const count = chosen.filter((x) => (PREFERRED_BY_TYPE[type] || []).includes(x)).length;
-        if (count >= minCount) break;
-      }
-    }
-    await ensureFromType(primary, 2);
-    if (secondary) await ensureFromType(secondary, 1);
+const pokemonData = {
+  id,
+  name: res.data.name,
+  sprite: staticSprite || fallbackSprite, // usa fallback se front_default for null
+  animated: animatedSprite,
+  hp: stats[0].base_stat * 5,
+  attack: stats[1].base_stat,
+  defense: stats[2].base_stat,
+  speed: stats[5].base_stat,
+  types,
+  height: res.data.height,
+  weight: res.data.weight,
+  moves,
+  evolutionStage: evoStage,
+};
 
-    if (chosen.length < 4) {
-      const exclude = new Set(chosen);
-      chosen = uniqueInOrder([...chosen, ...seededSample(available, 4 - chosen.length, seedBase + 1, exclude)]);
-    }
-    moves = chosen.slice(0, 4);
 
-    // Buscar estágio de evolução (já carregado em evoStage acima para escolha progressiva)
-    const evolutionStage = evoStage;
+    // 🧩 4️⃣ Salvar no cache local
+    localStorage.setItem(cacheKey, JSON.stringify(pokemonData));
 
-    return {
-      id,
-      name: res.data.name,
-      sprite: res.data.sprites.front_default,
-      animated: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${id}.gif`,
-      hp: stats[0].base_stat * 5,
-      attack: stats[1].base_stat,
-      defense: stats[2].base_stat,
-      speed: stats[5].base_stat,
-      types,
-      height: res.data.height,
-      weight: res.data.weight,
-      moves,
-      evolutionStage, // 👈 novo campo
-    };
+    return pokemonData;
   } catch (err) {
     console.error("Erro ao buscar Pokémon:", err);
     return null;
   }
 }
 
-// 🔹 Retorna os 151 Pokémon da 1ª geração
+// 🔹 Carrega os 151 Pokémons da 1ª geração em blocos paralelos + cache local
 export async function getFirstGenPokemons() {
   try {
+    // Tenta usar cache local primeiro
+    const cached = localStorage.getItem("firstGenPokemons");
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      if (Array.isArray(parsed) && parsed.length >= 150) {
+        console.log("✅ Pokémons carregados do cache local");
+        return parsed;
+      }
+    }
+
+    console.log("🌐 Buscando Pokémons da 1ª geração da API...");
     const res = await pokeAPI.get("pokemon?limit=151");
     const pokemonList = res.data.results;
 
-    const detailedPokemons = await Promise.all(
-      pokemonList.map(async (p) => await getPokemon(p.name))
-    );
+    // 🔸 Função auxiliar para buscar um lote (ex: 20 por vez)
+    async function fetchBatch(batch) {
+      const promises = batch.map(async (p) => {
+        try {
+          return await getPokemon(p.name);
+        } catch (err) {
+          console.warn(`⚠️ Erro ao buscar ${p.name}`, err);
+          return null;
+        }
+      });
+      return (await Promise.all(promises)).filter(Boolean);
+    }
 
-    return detailedPokemons.filter(Boolean);
+    // 🔸 Divide a lista em blocos de 20 Pokémons
+    const batchSize = 20;
+    const detailedPokemons = [];
+
+    for (let i = 0; i < pokemonList.length; i += batchSize) {
+      const batch = pokemonList.slice(i, i + batchSize);
+      const result = await fetchBatch(batch);
+      detailedPokemons.push(...result);
+      console.log(`✅ Lote ${i / batchSize + 1} carregado (${detailedPokemons.length}/151)`);
+      // pequeno atraso entre lotes
+      await new Promise((r) => setTimeout(r, 500));
+    }
+
+    // 🔹 Salva no cache local
+    localStorage.setItem("firstGenPokemons", JSON.stringify(detailedPokemons));
+
+    return detailedPokemons;
   } catch (err) {
     console.error("Erro ao buscar lista de Pokémons:", err);
     return [];
-  }
-}
-
-// 🔹 Busca e normaliza dados reais de um golpe
-export async function getMove(nameOrId) {
-  try {
-    const key = String(nameOrId).toLowerCase();
-    if (MOVE_DETAIL_CACHE.has(key)) return MOVE_DETAIL_CACHE.get(key);
-    const res = await pokeAPI.get(`move/${key}`).catch(() => null);
-    if (!res) {
-      // Fallback leve (sem log agressivo)
-      const data = {
-        name: key,
-        display: key.replace(/-/g, " "),
-        power: MOVE_POWER_HINTS[key] ?? 40,
-        accuracy: 95,
-        type: "normal",
-        damage_class: "physical",
-        effects: [],
-      };
-      MOVE_DETAIL_CACHE.set(key, data);
-      return data;
-    }
-    const m = res.data;
-    const effects = [];
-    const ailment = m.meta?.ailment?.name;
-    const ailmentChance = m.meta?.ailment_chance ?? 0;
-
-    if (ailment && ailment !== "none" && ailmentChance > 0) {
-      const map = {
-        paralysis: "paralyzed",
-        burn: "burned",
-        sleep: "asleep",
-        freeze: "frozen",
-        poison: "poisoned",
-        badly_poisoned: "poisoned",
-        confusion: "confused",
-      };
-      effects.push({ type: map[ailment] || ailment, chance: ailmentChance });
-    }
-
-    // Preferir nome em pt-BR se disponível
-    let display = m.name.replace(/-/g, " ");
-    try {
-      const pt = (m.names || []).find((n) => n.language?.name === "pt-BR") || (m.names || []).find((n) => n.language?.name === "pt");
-      if (pt?.name) display = pt.name;
-    } catch (e) {}
-
-    const data = {
-      name: m.name,
-      display,
-      power: m.power ?? 0,
-      accuracy: m.accuracy ?? 100,
-      type: m.type?.name || "normal",
-      damage_class: m.damage_class?.name || "physical",
-      effects,
-    };
-    MOVE_DETAIL_CACHE.set(key, data);
-    return data;
-  } catch (err) {
-    // Recuo silencioso com dados genéricos
-    return {
-      name: String(nameOrId),
-      display: String(nameOrId).replace(/-/g, " "),
-      power: MOVE_POWER_HINTS[String(nameOrId).toLowerCase()] ?? 40,
-      accuracy: 95,
-      type: "normal",
-      damage_class: "physical",
-      effects: [],
-    };
   }
 }

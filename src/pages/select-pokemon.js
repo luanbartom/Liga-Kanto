@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getFirstGenPokemons } from "../utils/api";
+import { getFirstGenPokemons } from "@/utils/api";
 import { useRouter } from "next/router";
 import styles from "../styles/SelectPokemon.module.css";
 import { typeLabel, moveLabel } from "@/utils/i18n";
