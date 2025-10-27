@@ -256,7 +256,7 @@ export default function Battle() {
       condition: "normal",
       moves: ["tackle", "thunder-shock", "quick-attack", "tail-whip"],
       animated:
-        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/25.gif",
+        "/sprites/gif/25.gif",
     };
 
     // Garantir height/weight para escala consistente
@@ -332,7 +332,7 @@ export default function Battle() {
         maxHp: calcMaxHp(45),
         moves: await enrichMoves(["tackle", "vine-whip", "growl", "sleep-powder"]),
         animated:
-          "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/1.gif",
+          "/sprites/gif/1.gif",
         condition: "normal",
         status: null,
       };
@@ -567,7 +567,7 @@ export default function Battle() {
                   style={{ cursor: "default" }}
                 >
                   <img
-                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png"
+                    src="/sprites/pokeball/poke-ball.png"
                     alt="Pokébola adversário"
                   />
                 </div>
@@ -638,7 +638,7 @@ export default function Battle() {
                 }}
               >
                 <img
-                  src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png"
+                  src="/sprites/pokeball/poke-ball.png"
                   alt="Pokébola"
                 />
               </button>

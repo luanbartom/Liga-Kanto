@@ -13,16 +13,14 @@ function PokeThumb({ pokemon, selected = false, onClick, enemy = false }) {
   // Escala base a partir da altura (decímetros -> metros)
   let scale = Math.min(Math.max(pokemon.height / 12, 0.8), 2.2);
 
-  // Estágios (listas simples pra exemplo)
-  const lowerName = pokemon.name.toLowerCase();
-  const firstStageNames = ["charmander", "squirtle", "bulbasaur", "pidgey", "geodude", "machop", "abra", "gastly", "magikarp"];
-  const secondStageNames = ["charmeleon", "wartortle", "ivysaur", "pidgeotto", "graveler", "machoke", "kadabra", "haunter"];
-  const thirdStageNames = ["charizard", "blastoise", "venusaur", "pidgeot", "golem", "machamp", "alakazam", "gengar", "gyarados"];
+  // Bônus por estágio via API (cobre todos os 151)
+  const stage = Math.min(3, Math.max(1, parseInt(pokemon?.evolutionStage ?? 1, 10)));
+  if (stage === 1) scale *= 1.15;
+  else if (stage === 2) scale *= 1.35;
+  else scale *= 1.55;
 
-  // Bônus de tamanho por estágio
-  if (firstStageNames.includes(lowerName)) scale *= 1.3;
-  if (secondStageNames.includes(lowerName)) scale *= 1.15;
-  if (thirdStageNames.includes(lowerName)) scale *= 1.5;
+  // Reaplica limites após o bônus
+  scale = Math.min(Math.max(scale, 0.8), 2.2);
 
   const spriteSize = baseSize * scale;
 
@@ -46,6 +44,13 @@ function PokeThumb({ pokemon, selected = false, onClick, enemy = false }) {
           transform: `${enemy ? "scaleX(-1)" : "scaleX(1)"} scale(${scale})`,
           transformOrigin: "center bottom",
         }}
+        onError={(e) => {
+          const img = e.currentTarget;
+          if (!img.dataset.fallback) {
+            img.dataset.fallback = "1";
+            img.src = pokemon.sprite; // fallback para PNG estático local
+          }
+        }}
       />
 
       <div className={styles.pokeMeta}>
@@ -59,12 +64,6 @@ function PokeThumb({ pokemon, selected = false, onClick, enemy = false }) {
         </div>
       </div>
 
-      <div className={styles.pokeStats}>
-        <div className={styles.statLine}>HP: {pokemon.hp}</div>
-        <div className={styles.statLine}>ATK: {pokemon.attack}</div>
-        <div className={styles.statLine}>DEF: {pokemon.defense}</div>
-        <div className={styles.statLine}>SPD: {pokemon.speed}</div>
-      </div>
     </button>
   );
 }
@@ -76,6 +75,7 @@ export default function SelectTeam() {
   const [team, setTeam] = useState([]);
   const [starterIndex, setStarterIndex] = useState(null);
   const [enemyPreview, setEnemyPreview] = useState([]);
+  const [trainerId, setTrainerId] = useState(1);
   const router = useRouter();
 
   useEffect(() => {
@@ -83,8 +83,30 @@ export default function SelectTeam() {
       document?.body?.classList?.add("bg-select-team");
     } catch (e) { }
 
+    const fixSprites = (arr = []) =>
+      arr.map((p) =>
+        p && p.id
+          ? {
+              ...p,
+              sprite: `/sprites/statics/${p.id}.png`,
+              animated: `/sprites/gif/${p.id}.gif`,
+            }
+          : p
+      );
+
     const saved = localStorage.getItem("selectedTeam");
-    if (saved) setTeam(JSON.parse(saved));
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setTeam(fixSprites(parsed));
+      } catch {}
+    }
+
+    try {
+      const storedTrainer = localStorage.getItem("selectedTrainer");
+      const parsedTrainer = parseInt(storedTrainer || "1", 10);
+      if (!Number.isNaN(parsedTrainer)) setTrainerId(parsedTrainer);
+    } catch {}
     const savedStarter = localStorage.getItem("starterIndex");
     if (savedStarter !== null) {
       const n = parseInt(savedStarter, 10);
@@ -97,7 +119,9 @@ export default function SelectTeam() {
         if (stored) {
           const parsed = JSON.parse(stored);
           if (Array.isArray(parsed) && parsed.length > 0) {
-            setEnemyPreview(parsed);
+            const fixed = fixSprites(parsed);
+            setEnemyPreview(fixed);
+            localStorage.setItem("enemyTeam", JSON.stringify(fixed));
             return;
           }
         }
@@ -149,10 +173,10 @@ export default function SelectTeam() {
           {/* VS */}
           <div className={styles.vs}>VS</div>
 
-          {/* Sua treinadora */}
+          {/* Seu treinador(a) selecionado na Home */}
           <img
-            className={styles.trainer}
-            src="/images/trainer1pixel.png"
+            className={`${styles.trainer} ${trainerId === 2 ? styles.trainerAdjust : ""}`}
+            src={`/images/trainer${trainerId}pixel.png`}
             width={80}
             height={80}
             alt="Você"

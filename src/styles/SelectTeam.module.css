@@ -1,19 +1,92 @@
-/* Select Team page styles */
-
 .selectTeamContainer {
   text-align: center;
-  margin: 12rem auto;
+  margin: 0 auto;
   color: #333;
+  position: relative;
+  overflow: visible;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
 }
 
+/* ======== ANIMAÇÕES ======== */
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  80% {
+    transform: scale(1.1);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeVs {
+  from {
+    opacity: 0;
+    transform: scale(2) rotate(-10deg);
+  }
+
+  to {
+    opacity: 0.82;
+    transform: scale(1) rotate(-8deg);
+  }
+}
+
+.trainer {
+  width: clamp(200px, 18vh, 220px);
+  height: clamp(200px, 18vh, 220px);
+  object-fit: contain; /* evita cortar cabeça/pés */
+  object-position: center bottom; /* ancora nos pés */
+  image-rendering: pixelated;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .15));
+  z-index: 10;
+}
+
+/* Ajuste de escala para o treinador 2, que tem sprite maior */
+.trainerAdjust {
+  transform: translateY(12px) scale(1.12);
+  transform-origin: center bottom;
+}
+
+/* Painel principal */
 .panel {
-  background-color: #f8f8f8ca;
+  background-color: #ffffffca;
   border: 3px solid #404040;
-  border-radius: 16px;
-  max-width: 180vh;
-  margin: -8vh auto;
-  padding: 24px 28px;
+  border-radius: 3vh;
+  max-width: 98vw;
+  padding: 20px 30px;
   box-shadow: 0 8px 24px #0000001f;
+  overflow: visible;
+  position: relative;
+  top: -4vh;
+  animation: fadeSlideUp 0.6s ease-out both;
+}
+
+.panel h1 {
+  font-size: clamp(1.25rem, 2.5vw + 0.5rem, 2.75rem);
+  margin-bottom: 1rem;
+  opacity: 0;
+  animation: fadeSlideUp 0.8s 0.2s ease-out forwards;
 }
 
 /* Sprite preview row */
@@ -31,6 +104,8 @@
   justify-content: center;
   gap: 16px;
   flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeSlideUp 0.8s 0.3s ease-out forwards;
 }
 
 .vsBlock {
@@ -39,113 +114,34 @@
   gap: 12px;
 }
 
-.trainer {
-  image-rendering: pixelated;
-  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .15));
-  width: 196px;
-  height: 196px;
-}
-
-/* Layout principal */
+/* ======== LINEUP ======== */
 .lineup {
-  flex-wrap: nowrap;
-  justify-content: space-evenly;
-  align-items: baseline;
-  gap: 0px;
-  height: 48vh;
-  padding: 115px 97px 0px;
   display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 5px;
+  height: 54vh;
+  padding: 185px 7vw 0;
   overflow-x: auto;
+  overflow-y: visible;
+  position: relative;
+  z-index: 5;
+  max-width: 100%;
+  margin: 0 auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  animation: fadeSlideUp 0.8s 0.4s ease-out both;
 }
 
-.cta {
-  margin-top: 1.5rem;
+.lineup::-webkit-scrollbar {
+  display: none;
 }
 
-/* Mirror para inimigos */
-.mirror {
-  transform: scaleX(-1);
+.lineup .pokeThumb+.pokeThumb {
+  margin-left: 6vh;
 }
 
-/* Type color helpers */
-.fire {
-  background: #f08030;
-}
-
-.water {
-  background: #6890f0;
-}
-
-.grass {
-  background: #78c850;
-}
-
-.electric {
-  background: #f8d030;
-  color: #000;
-}
-
-.bug {
-  background: #a8b820;
-}
-
-.normal {
-  background: #a8a878;
-}
-
-.poison {
-  background: #a040a0;
-}
-
-.flying {
-  background: #a890f0;
-}
-
-.ground {
-  background: #e0c068;
-  color: #000;
-}
-
-.psychic {
-  background: #f85888;
-}
-
-.rock {
-  background: #b8a038;
-}
-
-.ghost {
-  background: #705898;
-}
-
-.ice {
-  background: #98d8d8;
-  color: #000;
-}
-
-.dragon {
-  background: #7038f8;
-}
-
-.fighting {
-  background: #c03028;
-}
-
-.steel {
-  background: #b8b8d0;
-  color: #000;
-}
-
-.fairy {
-  background: #ee99ac;
-  color: #000;
-}
-
-.dark {
-  background: #705848;
-}
-
-/* Pokémon container */
 .pokeThumb {
   background: none;
   border: none;
@@ -154,63 +150,45 @@
   flex-direction: column;
   align-items: center;
   cursor: pointer;
+  position: relative;
+  overflow: visible;
+  z-index: 6;
+  opacity: 0;
+  animation: popIn 0.6s ease-out forwards;
 }
 
-/* Informações */
-.pokeMeta {
-  width: 100%;
-  text-align: center;
-  margin-top: 6px;
+.pokeThumb:nth-child(1) {
+  animation-delay: 0.3s;
 }
 
-.pokeName {
-  font-weight: 700;
-  text-transform: capitalize;
-  font-size: 1rem;
-  color: #fff;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+.pokeThumb:nth-child(2) {
+  animation-delay: 0.35s;
 }
 
-.pokeTypes {
-  display: flex;
-  justify-content: center;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-top: 2px;
+.pokeThumb:nth-child(3) {
+  animation-delay: 0.4s;
 }
 
-.type {
-  padding: 2px 6px;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  color: #fff;
-  font-weight: 600;
+.pokeThumb:nth-child(4) {
+  animation-delay: 0.45s;
 }
 
-/* Status abaixo */
-.pokeStats {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 4px;
-  font-size: 0.8rem;
-  color: #eee;
-  text-align: center;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+.pokeThumb:nth-child(5) {
+  animation-delay: 0.5s;
 }
 
-.statLine {
-  font-weight: 600;
+.pokeThumb:nth-child(6) {
+  animation-delay: 0.55s;
 }
 
-/* === Sprite styling === */
 .sprite {
   transition: filter 0.2s ease, transform 0.2s ease;
   image-rendering: pixelated;
   transform-origin: center bottom;
-  z-index: 2;
-  max-width: 10vh;
-  max-height: 10vh;
+  position: relative;
+  z-index: 9999;
+  max-width: clamp(74px, 14vh, 180px);
+  max-height: clamp(74px, 14vh, 180px);
 }
 
 /* Hover apenas na sprite do jogador */
@@ -220,17 +198,232 @@
 }
 
 .pokeThumb:not(.enemy) .sprite:hover.spriteSelected {
-  filter: drop-shadow(0 0 8px #1ecd97) drop-shadow(0 0 16px #1ecd97aa);
+  filter: drop-shadow(0 0 8px #cdbc1e) drop-shadow(0 0 16px #cdc41eaa);
 }
 
 
-/* Sombra de seleção */
 .spriteSelected {
-  filter: drop-shadow(0 0 8px #1ecd97) drop-shadow(0 0 16px #1ecd97aa);
+  filter: drop-shadow(0 0 8px #cdbc1e) drop-shadow(0 0 16px #cdc41eaa);
+}
+
+/* Meta do Pokémon (nome + tipos) */
+.pokeMeta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2vh;
+}
+
+.pokeName {
+  /* Cores inspiradas na logo Pokémon */
+  color: #ffcb05; /* amarelo vivo */
+  font-weight: 800;
+  font-size: clamp(12px, 1.4vw, 20px);
+  line-height: 1.1;
+  text-transform: capitalize;
+  letter-spacing: 0.09em; /* mais espaço entre letras */
+  /* Borda mais grossa (fallback + stroke) */
+  -webkit-text-stroke: 1px #183755;
+  font-family: Impact, "Arial Black", "Segoe UI Black", "Helvetica Neue", Poppins, sans-serif;
+  text-shadow: 0 0 8px rgba(0,0,0,.35);
+  /* Aumenta a largura visual da fonte */
+  display: inline-block;
+  font-stretch: expanded; /* suportado por alguns navegadores */
+  transform: scaleX(1.30);
+  transform-origin: center;
+}
+
+.pokeTypes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 4px;
 }
 
 /* Inimigos sem hover nem sombra */
 .enemySprite {
   pointer-events: none;
   filter: none !important;
+}
+
+/* ===== VS ===== */
+.vs {
+  /* Absolute overlay centered relative to the lineup */
+  position:fixed;
+  left: 49%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0;
+  /* hide original text */
+  line-height: 0;
+  pointer-events: none;
+  z-index: 1;
+  rotate: -12deg;
+}
+
+.vs::after {
+  content: "VS";
+  position: relative;
+  transform: rotate(-10deg);
+  font-size: clamp(72px, 16vw, 280px);
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  color: #313131;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, .35), 0 0 32px rgba(30, 205, 151, .35);
+  opacity: 0.82;
+  white-space: nowrap;
+  user-select: none;
+  animation: fadeVs 0.6s 0.6s ease-out both;
+}
+
+/* Rotulagem de tipos (estilo mais "Pokémon") */
+.type {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 12px;
+  margin: 6px 4px; /* mais espaço vertical, menos nas laterais */
+  border-radius: 8px;
+  color: #fff;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-shadow: 0 1px 0 rgba(0,0,0,.55), 0 0 6px rgba(0,0,0,.35);
+  box-shadow: inset 0 -2px 0 rgba(255,255,255,.25), 0 2px 0 rgba(0,0,0,.15);
+  user-select: none;
+}
+
+/* Tipos */
+.fire {
+  background: #f08030;
+  border-radius: 6px;
+}
+
+.water {
+  background: #6890f0;
+  border-radius: 6px;
+}
+
+.grass {
+  background: #78c850;
+  border-radius: 6px;
+}
+
+.electric {
+  background: #f8d030;
+  color: #000;
+  border-radius: 6px;
+}
+
+.bug {
+  background: #a8b820;
+  border-radius: 6px;
+}
+
+.normal {
+  background: #a8a878;
+  border-radius: 6px;
+}
+
+.poison {
+  background: #a040a0;
+  border-radius: 6px;
+}
+
+.flying {
+  background: #a890f0;
+  border-radius: 6px;
+}
+
+.ground {
+  background: #e0c068;
+  color: #572c08;
+  border-radius: 6px;
+}
+
+.psychic {
+  background: #f85888;
+  border-radius: 6px;
+}
+
+.rock {
+  background: #b8a038;
+  border-radius: 6px;
+}
+
+.ghost {
+  background: #705898;
+  border-radius: 6px;
+}
+
+.ice {
+  background: #98d8d8;
+  color: #000;
+  border-radius: 6px;
+}
+
+.dragon {
+  background: #7038f8;
+  border-radius: 6px;
+}
+
+.fighting {
+  background: #c03028;
+  border-radius: 6px;
+}
+
+.steel {
+  background: #b8b8d0;
+  color: #000;
+  border-radius: 6px;
+}
+
+.fairy {
+  background: #ee99ac;
+  color: #000;
+  border-radius: 6px;
+}
+
+.dark {
+  background: #705848;
+  border-radius: 6px;
+}
+
+/* ===== Responsividade ===== */
+@media (max-width: 992px) {
+  .panel {
+    padding: 14px 16px;
+  }
+
+  .lineup {
+    height: 42vh;
+    padding: 64px 3vw 0;
+    gap: 12px;
+  }
+
+  .trainer {
+    width: clamp(84px, 12vh, 160px);
+    height: clamp(84px, 12vh, 160px);
+  }
+
+  .trainerAdjust { transform: translateY(6px) scale(1.12); }
+
+  .sprite {
+    max-width: clamp(52px, 11vh, 120px);
+    max-height: clamp(52px, 11vh, 120px);
+  }
+
+  .vs::after {
+    font-size: clamp(56px, 13vw, 200px);
+  }
+}
+
+.cta {
+  margin-top: 0.5rem;
+}
+
+/* Espelhamento para inimigos */
+.mirror {
+  transform: scaleX(-1);
 }

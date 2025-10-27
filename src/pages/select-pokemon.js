@@ -12,6 +12,7 @@ export default function SelectPokemon() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedType, setSelectedType] = useState("");
   const [evolutionStage, setEvolutionStage] = useState("");
+  // Removido paginação por quantidade; mostra todos
   const router = useRouter();
 
   useEffect(() => {
@@ -36,6 +37,9 @@ export default function SelectPokemon() {
       } catch (e) {}
     };
   }, []);
+
+  // Reinicia a paginação quando filtros mudam
+  useEffect(() => {}, [searchTerm, selectedType, evolutionStage]);
 
   const toggleSelect = (pokemon) => {
     if (selected.includes(pokemon)) {
@@ -102,7 +106,7 @@ export default function SelectPokemon() {
               className={
                 index < selected.length ? styles.filled : styles.empty
               }
-              src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png"
+              src="/sprites/pokeball/poke-ball.png"
               alt="Pokeball"
             />
           ))}
@@ -112,6 +116,8 @@ export default function SelectPokemon() {
           Regra: selecione 3 Pokemon, um de cada estagio de evolucao (1, 2 e 3).
         </p>
       </div>
+
+      {/* Removido botão "Exibir mais 30" */}
 
         <ConfirmButton onClick={confirmTeam} disabled={!hasAllEvolutionStages()}>
           Confirmar ({selected.length}/3)

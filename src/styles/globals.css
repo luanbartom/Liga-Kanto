@@ -54,6 +54,18 @@ body.bg-select-team {
   background-attachment: fixed;
 }
 
+/* Hide all scrollbars on Select Team page while keeping scroll */
+body.bg-select-team,
+body.bg-select-team * {
+  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none;    /* Firefox */
+}
+
+body.bg-select-team::-webkit-scrollbar,
+body.bg-select-team *::-webkit-scrollbar {
+  display: none; /* WebKit */
+}
+
 a { color: inherit; text-decoration: none; }
 
 @media (prefers-color-scheme: dark) { html { color-scheme: dark; } }

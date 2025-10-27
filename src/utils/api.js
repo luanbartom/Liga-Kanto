@@ -283,8 +283,8 @@ export async function getPokemon(nameOrId) {
     return {
       id,
       name: res.data.name,
-      sprite: res.data.sprites.front_default,
-      animated: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${id}.gif`,
+      sprite: `/sprites/statics/${id}.png`,
+      animated: `/sprites/gif/${id}.gif`,
       hp: stats[0].base_stat * 5,
       attack: stats[1].base_stat,
       defense: stats[2].base_stat,
