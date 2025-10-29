@@ -421,6 +421,9 @@
 
 .cta {
   margin-top: 0.5rem;
+  transform: scale(1.5);
+  margin-bottom: 0.8rem;
+  
 }
 
 /* Espelhamento para inimigos */

@@ -8,8 +8,8 @@ async function loadPokedex() {
   const res = await fetch("/pokedex.json");
   if (!res.ok) throw new Error("Falha ao carregar pokedex.json");
   const data = await res.json();
-  cachedPokedex = data;
-  return data.pokedex;
+  cachedPokedex = data.pokedex;
+  return cachedPokedex;
 }
 
 /**

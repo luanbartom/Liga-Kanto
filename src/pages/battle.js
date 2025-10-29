@@ -2,6 +2,7 @@
 import HPBar from "@/components/HPBar";
 import ConditionBar from "@/components/ConditionBar";
 import { getPokemon, getMove } from "@/utils/api";
+import { typeLabel, moveName } from "@/utils/i18n";
 import styles from "@/styles/Battle.module.css";
 import ConfirmButton from "@/components/ui/ConfirmButton";
 import AttackMenu from "@/components/ui/AttackMenu";
@@ -22,6 +23,21 @@ export default function Battle() {
   const [logExpanded, setLogExpanded] = useState(false);
   const [playerAnim, setPlayerAnim] = useState(null);
   const [enemyAnim, setEnemyAnim] = useState(null);
+  const [playerTrainerId, setPlayerTrainerId] = useState(1);
+
+  // Ajustes de balanceamento (facilmente tunáveis)
+  const TUNING = {
+    LEVEL: 30,
+    HP_SCALE: 0.9, // 90% do HP vanilla para lutas mais dinâmicas
+    STAB: 1.35, // bônus por golpe do mesmo tipo
+    CRIT_RATE: 0.1, // 10% de chance de crítico
+    CRIT_MULT: 1.5, // crítico aumenta dano em 50%
+    RAND_MIN: 0.9, // variação aleatória do dano
+    RAND_MAX: 1.1,
+    CAP_SUPER: 2.0, // limite para super efetivo
+    FLOOR_RESIST: 0.5, // mínimo para pouco efetivo
+    HONOR_IMMUNITIES: true, // manter imunidades (normal->ghost etc.)
+  };
 
   const ATTACK_GAP_MS = 3200; // intervalo maior para separar turnos
   const [hoveredBall, setHoveredBall] = useState(-1);
@@ -30,34 +46,86 @@ export default function Battle() {
   const [defeatedEnemies, setDefeatedEnemies] = useState(0);
 
   async function enrichMoves(moves) {
-    const unique = Array.from(new Set((moves || []).filter(Boolean)));
-    const details = await Promise.all(
-      unique.map(async (mv) => {
-        if (moveCache.has(mv)) return moveCache.get(mv);
-        try {
-          const data = await getMove(mv);
-          moveCache.set(mv, data);
-          return data;
-        } catch (e) {
-          return null;
+    // Normaliza golpes vindos como string (ex.: "tackle") ou objeto do pokedex.json
+    const normalize = (raw) => {
+      if (!raw) return null;
+      if (typeof raw === "string") return null; // será resolvido via getMove abaixo
+      if (typeof raw === "object") {
+        const effectObj = raw.effect || null;
+        const effects = Array.isArray(raw.effects)
+          ? raw.effects
+          : effectObj
+            ? [{ type: effectObj.type, chance: effectObj.chance }]
+            : [];
+        return {
+          name: raw.name || raw.id || "",
+          display: raw.display || raw.name || "",
+          type: (raw.type || raw.element || "normal").toLowerCase(),
+          damage_class: (raw.damage_class || raw.category || "unknown").toLowerCase(),
+          power: raw.power ?? null,
+          accuracy: raw.accuracy ?? null,
+          pp: raw.pp ?? null,
+          priority: raw.priority ?? 0,
+          effects,
+          meta: raw.meta || undefined,
+        };
+      }
+      return null;
+    };
+
+    const list = (moves || []).filter(Boolean);
+
+    // Resolve detalhes para entradas string via getMove (puxando do pokedex.json)
+    const resolved = await Promise.all(
+      list.map(async (mv) => {
+        // Cache por chave de string para evitar buscas repetidas
+        if (typeof mv === "string") {
+          const key = mv.toLowerCase();
+          if (moveCache.has(key)) return moveCache.get(key);
+          try {
+            const data = normalize(await getMove(key)) || {
+              name: key,
+              display: cap(key),
+              power: 40,
+              accuracy: 95,
+              type: "normal",
+              damage_class: "physical",
+              effects: [],
+            };
+            moveCache.set(key, data);
+            return data;
+          } catch (_) {
+            return {
+              name: key,
+              display: cap(key),
+              power: 40,
+              accuracy: 95,
+              type: "normal",
+              damage_class: "physical",
+              effects: [],
+            };
+          }
         }
+
+        // Se já é objeto, apenas normaliza (não precisa buscar)
+        const normalized = normalize(mv);
+        if (normalized?.name) return normalized;
+
+        // Fallback muito defensivo
+        const name = typeof mv?.name === "string" ? mv.name : "unknown";
+        return {
+          name,
+          display: cap(name),
+          power: mv?.power ?? 40,
+          accuracy: mv?.accuracy ?? 95,
+          type: (mv?.type || "normal").toLowerCase(),
+          damage_class: (mv?.damage_class || "physical").toLowerCase(),
+          effects: Array.isArray(mv?.effects) ? mv.effects : [],
+        };
       })
     );
-    // mantem ordem original
-    const byName = Object.fromEntries(
-      details.filter(Boolean).map((d) => [d.name, d])
-    );
-    return (moves || []).map(
-      (m) =>
-        byName[m] || {
-          name: m,
-          display: cap(m),
-          power: 40,
-          accuracy: 95,
-          type: "normal",
-          effects: [],
-        }
-    );
+
+    return resolved;
   }
 
   function typeMultiplier(moveType, defenderTypes = []) {
@@ -82,20 +150,25 @@ export default function Battle() {
       fairy: { fighting: 2, dragon: 2, dark: 2, fire: 0.5, poison: 0.5, steel: 0.5 },
     };
     const def = defenderTypes || [];
-    return def.reduce((mult, t) => mult * (chart[moveType]?.[t] ?? 1), 1);
+    let mult = def.reduce((acc, t) => acc * (chart[moveType]?.[t] ?? 1), 1);
+    if (!TUNING.HONOR_IMMUNITIES && mult === 0) mult = TUNING.FLOOR_RESIST;
+    if (mult > TUNING.CAP_SUPER) mult = TUNING.CAP_SUPER;
+    if (mult > 0 && mult < TUNING.FLOOR_RESIST) mult = TUNING.FLOOR_RESIST;
+    return mult;
   }
 
   // Cálculo de dano
   function calcDamage(attacker, defender, move) {
-    const level = 30;
+    const level = TUNING.LEVEL;
     const power = Math.max(1, move?.power ?? 40);
     const atk = attacker?.attack ?? 50;
     const def = defender?.defense ?? 50;
-    const stab = move?.type && (attacker?.types || []).includes(move.type) ? 1.5 : 1;
+    const stab = move?.type && (attacker?.types || []).includes(move.type) ? TUNING.STAB : 1;
     const effectiveness = typeMultiplier(move?.type || "normal", defender?.types || []);
-    const rand = 0.85 + Math.random() * 0.15;
+    const rand = TUNING.RAND_MIN + Math.random() * (TUNING.RAND_MAX - TUNING.RAND_MIN);
     const base = (((2 * level) / 5 + 2) * power * (atk / Math.max(1, def))) / 50 + 2;
-    const dmg = Math.max(1, Math.floor(base * stab * effectiveness * rand));
+    const crit = Math.random() < TUNING.CRIT_RATE ? TUNING.CRIT_MULT : 1;
+    const dmg = Math.max(1, Math.floor(base * stab * effectiveness * rand * crit));
     return { dmg, effectiveness };
   }
 
@@ -103,10 +176,11 @@ export default function Battle() {
   function calcMaxHp(baseHp, level = LEVEL) {
     const iv = 15; // baseline de IV
     const ev = 0;  // sem EVs
-    return Math.max(
+    const vanilla = Math.max(
       1,
       Math.floor(((2 * baseHp + iv + Math.floor(ev / 4)) * level) / 100) + level + 10
     );
+    return Math.max(1, Math.floor(vanilla * TUNING.HP_SCALE));
   }
 
   // --- Status helpers (persist/decay) ---
@@ -195,10 +269,12 @@ export default function Battle() {
   };
 
   function cap(s) {
-    return (s || "")
+    if (!s) return "";
+    return String(s)
       .replace(/-/g, " ")
       .replace(/\b\w/g, (m) => m.toUpperCase());
   }
+
 
   // Build a fresh, battle-ready player from a team entry
   async function buildPlayerFrom(base) {
@@ -224,6 +300,12 @@ export default function Battle() {
 
   useEffect(() => {
     const savedTeam = localStorage.getItem("selectedTeam");
+    // Lê o treinador escolhido na Home
+    try {
+      const storedTrainer = localStorage.getItem("selectedTrainer");
+      const n = parseInt(storedTrainer || "1", 10);
+      if (!Number.isNaN(n)) setPlayerTrainerId(n);
+    } catch (e) {}
     if (savedTeam) {
       const parsed = JSON.parse(savedTeam);
       setTeam(parsed);
@@ -548,6 +630,7 @@ export default function Battle() {
   };
   const pScale = getScale(player);
   const eScale = getScale(enemy);
+  const playerTrainerSrc = `/images/trainer${playerTrainerId}pixel.png`;
 
   return (
     <div className={styles.battleContainer}>
@@ -561,7 +644,7 @@ export default function Battle() {
             className={styles.trainerPlayer}
           />
           <img
-            src="/images/trainer1pixel.png" // caminho da imagem do treinador inimigo
+            src={playerTrainerSrc} // treinador do jogador escolhido na Home
             alt="Treinador Jogador"
             className={styles.trainerEnemy}
           />
@@ -580,7 +663,7 @@ export default function Battle() {
                   style={{ cursor: "default" }}
                 >
                   <img
-                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png"
+                    src="/sprites/pokeballs/poke-ball.png"
                     alt="Pokébola adversário"
                   />
                 </div>
@@ -649,7 +732,7 @@ export default function Battle() {
                 }}
               >
                 <img
-                  src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png"
+                  src="/sprites/pokeballs/poke-ball.png"
                   alt="Pokébola"
                 />
               </button>
@@ -771,17 +854,13 @@ export default function Battle() {
                         }}
                       >
                         <div className={styles.moveHeader}>
-                          <span className={styles.moveName}>
-                            {item.display || item.name || cap(String(item))}
-                          </span>
-                          <span
-                            className={`${styles.typeBadge} ${styles[item.type] || ""}`}
-                          >
-                            {item.type || "normal"}
+                          <span className={styles.moveName}>{moveName(item)}</span>
+                          <span className={`${styles.typeBadge} ${styles[item.type] || ""}`}>
+                            {typeLabel(item.type || "normal")}
                           </span>
                         </div>
                         <span className={styles.moveStats}>
-                          Poder {item.power} {item.accuracy}%
+                          Poder {item.power} Precisão {item.accuracy}%
                         </span>
                         <div className={styles.moveMeta}>
                           <span className={`${styles.moveMult} ${multClass}`}>
@@ -814,21 +893,17 @@ export default function Battle() {
                 <h2>🎉 Vitória! 🎉</h2>
                 <p>Você venceu a batalha! O que deseja fazer agora?</p>
                 <div className={styles.optionButtons}>
-                  <button
-                    className={styles.confirmBtn}
-                    onClick={() => (window.location.href = "/select-pokemon")}
-                  >
+                  <ConfirmButton onClick={() => (window.location.href = "/select-pokemon")}>
                     Mudar Time
-                  </button>
-                  <button
-                    className={styles.confirmBtnSecondary}
+                  </ConfirmButton>
+                  <ConfirmButton
                     onClick={() => {
                       // Vai para a tela de seleção de time, mas com o contexto de "nova batalha"
                       window.location.href = "/select-team?nextBattle=true";
                     }}
                   >
                     Próxima Batalha
-                  </button>
+                  </ConfirmButton>
                 </div>
               </div>
             </div>
@@ -881,4 +956,11 @@ export default function Battle() {
     </div>
   );
 }
+
+
+
+
+
+
+
 

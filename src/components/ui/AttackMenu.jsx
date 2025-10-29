@@ -1,5 +1,6 @@
 ﻿import React from "react";
 import styles from "./AttackMenu.module.css";
+import { typeLabel, moveName } from "@/utils/i18n";
 
 // Lista simples de ataques (sem Ã­cones/cabeÃ§alhos entre os itens)
 export default function AttackMenu({ moves = [], onSelect }) {
@@ -18,27 +19,8 @@ export default function AttackMenu({ moves = [], onSelect }) {
   ];
 
   // Local labels for types (pt-BR)
-  const TYPE_PT = {
-    normal: "Normal",
-    fire: "Fogo",
-    water: "Água",
-    grass: "Planta",
-    electric: "Elétrico",
-    ice: "Gelo",
-    fighting: "Lutador",
-    poison: "Venenoso",
-    ground: "Terra",
-    flying: "Voador",
-    psychic: "Psíquico",
-    bug: "Inseto",
-    rock: "Pedra",
-    ghost: "Fantasma",
-    dragon: "Dragão",
-    dark: "Sombrio",
-    steel: "Aço",
-    fairy: "Fada",
-  };
-  const tLabel = (t) => (t ? TYPE_PT[t] || (t.charAt(0).toUpperCase() + t.slice(1)) : "");
+
+  const tLabel = (t) => typeLabel(t || "");
 
   return (
     <div className={styles.menu}>
@@ -48,17 +30,17 @@ export default function AttackMenu({ moves = [], onSelect }) {
             key={mv._key}
             className={styles.item}
             onClick={() => onSelect?.(mv)}
-            title={`${mv.display || mv.name}`}
+            title={String(moveName(mv) || "")}
           >
             <div className={styles.itemLine}>
-              <span className={styles.itemName}>{mv.display || mv.name}</span>
+              <span className={styles.itemName}>{String(moveName(mv) || "")}</span>
               <span className={`${styles.badge} ${styles[mv.type] || ""}`}>
                 {tLabel(mv.type || "normal")}
               </span>
             </div>
             <div className={styles.meta}>
               <span>Poder {mv.power ?? 0}</span>
-              <span>PrecisÃ£o {mv.accuracy ?? 100}%</span>
+              <span>{"Precis\u00E3o "}{mv.accuracy ?? 100}%</span>
             </div>
           </button>
         ))}
@@ -66,4 +48,10 @@ export default function AttackMenu({ moves = [], onSelect }) {
     </div>
   );
 }
+
+
+
+
+
+
 
