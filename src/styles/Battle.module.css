@@ -710,3 +710,124 @@
     width: min(92vw, 360px);
   }
 }
+
+.trainers {
+  position: absolute;
+  top: 35%;
+  left: 0;
+  width: 100%;
+  height: 30%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  pointer-events: none;
+  /* evita clicar neles */
+}
+
+.trainerPlayer {
+  height: 240px;
+  margin-left: 40px;
+  transform: translateY(-30px);
+  transform: scaleX(-1) translateY(-20px);
+  /* espelha e ajusta posição vertical */
+}
+
+.trainerEnemy {
+  height: 240px;
+  margin-right: 40px;
+}
+
+.victoryOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.victoryBox {
+  background: linear-gradient(135deg, #f9f9f9, #d1ffd8);
+  border: 3px solid #4caf50;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0, 255, 100, 0.5);
+  text-align: center;
+  padding: 40px 60px;
+  max-width: 500px;
+  color: #2c3e50;
+  animation: scaleUp 0.4s ease-out;
+}
+
+.victoryBox h2 {
+  font-size: 2rem;
+  color: #2e7d32;
+  margin-bottom: 10px;
+}
+
+.victoryBox p {
+  font-size: 1.2rem;
+  margin-bottom: 25px;
+}
+
+.optionButtons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.confirmBtn,
+.confirmBtnSecondary {
+  padding: 12px 24px;
+  border-radius: 10px;
+  border: none;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.confirmBtn {
+  background-color: #4caf50;
+  color: white;
+}
+
+.confirmBtn:hover {
+  background-color: #45a049;
+}
+
+.confirmBtnSecondary {
+  background-color: #ffffff;
+  border: 2px solid #4caf50;
+  color: #4caf50;
+}
+
+.confirmBtnSecondary:hover {
+  background-color: #e8ffe8;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleUp {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

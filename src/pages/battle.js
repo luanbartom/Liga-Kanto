@@ -211,7 +211,7 @@ export default function Battle() {
           full = { ...base, ...fetched, animated: base.animated || fetched.animated };
         }
       }
-    } catch (e) {}
+    } catch (e) { }
     return {
       ...full,
       maxHp: calcMaxHp(full.hp || 50),
@@ -234,7 +234,7 @@ export default function Battle() {
           const n = parseInt(savedStarter, 10);
           if (!Number.isNaN(n) && n >= 0 && n < parsed.length) starter = n;
         }
-      } catch (e) {}
+      } catch (e) { }
       if (parsed.length > 0) {
         setCurrentIndex(starter);
         startBattle(parsed[starter]);
@@ -256,7 +256,7 @@ export default function Battle() {
       condition: "normal",
       moves: ["tackle", "thunder-shock", "quick-attack", "tail-whip"],
       animated:
-        "/sprites/gif/25.gif",
+        "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/25.gif",
     };
 
     // Garantir height/weight para escala consistente
@@ -273,7 +273,7 @@ export default function Battle() {
           };
         }
       }
-    } catch (e) {}
+    } catch (e) { }
 
     const player = {
       ...playerFull,
@@ -304,7 +304,7 @@ export default function Battle() {
             );
           }
         }
-      } catch (e) {}
+      } catch (e) { }
 
       if (enemies.length === 0) {
         for (let i = 0; i < ENEMIES_PER_BATTLE; i++) {
@@ -332,7 +332,7 @@ export default function Battle() {
         maxHp: calcMaxHp(45),
         moves: await enrichMoves(["tackle", "vine-whip", "growl", "sleep-powder"]),
         animated:
-          "/sprites/gif/1.gif",
+          "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/25.gif",
         condition: "normal",
         status: null,
       };
@@ -439,7 +439,7 @@ export default function Battle() {
       if (canEnemyAct) {
         const enemyMove =
           newBattle.enemy.moves[
-            Math.floor(Math.random() * newBattle.enemy.moves.length)
+          Math.floor(Math.random() * newBattle.enemy.moves.length)
           ];
         // Animação: inimigo tentando atacar
         setEnemyAnim("attack");
@@ -553,6 +553,20 @@ export default function Battle() {
     <div className={styles.battleContainer}>
       <div className={styles.arena}>
         {/* Inimigo */}
+        {/* Treinadores (posicionados nas laterais da arena) */}
+        <div className={styles.trainers}>
+          <img
+            src="/images/gary.png" // caminho da imagem do treinador do jogador
+            alt="Treinador Inimigo"
+            className={styles.trainerPlayer}
+          />
+          <img
+            src="/images/trainer1pixel.png" // caminho da imagem do treinador inimigo
+            alt="Treinador Jogador"
+            className={styles.trainerEnemy}
+          />
+        </div>
+
         <div className={styles.enemySection}>
           <div className={styles.switchRow}>
             {Array.from({ length: ENEMIES_PER_BATTLE }).map((_, i) => {
@@ -561,13 +575,12 @@ export default function Battle() {
               return (
                 <div
                   key={i}
-                  className={`${styles.ballBtn} ${active ? styles.ballActive : ""} ${
-                    defeated ? styles.ballDefeated : ""
-                  }`}
+                  className={`${styles.ballBtn} ${active ? styles.ballActive : ""} ${defeated ? styles.ballDefeated : ""
+                    }`}
                   style={{ cursor: "default" }}
                 >
                   <img
-                    src="/sprites/pokeball/poke-ball.png"
+                    src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png"
                     alt="Pokébola adversário"
                   />
                 </div>
@@ -602,9 +615,8 @@ export default function Battle() {
                 <img
                   src={enemy.animated}
                   alt={enemy.name}
-                  className={`${styles.sprite} ${
-                    enemyAnim === "attack" ? styles.attackEnemy : ""
-                  } ${enemyAnim === "damage" ? styles.damageAnim : ""}`}
+                  className={`${styles.sprite} ${enemyAnim === "attack" ? styles.attackEnemy : ""
+                    } ${enemyAnim === "damage" ? styles.damageAnim : ""}`}
                   style={{
                     ["--shakeDist"]: `${Math.max(3, Math.min(10, 5 * eScale)).toFixed(0)}px`,
                   }}
@@ -625,9 +637,8 @@ export default function Battle() {
             {team.map((p, idx) => (
               <button
                 key={idx}
-                className={`${styles.ballBtn} ${
-                  idx === currentIndex ? styles.ballActive : ""
-                }`}
+                className={`${styles.ballBtn} ${idx === currentIndex ? styles.ballActive : ""
+                  }`}
                 title={p.name}
                 onMouseEnter={() => setHoveredBall(idx)}
                 onFocus={() => setHoveredBall(idx)}
@@ -638,7 +649,7 @@ export default function Battle() {
                 }}
               >
                 <img
-                  src="/sprites/pokeball/poke-ball.png"
+                  src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png"
                   alt="Pokébola"
                 />
               </button>
@@ -694,9 +705,8 @@ export default function Battle() {
               <img
                 src={player.animated}
                 alt={player.name}
-                className={`${styles.sprite} ${
-                  playerAnim === "attack" ? styles.attackPlayer : ""
-                } ${playerAnim === "damage" ? styles.damageAnim : ""}`}
+                className={`${styles.sprite} ${playerAnim === "attack" ? styles.attackPlayer : ""
+                  } ${playerAnim === "damage" ? styles.damageAnim : ""}`}
                 style={{
                   ["--atkDist"]: `${Math.max(30, Math.min(90, 36 * pScale)).toFixed(0)}px`,
                   ["--shakeDist"]: `${Math.max(3, Math.min(10, 5 * pScale)).toFixed(0)}px`,
@@ -723,13 +733,13 @@ export default function Battle() {
                     const item =
                       typeof mv === "string"
                         ? {
-                            name: mv,
-                            display: cap(mv),
-                            power: 40,
-                            accuracy: 95,
-                            type: "normal",
-                            effects: [],
-                          }
+                          name: mv,
+                          display: cap(mv),
+                          power: 40,
+                          accuracy: 95,
+                          type: "normal",
+                          effects: [],
+                        }
                         : mv;
                     const mult = typeMultiplier(
                       item.type || "normal",
@@ -739,18 +749,18 @@ export default function Battle() {
                       mult === 1
                         ? styles.multNeutral
                         : mult === 0
-                        ? styles.multBad
-                        : mult > 1
-                        ? styles.multGood
-                        : styles.multBad;
+                          ? styles.multBad
+                          : mult > 1
+                            ? styles.multGood
+                            : styles.multBad;
                     const multLabel =
                       mult === 1
                         ? "Efeito Normal"
                         : mult === 0
-                        ? "Sem efeito"
-                        : mult > 1
-                        ? "Super efetivo"
-                        : "Não muito efetivo";
+                          ? "Sem efeito"
+                          : mult > 1
+                            ? "Super efetivo"
+                            : "Não muito efetivo";
                     return (
                       <button
                         key={idx}
@@ -798,6 +808,32 @@ export default function Battle() {
               <h3>{winner === "player" ? "Você venceu!" : "Você perdeu!"}</h3>
             </div>
           )}
+          {winner === "player" && (
+            <div className={styles.victoryOverlay}>
+              <div className={styles.victoryBox}>
+                <h2>🎉 Vitória! 🎉</h2>
+                <p>Você venceu a batalha! O que deseja fazer agora?</p>
+                <div className={styles.optionButtons}>
+                  <button
+                    className={styles.confirmBtn}
+                    onClick={() => (window.location.href = "/select-pokemon")}
+                  >
+                    Mudar Time
+                  </button>
+                  <button
+                    className={styles.confirmBtnSecondary}
+                    onClick={() => {
+                      // Vai para a tela de seleção de time, mas com o contexto de "nova batalha"
+                      window.location.href = "/select-team?nextBattle=true";
+                    }}
+                  >
+                    Próxima Batalha
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
         </div>
       </div>
 
@@ -808,14 +844,14 @@ export default function Battle() {
             moves={player.moves.map((mv) =>
               typeof mv === "string"
                 ? {
-                    name: mv,
-                    display: cap(mv),
-                    power: 40,
-                    accuracy: 95,
-                    type: "normal",
-                    damage_class: "physical",
-                    effects: [],
-                  }
+                  name: mv,
+                  display: cap(mv),
+                  power: 40,
+                  accuracy: 95,
+                  type: "normal",
+                  damage_class: "physical",
+                  effects: [],
+                }
                 : mv
             )}
             onSelect={(item) => {
@@ -845,3 +881,4 @@ export default function Battle() {
     </div>
   );
 }
+
