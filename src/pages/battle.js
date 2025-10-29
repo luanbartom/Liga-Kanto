@@ -305,7 +305,7 @@ export default function Battle() {
       const storedTrainer = localStorage.getItem("selectedTrainer");
       const n = parseInt(storedTrainer || "1", 10);
       if (!Number.isNaN(n)) setPlayerTrainerId(n);
-    } catch (e) {}
+    } catch (e) { }
     if (savedTeam) {
       const parsed = JSON.parse(savedTeam);
       setTeam(parsed);
@@ -564,16 +564,29 @@ export default function Battle() {
 
       // Checagem de derrota do jogador
       if (newBattle.player.hp <= 0) {
+        // Marca o Pokémon atual como derrotado
+        const updatedTeam = team.map((p, idx) =>
+          idx === currentIndex ? { ...p, hp: 0, fainted: true } : p
+        );
+        setTeam(updatedTeam);
+
+        // Encontra o próximo Pokémon vivo
         let nextIdx = -1;
-        if (team && team.length > 1) {
-          for (let step = 1; step <= team.length; step++) {
-            const idx = (currentIndex + step) % team.length;
-            if (idx !== currentIndex && team[idx]) {
+        if (updatedTeam && updatedTeam.length > 1) {
+          for (let step = 1; step <= updatedTeam.length; step++) {
+            const idx = (currentIndex + step) % updatedTeam.length;
+            if (
+              idx !== currentIndex &&
+              updatedTeam[idx] &&
+              !updatedTeam[idx].fainted &&
+              updatedTeam[idx].hp > 0
+            ) {
               nextIdx = idx;
               break;
             }
           }
         }
+
         if (nextIdx === -1) {
           newBattle.winner = "enemy";
           newLog.unshift(`${newBattle.enemy.name} venceu a batalha!`);

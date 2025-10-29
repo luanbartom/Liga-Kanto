@@ -33,9 +33,8 @@ function PokeThumb({ pokemon, selected = false, onClick, enemy = false }) {
       title={pokemon?.name || "pokemon"}
     >
       <img
-        className={`${styles.sprite} ${
-          enemy ? `${styles.mirror} ${styles.enemySprite}` : ""
-        } ${selected && !enemy ? styles.spriteSelected : ""}`}
+        className={`${styles.sprite} ${enemy ? `${styles.mirror} ${styles.enemySprite}` : ""
+          } ${selected && !enemy ? styles.spriteSelected : ""}`}
         src={pokemon.animated}
         alt={pokemon.name}
         width={spriteSize}
@@ -87,10 +86,10 @@ export default function SelectTeam() {
       arr.map((p) =>
         p && p.id
           ? {
-              ...p,
-              sprite: `/sprites/statics/${p.id}.png`,
-              animated: `/sprites/gif/${p.id}.gif`,
-            }
+            ...p,
+            sprite: `/sprites/statics/${p.id}.png`,
+            animated: `/sprites/gif/${p.id}.gif`,
+          }
           : p
       );
 
@@ -99,39 +98,37 @@ export default function SelectTeam() {
       try {
         const parsed = JSON.parse(saved);
         setTeam(fixSprites(parsed));
-      } catch {}
+      } catch { }
     }
 
     try {
       const storedTrainer = localStorage.getItem("selectedTrainer");
       const parsedTrainer = parseInt(storedTrainer || "1", 10);
       if (!Number.isNaN(parsedTrainer)) setTrainerId(parsedTrainer);
-    } catch {}
+    } catch { }
     const savedStarter = localStorage.getItem("starterIndex");
     if (savedStarter !== null) {
       const n = parseInt(savedStarter, 10);
       if (!Number.isNaN(n)) setStarterIndex(n);
     }
-
+    
     (async () => {
       try {
-        const stored = localStorage.getItem("enemyTeam");
-        if (stored) {
-          const parsed = JSON.parse(stored);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            const fixed = fixSprites(parsed);
-            setEnemyPreview(fixed);
-            localStorage.setItem("enemyTeam", JSON.stringify(fixed));
-            return;
-          }
-        }
+        // Sempre gera um novo time inimigo, ignorando o salvo anteriormente
         const ENEMIES = 3;
         const ids = Array.from({ length: ENEMIES }, () => Math.floor(Math.random() * 151) + 1);
         const enemies = await Promise.all(ids.map((id) => getPokemon(id)));
         const filtered = enemies.filter(Boolean);
-        setEnemyPreview(filtered);
-        localStorage.setItem("enemyTeam", JSON.stringify(filtered));
-      } catch (e) { }
+        const fixed = filtered.map((p) => ({
+          ...p,
+          sprite: `/sprites/statics/${p.id}.png`,
+          animated: `/sprites/gif/${p.id}.gif`,
+        }));
+        setEnemyPreview(fixed);
+        localStorage.setItem("enemyTeam", JSON.stringify(fixed)); // salva o novo time
+      } catch (e) {
+        console.error("Erro ao gerar time inimigo:", e);
+      }
     })();
 
     return () => {
