@@ -28,7 +28,7 @@ export default function Battle() {
   // Ajustes de balanceamento (facilmente tunáveis)
   const TUNING = {
     LEVEL: 30,
-    HP_SCALE: 0.9, // 90% do HP vanilla para lutas mais dinâmicas
+    HP_SCALE: 5, // 90% do HP vanilla para lutas mais dinâmicas
     STAB: 1.35, // bônus por golpe do mesmo tipo
     CRIT_RATE: 0.1, // 10% de chance de crítico
     CRIT_MULT: 1.5, // crítico aumenta dano em 50%
@@ -616,11 +616,22 @@ export default function Battle() {
 
   async function handleSwitch(index) {
     if (index === currentIndex || !team[index]) return;
+
+    const target = team[index];
+
+    // ❌ Impede troca para Pokémon derrotado
+    if (target.hp <= 0 || target.fainted) {
+      setLog((prev) => [`${target.name} não pode lutar!`, ...prev]);
+      return;
+    }
+
+    // Troca válida
     setCurrentIndex(index);
-    const nextPlayer = await buildPlayerFrom(team[index]);
+    const nextPlayer = await buildPlayerFrom(target);
     setBattle((prev) => ({ ...prev, player: nextPlayer }));
-    setLog((prev) => [`Você trocou para ${team[index].name}`, ...prev]);
+    setLog((prev) => [`Você trocou para ${target.name}`, ...prev]);
   }
+
 
   if (loading && !battle) return <p>Carregando batalha...</p>;
   if (error)
@@ -730,26 +741,32 @@ export default function Battle() {
             className={styles.switchRow}
             onMouseLeave={() => setHoveredBall(-1)}
           >
-            {team.map((p, idx) => (
-              <button
-                key={idx}
-                className={`${styles.ballBtn} ${idx === currentIndex ? styles.ballActive : ""
-                  }`}
-                title={p.name}
-                onMouseEnter={() => setHoveredBall(idx)}
-                onFocus={() => setHoveredBall(idx)}
-                onBlur={() => setHoveredBall(-1)}
-                onClick={() => {
-                  if (idx === currentIndex) return;
-                  setPendingSwitch(idx);
-                }}
-              >
-                <img
-                  src="/sprites/pokeballs/poke-ball.png"
-                  alt="Pokébola"
-                />
-              </button>
-            ))}
+            {team.map((p, idx) => {
+              const isDead = p.hp <= 0 || p.fainted;
+              return (
+                <button
+                  key={idx}
+                  className={`${styles.ballBtn} 
+        ${idx === currentIndex ? styles.ballActive : ""} 
+        ${isDead ? styles.ballDefeated : ""}`}
+                  title={p.name}
+                  disabled={isDead}
+                  onMouseEnter={() => setHoveredBall(idx)}
+                  onFocus={() => setHoveredBall(idx)}
+                  onBlur={() => setHoveredBall(-1)}
+                  onClick={() => {
+                    if (idx === currentIndex || isDead) return;
+                    setPendingSwitch(idx);
+                  }}
+                >
+                  <img
+                    src="/sprites/pokeballs/poke-ball.png"
+                    alt="Pokébola"
+                  />
+                </button>
+              );
+            })}
+
             {hoveredBall >= 0 && team[hoveredBall] && (
               <div className={styles.ballTooltip}>{team[hoveredBall].name}</div>
             )}
@@ -969,11 +986,3 @@ export default function Battle() {
     </div>
   );
 }
-
-
-
-
-
-
-
-

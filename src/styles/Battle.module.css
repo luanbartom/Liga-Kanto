@@ -725,16 +725,21 @@
 }
 
 .trainerPlayer {
-  height: 240px;
-  margin-left: 40px;
-  transform: translateY(-30px);
-  transform: scaleX(-1) translateY(-20px);
+  height: 25vh;
+  margin-left: 2vh;
+  transform: translateY(-3vh);
+  transform: scaleX(-1) translateY(-2vh);
+  image-rendering: pixelated;
+  margin-bottom: 4vh;
+
   /* espelha e ajusta posição vertical */
 }
 
 .trainerEnemy {
-  height: 240px;
-  margin-right: 40px;
+  image-rendering: pixelated;
+  height: 26vh;
+  margin-right: 5vh;
+  margin-bottom: 5vh;
 }
 
 .victoryOverlay {
@@ -831,4 +836,10 @@
     transform: scale(1);
     opacity: 1;
   }
+}
+
+.ballDefeated {
+  opacity: 0.4;
+  filter: grayscale(100%);
+  pointer-events: none;
 }
