@@ -41,9 +41,11 @@
 }
 
 .trainerIcon {
-  width: 40px;
-  height: 40px;
+  width: 6vh;
+  height: 8vh;
   filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.3));
+  image-rendering: pixelated;
+
 }
 
 /* Pokébolas */
@@ -162,6 +164,47 @@
 .subtitle {
   margin: 12px;
   color: #000000;
+}
+
+.bossBadge {
+  margin-left: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #b91c1c;
+  background: #ffe4e6;
+  border: 2px solid #b91c1c;
+  border-radius: 10px;
+  padding: 2px 8px;
+}
+
+.bossLocked {
+  filter: grayscale(1) brightness(0.8) contrast(0.9);
+  opacity: 0.7;
+}
+
+.infoOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.infoBox {
+  background: #fffefb;
+  border: 0.5vh solid #fecc01;
+  border-radius: 2vh;
+  padding: 2vh 2vh;
+  max-width: 100vh;
+  height: 25vh;
+  display: flex;
+  color: #513b11;
+  box-shadow: 0vh 0vh 12vh rgb(255, 224, 71);
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /* Grid */
@@ -429,4 +472,140 @@
     max-width: 740px;
     margin: 8px auto 18px;
   }
+}
+
+/* Achievements bar */
+.achievementsBar {
+  position: fixed;
+  top: 1.5vh;
+  left: 1.5vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0vh;
+  background: rgba(255, 255, 255, 0.92);
+  border: 3px solid #414141b1;
+  border-radius: 2vh;
+  padding: 2vh 2vh;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  z-index: 11;
+}
+
+.trainerNameOnly {
+  font-weight: 700;
+  color: #1f2937;
+  margin-top: 2px;
+}
+
+.achTitle {
+  font-weight: 700;
+  color: #374151;
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+.achList {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  max-width: 400px;
+  flex-wrap: wrap;
+}
+
+.achIcon {
+  width: 28px;
+  height: 28px;
+  image-rendering: pixelated;
+  border: 2px solid #374151;
+  border-radius: 6px;
+  background: #fff;
+}
+
+/* Achievements modal */
+.achGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  margin: 10px 0 16px;
+}
+
+.achCell {
+  text-align: center;
+}
+
+.achIconLg {
+  width: 10vh;
+  height: 10vh;
+  image-rendering: pixelated;
+  border-radius: 2vh;
+  background: #ffffff4d;
+}
+
+.achLabel {
+  font-size: 11px;
+  color: #374151;
+  margin-top: 4px;
+  text-transform: capitalize;
+}
+
+.achLocked {
+  filter: grayscale(1) brightness(0.85);
+  opacity: 0.7;
+}
+
+.achUnlocked {
+  filter: none;
+  opacity: 1;
+}
+
+.achievementsBtn {
+  margin-top: 6px;
+  background: #ffffff;
+  border: 2px solid #1ECD97;
+  color: #1ECD97;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.achievementsBtn:hover {
+  background: #1ECD97;
+  color: #fff;
+}
+
+.badgeCount {
+  margin-left: 6px;
+  background: #1f2937;
+  color: #fff;
+  border-radius: 999px;
+  padding: 1px 6px;
+  font-size: 10px;
+}
+
+/* Trainer picker */
+.trainerGrid {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin: 12px 0;
+}
+
+.trainerCell {
+  background: #fff;
+  border: 2px solid #374151;
+  border-radius: 12px;
+  padding: 6px;
+  cursor: pointer;
+}
+
+.trainerActive {
+  box-shadow: 0 0 0 3px #facc15 inset;
+}
+
+.trainerPickIcon {
+  width: 64px;
+  height: 64px;
+  image-rendering: pixelated;
 }

@@ -2,6 +2,7 @@
  * Lê o arquivo local de Pokédex via fetch (carrega só uma vez).
  */
 let cachedPokedex = null;
+import { isBoss } from "./boss";
 
 async function loadPokedex() {
   if (cachedPokedex) return cachedPokedex;
@@ -20,7 +21,19 @@ export async function getFirstGenPokemons() {
   console.log(pokedex)
   return pokedex?.map((p) => ({
     ...p,
-    sprite: `/sprites/statics/${p.id}.png`,
+    boss: isBoss(p),
+    sprite: `/sprites/static/${p.id}.png`,
+    animated: `/sprites/gif/${p.id}.gif`,
+  }));
+}
+
+// Retorna todos os Pokémons disponíveis no pokedex.json (Gens 1–3 neste projeto)
+export async function getAllPokemons() {
+  const pokedex = await loadPokedex();
+  return pokedex?.map((p) => ({
+    ...p,
+    boss: isBoss(p),
+    sprite: `/sprites/static/${p.id}.png`,
     animated: `/sprites/gif/${p.id}.gif`,
   }));
 }
@@ -39,7 +52,8 @@ export async function getPokemon(nameOrId) {
 
   return {
     ...found,
-    sprite: `/sprites/statics/${found.id}.png`,
+    boss: isBoss(found),
+    sprite: `/sprites/static/${found.id}.png`,
     animated: `/sprites/gif/${found.id}.gif`,
   };
 }

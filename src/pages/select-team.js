@@ -3,7 +3,8 @@ import { useRouter } from "next/router";
 import styles from "@/styles/SelectTeam.module.css";
 import { typeLabel } from "@/utils/i18n";
 import ConfirmButton from "@/components/ui/ConfirmButton";
-import { getPokemon } from "@/utils/api";
+import { getAllPokemons } from "@/utils/api";
+
 
 function PokeThumb({ pokemon, selected = false, onClick, enemy = false }) {
   if (!pokemon) return null;
@@ -76,8 +77,10 @@ export default function SelectTeam() {
   const [enemyPreview, setEnemyPreview] = useState([]);
   const [trainerId, setTrainerId] = useState(1);
   const router = useRouter();
+  const nextRound = (router?.query?.nextRound || "1").toString();
 
   useEffect(() => {
+    if (!router.isReady) return;
     try {
       document?.body?.classList?.add("bg-select-team");
     } catch (e) { }
@@ -115,17 +118,103 @@ export default function SelectTeam() {
     (async () => {
       try {
         // Sempre gera um novo time inimigo, ignorando o salvo anteriormente
-        const ENEMIES = 3;
-        const ids = Array.from({ length: ENEMIES }, () => Math.floor(Math.random() * 151) + 1);
-        const enemies = await Promise.all(ids.map((id) => getPokemon(id)));
-        const filtered = enemies.filter(Boolean);
-        const fixed = filtered.map((p) => ({
+                const ENEMIES = 3;
+        const all = await getAllPokemons();
+        let picks = [];
+        if ((router?.query?.nextRound || "").toString() === "boss") {
+          const bosses = (all || []).filter((p) => p && p.boss);
+          if (bosses.length > 0) {
+            const idx = Math.floor(Math.random() * bosses.length);
+            picks = [bosses[idx]];
+          }
+        } else {
+          // Build pools following round rules (final evolutions only)
+          const pool = (all || []).filter((p) => p && !p.boss);
+
+          // Identify species that have evolutions (names that appear as evolves_from somewhere)
+          const namesWithEvos = new Set((all || [])
+            .map((p) => (typeof p?.evolves_from === 'string' ? p.evolves_from.toLowerCase() : null))
+            .filter(Boolean));
+
+          const isFinalEvolution = (mon) => !namesWithEvos.has(String(mon?.name || '').toLowerCase());
+
+          // Allowed types by round
+          const nr = (router?.query?.nextRound || "1").toString();
+          const TYPE_RULES = {
+            '1': ["fighting", "rock", "ground"],
+            '2': ["water", "ice"],
+            '3': ["ghost", "poison"],
+            '4': ["dragon"],
+          };
+          const allowed = TYPE_RULES[nr] || [];
+
+          const byTypeFinal = pool.filter((m) =>
+            isFinalEvolution(m) && (m.types || []).some((t) => allowed.includes(String(t).toLowerCase()))
+          );
+
+          // Utility to pick unique random items
+          const pickFrom = (arr) => {
+            if (!arr || arr.length === 0) return null;
+            const idx = Math.floor(Math.random() * arr.length);
+            return arr.splice(idx, 1)[0];
+          };
+
+          // Round-specific composition
+          if (nr === '3') {
+            // Ensure Gengar is included
+            const gengar = (all || []).find((p) => String(p?.name).toLowerCase() === 'gengar');
+            if (gengar) picks.push(gengar);
+            // Fill remaining with matching final evolutions excluding Gengar
+            const poolEx = byTypeFinal.filter((m) => String(m?.name).toLowerCase() !== 'gengar');
+            while (picks.length < ENEMIES && poolEx.length > 0) {
+              const next = pickFrom(poolEx);
+              if (next) picks.push(next);
+            }
+          } else {
+            const work = [...byTypeFinal];
+            while (picks.length < ENEMIES && work.length > 0) {
+              const next = pickFrom(work);
+              if (next) picks.push(next);
+            }
+          }
+
+          // Fallbacks if not enough candidates: fill with any final evolutions (ignoring type), then any non-boss
+          if (picks.length < ENEMIES) {
+            const finalsAny = pool.filter(isFinalEvolution);
+            // Remove already chosen
+            const chosenNames = new Set(picks.map((p) => String(p.name).toLowerCase()));
+            const finalsLeft = finalsAny.filter((m) => !chosenNames.has(String(m.name).toLowerCase()));
+            while (picks.length < ENEMIES && finalsLeft.length > 0) {
+              const next = pickFrom(finalsLeft);
+              if (next) picks.push(next);
+            }
+          }
+          if (picks.length < ENEMIES) {
+            const poolLeft = pool.filter((m) => !picks.some((x) => x.id === m.id));
+            while (picks.length < ENEMIES && poolLeft.length > 0) {
+              const next = pickFrom(poolLeft);
+              if (next) picks.push(next);
+            }
+          }
+        }
+        const fixed = picks.map((p) => ({
           ...p,
-          sprite: `/sprites/statics/${p.id}.png`,
+          sprite: `/sprites/static/${p.id}.png`,
           animated: `/sprites/gif/${p.id}.gif`,
         }));
         setEnemyPreview(fixed);
-        localStorage.setItem("enemyTeam", JSON.stringify(fixed)); // salva o novo time
+        // Salva o time e sincroniza o round para a Battle
+        try {
+          localStorage.setItem("enemyTeam", JSON.stringify(fixed));
+          const nr = (router?.query?.nextRound || "1").toString();
+          if (nr === "boss") {
+            localStorage.setItem("battleProgressRound", "4");
+          } else {
+            const n = parseInt(nr || "1", 10);
+            const roundIndex = Number.isNaN(n) ? 0 : Math.max(0, Math.min(3, n - 1));
+            localStorage.setItem("battleProgressRound", String(roundIndex));
+          }
+        } catch (e) {}
       } catch (e) {
         console.error("Erro ao gerar time inimigo:", e);
       }
@@ -136,7 +225,7 @@ export default function SelectTeam() {
         document?.body?.classList?.remove("bg-select-team");
       } catch (e) { }
     };
-  }, []);
+  }, [router.isReady, router.query]);
 
   const handleStartBattle = () => {
     if (team.length === 0) return alert("Selecione pelo menos 1 Pokémon!");
@@ -158,13 +247,13 @@ export default function SelectTeam() {
             <PokeThumb key={`enemy-${p.id}-${i}`} pokemon={p} enemy />
           ))}
 
-          {/* Treinador inimigo (Gary) */}
+          {/* Treinador inimigo (varia por round) */}
           <img
             className={`${styles.trainer} ${styles.mirror}`}
-            src="/images/gary.png"
+            src={nextRound === 'boss' ? '/images/gary.png' : `/images/enemy${parseInt(nextRound||'1',10)}.png`}
             width={80}
             height={80}
-            alt="Rival"
+            alt={nextRound === 'boss' ? 'Gary' : `Oponente ${nextRound}`}
           />
 
           {/* VS */}
@@ -201,3 +290,5 @@ export default function SelectTeam() {
     </div>
   );
 }
+
+

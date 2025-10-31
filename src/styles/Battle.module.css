@@ -71,8 +71,8 @@
 }
 
 .sprite {
-  width: 180px;
-  height: 180px;
+  width: 18vh;
+  height: 18vh;
   will-change: transform, filter, opacity;
   position: relative;
   z-index: 0;
@@ -218,12 +218,18 @@
 }
 
 .spriteBox {
-  height: 320px;
+  height: 32vh;
   /* padroniza altura de sprite */
   display: flex;
   align-items: flex-end;
   justify-content: center;
   position: relative;
+}
+
+/* Somente na luta do Boss, desce um pouco as sprites */
+.bossSprites {
+  margin-top: 14vh;
+  gap: 4vh;
 }
 
 .spriteScale {
@@ -236,11 +242,11 @@
 
 /* Primary actions under player sprite */
 .attackMenuToggle {
-  margin-top: 10px;
+  margin-top: 1vh;
 }
 
 .switchTeam {
-  margin-top: 10px;
+  margin-top: 1vh;
 }
 
 @media (max-width: 700px) {
@@ -687,10 +693,10 @@
 
 .attackSidebar {
   position: fixed;
-  right: 150px;
-  top: 78%;
+  right: 4%;
+  top: 80%;
   transform: translateY(-48%);
-  width: 313px;
+  width: 31vh;
   z-index: 25;
 }
 
@@ -722,6 +728,11 @@
   align-items: flex-end;
   pointer-events: none;
   /* evita clicar neles */
+}
+
+/* Boss: desce os treinadores um pouco mais */
+.trainersBoss {
+  top: 40%;
 }
 
 .trainerPlayer {
@@ -778,6 +789,32 @@
 .victoryBox p {
   font-size: 1.2rem;
   margin-bottom: 25px;
+}
+
+.defeatOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.defeatBox {
+  background: linear-gradient(135deg, #f9f9f9, #ffd1d1);
+  border: 4px solid #3d3d3dc8;
+  border-radius: 20px;
+  box-shadow: 1px 1px 50px rgba(255, 0, 0, 0.65);
+  text-align: center;
+  padding: 40px 60px;
+  max-width: 500px;
+  color: #2c3e50;
+  animation: scaleUp 0.4s ease-out;
 }
 
 .optionButtons {
@@ -842,4 +879,81 @@
   opacity: 0.4;
   filter: grayscale(100%);
   pointer-events: none;
+}
+
+/* Battle progress (4 rounds + Boss) */
+.battleProgress {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 40;
+}
+
+.progressDots {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 3px solid #2f2f2f;
+  border-radius: 999px;
+  padding: 6px 10px;
+}
+
+.progDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #d1d5db;
+  /* gray-300 */
+  border: 2px solid #4b5563;
+  /* gray-600 */
+}
+
+.progDotActive {
+  box-shadow: 0 0 0 2px #facc15 inset;
+  /* amber-400 */
+  background: #fde68a;
+  /* amber-200 */
+}
+
+.progDotDone {
+  background: #86efac;
+  /* green-300 */
+  border-color: #16a34a;
+  /* green-600 */
+}
+
+.progBoss {
+  margin-left: 1vh;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 5vh;
+  height: 5vh;
+  background: #fee2e2;
+  border: 0.5vh solid #991b1b;
+  border-radius: 999vh;
+}
+
+.bossIcon {
+  width: 5vh;
+  height: 5vh;
+  image-rendering: pixelated;
+}
+
+.progBossActive {
+  background: #fecaca;
+  /* red-200 */
+  box-shadow: 0 0 0 2px #fca5a5 inset;
+  /* red-300 */
+}
+
+.progBossDone {
+  background: #bbf7d0;
+  /* green-100 */
+  color: #065f46;
+  /* green-800 */
+  border-color: #10b981;
+  /* emerald-500 */
 }

@@ -1,7 +1,8 @@
 ﻿import { useState, useEffect, useRef } from "react";
 import HPBar from "@/components/HPBar";
 import ConditionBar from "@/components/ConditionBar";
-import { getPokemon, getMove } from "@/utils/api";
+import { getPokemon, getMove, getAllPokemons } from "@/utils/api";
+import { STAGE_MOVES } from "@/utils/moves";
 import { typeLabel, moveName } from "@/utils/i18n";
 import styles from "@/styles/Battle.module.css";
 import ConfirmButton from "@/components/ui/ConfirmButton";
@@ -37,13 +38,34 @@ export default function Battle() {
     CAP_SUPER: 2.0, // limite para super efetivo
     FLOOR_RESIST: 0.5, // mínimo para pouco efetivo
     HONOR_IMMUNITIES: true, // manter imunidades (normal->ghost etc.)
+    // Buff leve para o jogador
+    PLAYER_ATK_MULT: 1.2,
+    // Boss tuning
+    BOSS_LEVEL: 48, // nível efetivo para Boss
+    BOSS_ATK_MULT: 1.4, // Boss causa mais dano
+    BOSS_DEF_MULT: 1.35, // Boss recebe menos dano
+    BOSS_HP_MULT: 1.45, // Boss tem mais HP
   };
 
   const ATTACK_GAP_MS = 3200; // intervalo maior para separar turnos
   const [hoveredBall, setHoveredBall] = useState(-1);
   const [pendingSwitch, setPendingSwitch] = useState(null);
-  const ENEMIES_PER_BATTLE = 3;
+  // Número de oponentes normais antes do Boss
+  const ENEMIES_PER_BATTLE = 4;
   const [defeatedEnemies, setDefeatedEnemies] = useState(0);
+  const [bossPhase, setBossPhase] = useState(false);
+  const [currentPartyIndex, setCurrentPartyIndex] = useState(0);
+  
+  // Auto-redirect to Select Pokemon after defeating the Boss
+  useEffect(() => {
+    if (battle?.winner === "player" && (battle?.bossPhase || bossPhase)) {
+      const t = setTimeout(() => {
+        try { localStorage.setItem("battleProgressRound", "0"); } catch (_) {}
+        window.location.href = "/select-pokemon";
+      }, 1200);
+      return () => clearTimeout(t);
+    }
+  }, [battle?.winner, battle?.bossPhase, bossPhase]);
 
   async function enrichMoves(moves) {
     // Normaliza golpes vindos como string (ex.: "tackle") ou objeto do pokedex.json
@@ -159,10 +181,41 @@ export default function Battle() {
 
   // Cálculo de dano
   function calcDamage(attacker, defender, move) {
-    const level = TUNING.LEVEL;
+    const attackerIsBoss = !!(attacker && attacker.boss);
+    const defenderIsBoss = !!(defender && defender.boss);
+    const attackerIsPlayer = !!(attacker && attacker.isPlayer);
+    const level = attackerIsBoss ? (TUNING.BOSS_LEVEL || TUNING.LEVEL) : TUNING.LEVEL;
+    const isStatusMove = (move?.damage_class || "").toLowerCase() === "status" || (move?.power ?? 0) <= 0;
+    if (isStatusMove) {
+      return { dmg: 0, effectiveness: 1 };
+    }
+
+    const stageMult = (s = 0) => {
+      const n = Math.max(-6, Math.min(6, s));
+      if (n >= 0) return (2 + n) / 2;
+      return 2 / (2 - n);
+    };
+
+    const isSpecial = (move?.damage_class || "").toLowerCase() === "special";
+    const baseAtk = isSpecial
+      ? (attacker?.special_attack ?? attacker?.spAttack ?? attacker?.sp_atk ?? attacker?.attack ?? 50)
+      : (attacker?.attack ?? 50);
+    const baseDef = isSpecial
+      ? (defender?.special_defense ?? defender?.spDefense ?? defender?.sp_def ?? defender?.defense ?? 50)
+      : (defender?.defense ?? 50);
+    const atkStage = isSpecial
+      ? (attacker?.stages?.spAttack ?? attacker?.stages?.attack ?? 0)
+      : (attacker?.stages?.attack ?? 0);
+    const defStage = isSpecial
+      ? (defender?.stages?.spDefense ?? defender?.stages?.defense ?? 0)
+      : (defender?.stages?.defense ?? 0);
+    let atk = baseAtk * stageMult(atkStage);
+    if (attackerIsPlayer) atk *= (TUNING.PLAYER_ATK_MULT || 1);
+    let def = baseDef * stageMult(defStage);
+    if (attackerIsBoss) atk *= (TUNING.BOSS_ATK_MULT || 1);
+    if (defenderIsBoss) def *= (TUNING.BOSS_DEF_MULT || 1);
+
     const power = Math.max(1, move?.power ?? 40);
-    const atk = attacker?.attack ?? 50;
-    const def = defender?.defense ?? 50;
     const stab = move?.type && (attacker?.types || []).includes(move.type) ? TUNING.STAB : 1;
     const effectiveness = typeMultiplier(move?.type || "normal", defender?.types || []);
     const rand = TUNING.RAND_MIN + Math.random() * (TUNING.RAND_MAX - TUNING.RAND_MIN);
@@ -209,6 +262,55 @@ export default function Battle() {
     target.condition = "normal";
     target.status = null;
     if (msg) logs?.unshift(msg);
+  }
+
+  function modifyStage(target, stat, delta, logs) {
+    if (!target.stages)
+      target.stages = {
+        attack: 0,
+        defense: 0,
+        spAttack: 0,
+        spDefense: 0,
+        speed: 0,
+        accuracy: 0,
+        evasion: 0,
+      };
+    const valid = new Set([
+      "attack",
+      "defense",
+      "spAttack",
+      "spDefense",
+      "speed",
+      "accuracy",
+      "evasion",
+    ]);
+    const key = valid.has(stat) ? stat : "attack";
+    const before = target.stages[key] || 0;
+    const after = Math.max(-6, Math.min(6, before + delta));
+    target.stages[key] = after;
+    const labels = {
+      attack: "Ataque",
+      defense: "Defesa",
+      spAttack: "Ataque Esp.",
+      spDefense: "Defesa Esp.",
+      speed: "Velocidade",
+      accuracy: "Precisão",
+      evasion: "Evasão",
+    };
+    const changeLabel = delta < 0 ? "caiu" : "aumentou";
+    if (after !== before)
+      logs?.unshift(`${target.name} teve o ${labels[key] || key} ${changeLabel}!`);
+  }
+
+
+  function applyStageMove(user, target, move, logs) {
+    const n = (move?.name || move?.id || "").toString().toLowerCase();
+    const defs = STAGE_MOVES[n];
+    if (!defs) return;
+    for (const eff of defs) {
+      const tgt = eff.target === "self" ? user : target;
+      modifyStage(tgt, eff.stat, eff.delta, logs);
+    }
   }
 
   function applyStartOfTurnEffects(which, state, logs) {
@@ -290,10 +392,12 @@ export default function Battle() {
     } catch (e) { }
     return {
       ...full,
+      isPlayer: true,
       maxHp: calcMaxHp(full.hp || 50),
       hp: calcMaxHp(full.hp || 50),
       condition: "normal",
       status: null,
+      stages: { attack: 0, defense: 0, spAttack: 0, spDefense: 0, speed: 0, accuracy: 0, evasion: 0 },
       moves: await enrichMoves((full.moves || []).slice(0, 4)),
     };
   }
@@ -329,7 +433,14 @@ export default function Battle() {
   async function startBattle(selectedPokemon = null) {
     setLoading(true);
     setError(null);
-    setDefeatedEnemies(0);
+    // Recupera progresso de rounds (entre seleções de inimigos)
+    try {
+      const savedRound = parseInt(localStorage.getItem("battleProgressRound") || "0", 10);
+      if (!Number.isNaN(savedRound) && savedRound >= 0) setDefeatedEnemies(savedRound);
+      else setDefeatedEnemies(0);
+    } catch (_) {
+      setDefeatedEnemies(0);
+    }
 
     const playerBase = selectedPokemon || {
       id: 25,
@@ -359,11 +470,13 @@ export default function Battle() {
 
     const player = {
       ...playerFull,
+      isPlayer: true,
       maxHp: calcMaxHp(playerFull.hp || 50),
       hp: calcMaxHp(playerFull.hp || 50),
       moves: await enrichMoves((playerFull.moves || []).slice(0, 4)),
       status: null,
       condition: "normal",
+      stages: { attack: 0, defense: 0, spAttack: 0, spDefense: 0, speed: 0, accuracy: 0, evasion: 0 },
     };
 
     try {
@@ -374,37 +487,63 @@ export default function Battle() {
         if (stored) {
           const parsed = JSON.parse(stored);
           if (Array.isArray(parsed) && parsed.length > 0) {
+            const hasBoss = parsed.some((e) => !!e?.boss);
+            if (hasBoss) setBossPhase(true);
             enemies = await Promise.all(
-              parsed.slice(0, ENEMIES_PER_BATTLE).map(async (enemyData) => ({
-                ...enemyData,
-                maxHp: calcMaxHp(enemyData.hp || 50),
-                hp: calcMaxHp(enemyData.hp || 50),
-                condition: "normal",
-                moves: await enrichMoves((enemyData.moves || []).slice(0, 4)),
-                status: null,
-              }))
+              parsed.slice(0, hasBoss ? 1 : 3).map(async (enemyData) => {
+                const isBoss = !!enemyData?.boss;
+                const baseMax = calcMaxHp(enemyData.hp || 50);
+                const boostedMax = isBoss ? Math.floor(baseMax * (TUNING.BOSS_HP_MULT || 1)) : baseMax;
+                return ({
+                  ...enemyData,
+                  maxHp: boostedMax,
+                  hp: boostedMax,
+                  condition: "normal",
+                  moves: await enrichMoves((enemyData.moves || []).slice(0, 4)),
+                  status: null,
+                  stages: { attack: 0, defense: 0, spAttack: 0, spDefense: 0, speed: 0, accuracy: 0, evasion: 0 },
+                });
+              })
             );
           }
         }
       } catch (e) { }
 
       if (enemies.length === 0) {
-        for (let i = 0; i < ENEMIES_PER_BATTLE; i++) {
-          const enemyId = Math.floor(Math.random() * 151) + 1;
-          const enemyData = await getPokemon(enemyId);
+        const all = await getAllPokemons();
+        const pool = (all || []).filter((p) => p && !p.boss);
+        const stagePools = { 1: [], 2: [], 3: [] };
+        for (const mon of pool) {
+          const st = Math.min(3, Math.max(1, parseInt(mon?.evolutionStage ?? 1, 10)));
+          stagePools[st].push(mon);
+        }
+        const pickFrom = (arr) => {
+          if (!arr || arr.length === 0) return null;
+          const idx = Math.floor(Math.random() * arr.length);
+          return arr.splice(idx, 1)[0];
+        };
+        const picks = [];
+        for (let st = 1; st <= 3; st++) {
+          let chosen = pickFrom(stagePools[st]);
+          if (!chosen) chosen = pickFrom(pool);
+          if (chosen) picks.push(chosen);
+        }
+        for (const enemyData of picks) {
           const enemy = {
             ...enemyData,
-            maxHp: calcMaxHp(enemyData.hp || 50),
-            hp: calcMaxHp(enemyData.hp || 50),
+            maxHp: (() => { const base = calcMaxHp(enemyData.hp || 50); return enemyData?.boss ? Math.floor(base * (TUNING.BOSS_HP_MULT || 1)) : base; })(),
+            hp: (() => { const base = calcMaxHp(enemyData.hp || 50); return enemyData?.boss ? Math.floor(base * (TUNING.BOSS_HP_MULT || 1)) : base; })(),
             condition: "normal",
             moves: await enrichMoves((enemyData.moves || []).slice(0, 4)),
             status: null,
+            stages: { attack: 0, defense: 0, spAttack: 0, spDefense: 0, speed: 0, accuracy: 0, evasion: 0 },
           };
           enemies.push(enemy);
         }
       }
       setEnemyTeam(enemies);
-      setBattle({ player, enemy: enemies[0], currentTurn: "player", winner: null });
+      setCurrentPartyIndex(0);
+      setBattle({ player, enemy: enemies[0], currentTurn: "player", winner: null, bossPhase: false });
       setLog(["Sua vez!", "Batalha iniciada!"]);
     } catch (err) {
       const enemy = {
@@ -417,21 +556,141 @@ export default function Battle() {
           "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/25.gif",
         condition: "normal",
         status: null,
+        stages: { attack: 0, defense: 0, spAttack: 0, spDefense: 0, speed: 0, accuracy: 0, evasion: 0 },
       };
       const enemies = Array.from({ length: ENEMIES_PER_BATTLE }, () => ({ ...enemy }));
       setEnemyTeam(enemies);
-      setBattle({ player, enemy: enemies[0], currentTurn: "player", winner: null });
+      setBattle({ player, enemy: enemies[0], currentTurn: "player", winner: null, bossPhase: false });
       setLog(["Sua vez!", "Batalha simulada iniciada!"]);
     } finally {
       setLoading(false);
     }
   }
 
-  function handleMove(move) {
+  async function handleMove(move) {
     if (!battle || battle.winner || battle.currentTurn !== "player") return;
 
     const newBattle = { ...battle };
     const newLog = [...log];
+
+    // Checagem de status do jogador no início do turno (sleep/freeze/paralyze)
+    const canPlayerAct = applyStartOfTurnEffects("player", newBattle, newLog);
+    if (!canPlayerAct) {
+      // Fim do turno do jogador (dano residual etc.)
+      applyEndOfTurnEffects("player", newBattle, newLog);
+
+      // Passa a vez para o inimigo
+      newBattle.currentTurn = "enemy";
+      setBattle(newBattle);
+      setLog(newLog);
+
+      setTimeout(async () => {
+        const canEnemyAct = applyStartOfTurnEffects("enemy", newBattle, newLog);
+        if (canEnemyAct) {
+          const enemyMove =
+            newBattle.enemy.moves[
+            Math.floor(Math.random() * newBattle.enemy.moves.length)
+            ];
+          setEnemyAnim("attack");
+          setTimeout(() => setEnemyAnim(null), 1400);
+          if (Math.random() * 100 > (enemyMove.accuracy || 95)) {
+            newLog.unshift(
+              `${newBattle.enemy.name} errou ${enemyMove.display || enemyMove.name}!`
+            );
+          } else {
+            const { dmg: dmgE, effectiveness: multE } = calcDamage(
+              newBattle.enemy,
+              newBattle.player,
+              enemyMove
+            );
+            newBattle.player.hp = Math.max(newBattle.player.hp - dmgE, 0);
+
+            setPlayerAnim("damage");
+            setTimeout(() => setPlayerAnim(null), 1600);
+
+            let effMsgE = "";
+            if (multE === 0) effMsgE = " Não teve efeito.";
+            else if (multE > 1.5) effMsgE = " Foi super efetivo!";
+            else if (multE < 1) effMsgE = " Não foi muito efetivo.";
+
+            newLog.unshift(
+              `${newBattle.enemy.name} usou ${enemyMove.display || enemyMove.name}! Causou ${dmgE} de dano!${effMsgE}`
+            );
+
+            // Efeitos de estágios para golpes de status do inimigo
+            const isStatusMoveE = (enemyMove?.damage_class || "").toLowerCase() === "status" || (enemyMove?.power ?? 0) <= 0;
+            if (isStatusMoveE) {
+              applyStageMove(newBattle.enemy, newBattle.player, enemyMove, newLog);
+            }
+
+            if (!newBattle.player.status && Array.isArray(enemyMove.effects)) {
+              for (const eff of enemyMove.effects) {
+                if (Math.random() * 100 < (eff.chance ?? 0)) {
+                  setStatus(newBattle.player, eff.type, newLog);
+                  break;
+                }
+              }
+            }
+          }
+        }
+
+        // Checagem de derrota do jogador
+        if (newBattle.player.hp <= 0) {
+          const updatedTeam = team.map((p, idx) =>
+            idx === currentIndex ? { ...p, hp: 0, fainted: true } : p
+          );
+          setTeam(updatedTeam);
+
+          let nextIdx = -1;
+          if (updatedTeam && updatedTeam.length > 1) {
+            for (let step = 1; step <= updatedTeam.length; step++) {
+              const idx = (currentIndex + step) % updatedTeam.length;
+              if (
+                idx !== currentIndex &&
+                updatedTeam[idx] &&
+                !updatedTeam[idx].fainted &&
+                updatedTeam[idx].hp > 0
+              ) {
+                nextIdx = idx;
+                break;
+              }
+            }
+          }
+
+          if (nextIdx === -1) {
+            newBattle.winner = "enemy";
+            newLog.unshift(`${newBattle.enemy.name} venceu a batalha!`);
+          } else {
+            let nextPlayer = await buildPlayerFrom(team[nextIdx]);
+            // Se esse slot já possuir HP/estado salvo, preserva
+            const saved = team[nextIdx];
+            if (typeof saved?.hp === 'number' && typeof saved?.maxHp === 'number' && saved.maxHp > 0) {
+              nextPlayer.maxHp = saved.maxHp;
+              nextPlayer.hp = Math.max(0, Math.min(saved.hp, saved.maxHp));
+              nextPlayer.status = saved.status || null;
+              nextPlayer.condition = saved.condition || (nextPlayer.status ? nextPlayer.status.type : "normal");
+            }
+            setCurrentIndex(nextIdx);
+            newLog.unshift(`Você enviou ${nextPlayer.name}.`);
+            setBattle({
+              player: nextPlayer,
+              enemy: newBattle.enemy,
+              currentTurn: "player",
+              winner: null,
+            });
+            setLog([...newLog]);
+            return;
+          }
+        }
+
+        applyEndOfTurnEffects("enemy", newBattle, newLog);
+        newLog.unshift("Sua vez!");
+        newBattle.currentTurn = "player";
+        setBattle({ ...newBattle });
+        setLog([...newLog]);
+      }, ATTACK_GAP_MS);
+      return;
+    }
 
     // Animação: jogador atacando
     setPlayerAnim("attack");
@@ -461,6 +720,12 @@ export default function Battle() {
         `${newBattle.player.name} usou ${move.display || move.name}! Causou ${dmg} de dano!${effMsg}`
       );
 
+      // Efeitos de estágios para golpes de status do jogador
+      const isStatusMoveP = (move?.damage_class || "").toLowerCase() === "status" || (move?.power ?? 0) <= 0;
+      if (isStatusMoveP) {
+        applyStageMove(newBattle.player, newBattle.enemy, move, newLog);
+      }
+
       // Chance de aplicar status
       if (!newBattle.enemy.status && move && Array.isArray(move.effects)) {
         for (const eff of move.effects) {
@@ -473,39 +738,51 @@ export default function Battle() {
       }
     }
 
-    // Checagem de derrota do inimigo
+    // Checagem de derrota do inimigo (conta rounds, não pokémons)
     if (newBattle.enemy.hp <= 0) {
-      const defeated = defeatedEnemies + 1;
-      setDefeatedEnemies(defeated);
-      if (defeated >= ENEMIES_PER_BATTLE) {
+      if (!bossPhase) {
+        // Se ainda há pokémon no party atual, apenas troca (não avança round)
+        if (currentPartyIndex < (enemyTeam.length - 1)) {
+          const nextIdx = currentPartyIndex + 1;
+          setCurrentPartyIndex(nextIdx);
+          const nextEnemy = enemyTeam[nextIdx];
+          newLog.unshift(`Oponente enviou ${nextEnemy.name}!`);
+          setBattle({ player: newBattle.player, enemy: nextEnemy, currentTurn: "player", winner: null });
+          setLog(newLog);
+          return;
+        }
+
+        // Party acabou -> avança para o próximo oponente (round)
+        const defeated = defeatedEnemies + 1;
+        setDefeatedEnemies(defeated);
+        // Salva progresso e abre Select Team para o próximo inimigo (ou Boss)
+        try {
+          localStorage.setItem("battleProgressRound", String(defeated));
+        } catch (_) {}
+        if (defeated >= ENEMIES_PER_BATTLE) {
+          window.location.href = "/select-team?nextRound=boss";
+        } else {
+          const nxt = defeated + 1; // próxima rodada começa no enemy<nxt>
+          window.location.href = `/select-team?nextRound=${nxt}`;
+        }
+        return;
+      } else {
+        // Boss derrotado => vitória e desbloqueio específico
         newBattle.winner = "player";
-        newLog.unshift(`${newBattle.player.name} venceu a batalha!`);
+        newLog.unshift(`${newBattle.player.name} derrotou o Boss e venceu a batalha!`);
+        try {
+          const raw = localStorage.getItem("unlockedBosses") || "[]";
+          const arr = Array.isArray(JSON.parse(raw)) ? JSON.parse(raw) : [];
+          const id = newBattle.enemy?.id;
+          if (id != null && !arr.includes(id)) {
+            arr.push(id);
+            localStorage.setItem("unlockedBosses", JSON.stringify(arr));
+          }
+        } catch (e) { }
         setBattle(newBattle);
         setLog(newLog);
         return;
       }
-      newLog.unshift("Um novo oponente entrou na arena!");
-      setBattle(newBattle);
-      setLog(newLog);
-      setTimeout(async () => {
-        try {
-          const nextEnemy = enemyTeam[defeated] || newBattle.enemy;
-          setBattle({
-            player: newBattle.player,
-            enemy: nextEnemy,
-            currentTurn: "player",
-            winner: null,
-          });
-        } catch (_) {
-          setBattle({
-            player: newBattle.player,
-            enemy: newBattle.enemy,
-            currentTurn: "player",
-            winner: null,
-          });
-        }
-      }, 900);
-      return;
     }
 
     // Dano residual do jogador (fim do turno)
@@ -591,7 +868,14 @@ export default function Battle() {
           newBattle.winner = "enemy";
           newLog.unshift(`${newBattle.enemy.name} venceu a batalha!`);
         } else {
-          const nextPlayer = await buildPlayerFrom(team[nextIdx]);
+          let nextPlayer = await buildPlayerFrom(team[nextIdx]);
+          const saved = team[nextIdx];
+          if (typeof saved?.hp === 'number' && typeof saved?.maxHp === 'number' && saved.maxHp > 0) {
+            nextPlayer.maxHp = saved.maxHp;
+            nextPlayer.hp = Math.max(0, Math.min(saved.hp, saved.maxHp));
+            nextPlayer.status = saved.status || null;
+            nextPlayer.condition = saved.condition || (nextPlayer.status ? nextPlayer.status.type : "normal");
+          }
           setCurrentIndex(nextIdx);
           newLog.unshift(`Você enviou ${nextPlayer.name}.`);
           setBattle({
@@ -619,15 +903,38 @@ export default function Battle() {
 
     const target = team[index];
 
-    // ❌ Impede troca para Pokémon derrotado
+    // ? Impede troca para Pokémon derrotado
     if (target.hp <= 0 || target.fainted) {
       setLog((prev) => [`${target.name} não pode lutar!`, ...prev]);
       return;
     }
 
+    // Persiste estado do atual no array do time antes de sair
+    try {
+      setTeam((prev) => {
+        const list = Array.isArray(prev) ? [...prev] : [];
+        if (list[currentIndex] && battle?.player) {
+          list[currentIndex] = {
+            ...list[currentIndex],
+            hp: battle.player.hp,
+            maxHp: battle.player.maxHp,
+            status: battle.player.status || null,
+            condition: battle.player.condition || "normal",
+          };
+        }
+        return list;
+      });
+    } catch (_) {}
+
     // Troca válida
     setCurrentIndex(index);
-    const nextPlayer = await buildPlayerFrom(target);
+    let nextPlayer = await buildPlayerFrom(target);
+    if (typeof target?.hp === 'number' && typeof target?.maxHp === 'number' && target.maxHp > 0) {
+      nextPlayer.maxHp = target.maxHp;
+      nextPlayer.hp = Math.max(0, Math.min(target.hp, target.maxHp));
+      nextPlayer.status = target.status || null;
+      nextPlayer.condition = target.condition || (nextPlayer.status ? nextPlayer.status.type : "normal");
+    }
     setBattle((prev) => ({ ...prev, player: nextPlayer }));
     setLog((prev) => [`Você trocou para ${target.name}`, ...prev]);
   }
@@ -655,20 +962,70 @@ export default function Battle() {
   const pScale = getScale(player);
   const eScale = getScale(enemy);
   const playerTrainerSrc = `/images/trainer${playerTrainerId}pixel.png`;
+  const enemyTrainerSrc = bossPhase ? "/images/gary.png" : `/images/enemy${Math.min(defeatedEnemies + 1, ENEMIES_PER_BATTLE)}.png`;
+
+  
+
+  const activeRound = bossPhase ? 'boss' : Math.min(defeatedEnemies + 1, ENEMIES_PER_BATTLE);
+  const arenaBg = (
+    activeRound === 'boss' ? '/arenaBoss.png'
+    : activeRound === 1 ? '/arenaFighter.png'
+    : activeRound === 2 ? '/arenaIce.png'
+    : activeRound === 3 ? '/arenaShadow.png'
+    : activeRound === 4 ? '/arenaDragon.png'
+    : '/arena.png'
+  );
+
+  const containerStyle = bossPhase
+    ? {
+        backgroundImage: `url(${arenaBg})`,
+        backgroundPosition: 'center top',
+        backgroundRepeat: 'no-repeat',
+        // Flatten vertically a bit to avoid overflow while covering width
+        backgroundSize: '100% 100%',
+        backgroundAttachment: 'fixed',
+        backgroundColor: '#000',
+      }
+    : { backgroundImage: `url(${arenaBg})` };
 
   return (
-    <div className={styles.battleContainer}>
+    <div className={styles.battleContainer} style={containerStyle}>
       <div className={styles.arena}>
+        {/* Indicador de progresso das batalhas (4 normais + Boss) */}
+        <div className={styles.battleProgress}>
+          <div className={styles.progressDots}>
+            {Array.from({ length: ENEMIES_PER_BATTLE }).map((_, i) => {
+              const done = i < defeatedEnemies;
+              const active = i === defeatedEnemies && !bossPhase && !winner;
+              return (
+                <span
+                  key={`dot-${i}`}
+                  className={`${styles.progDot} ${done ? styles.progDotDone : ""} ${active ? styles.progDotActive : ""}`.trim()}
+                />
+              );
+            })}
+            <span
+              className={`${styles.progBoss} ${bossPhase && !winner ? styles.progBossActive : ""} ${winner === "player" && bossPhase ? styles.progBossDone : ""}`.trim()}
+              title="Boss"
+            >
+              <img
+                className={styles.bossIcon}
+                src="/sprites/pokeballs/master-ball.png"
+                alt="Boss"
+              />
+            </span>
+          </div>
+        </div>
         {/* Inimigo */}
         {/* Treinadores (posicionados nas laterais da arena) */}
-        <div className={styles.trainers}>
+        <div className={`${styles.trainers} ${bossPhase ? styles.trainersBoss : ""}`}>
           <img
-            src="/images/gary.png" // caminho da imagem do treinador do jogador
+            src={enemyTrainerSrc}
             alt="Treinador Inimigo"
             className={styles.trainerPlayer}
           />
           <img
-            src={playerTrainerSrc} // treinador do jogador escolhido na Home
+            src={playerTrainerSrc}
             alt="Treinador Jogador"
             className={styles.trainerEnemy}
           />
@@ -676,20 +1033,16 @@ export default function Battle() {
 
         <div className={styles.enemySection}>
           <div className={styles.switchRow}>
-            {Array.from({ length: ENEMIES_PER_BATTLE }).map((_, i) => {
-              const defeated = i < defeatedEnemies;
-              const active = i === defeatedEnemies; // o atual em campo
+            {(enemyTeam || []).map((_, i) => {
+              const defeated = i < (currentPartyIndex || 0);
+              const active = i === (currentPartyIndex || 0);
               return (
                 <div
-                  key={i}
-                  className={`${styles.ballBtn} ${active ? styles.ballActive : ""} ${defeated ? styles.ballDefeated : ""
-                    }`}
+                  key={`enemy-ball-${i}`}
+                  className={`${styles.ballBtn} ${active ? styles.ballActive : ""} ${defeated ? styles.ballDefeated : ""}`}
                   style={{ cursor: "default" }}
                 >
-                  <img
-                    src="/sprites/pokeballs/poke-ball.png"
-                    alt="Pokébola adversário"
-                  />
+                  <img src="/sprites/pokeballs/poke-ball.png" alt="PokAbola adversArio" />
                 </div>
               );
             })}
@@ -711,19 +1064,18 @@ export default function Battle() {
               ["--shakeDist"]: `${Math.max(3, Math.min(10, 5 * eScale)).toFixed(0)}px`,
             }}
           >
-            <div className={styles.spriteBox}>
+            <div className={`${styles.spriteBox} ${bossPhase ? styles.bossSprites : ""}`}>
               <div
                 className={styles.spriteScale}
                 style={{
-                  ["--pokeScale"]: `${eScale}`,
-                  ["--groundScale"]: `${eScale}`,
+                  ["--pokeScale"]: `${eScale}` ,
+                  ["--groundScale"]: `${eScale}` ,
                 }}
               >
                 <img
                   src={enemy.animated}
                   alt={enemy.name}
-                  className={`${styles.sprite} ${enemyAnim === "attack" ? styles.attackEnemy : ""
-                    } ${enemyAnim === "damage" ? styles.damageAnim : ""}`}
+                  className={`${styles.sprite} ${enemyAnim === "attack" ? styles.attackEnemy : ""} ${enemyAnim === "damage" ? styles.damageAnim : ""}`}
                   style={{
                     ["--shakeDist"]: `${Math.max(3, Math.min(10, 5 * eScale)).toFixed(0)}px`,
                   }}
@@ -733,7 +1085,6 @@ export default function Battle() {
             </div>
           </div>
         </div>
-
         {/* Jogador */}
         <div className={styles.playerSection}>
           {/* Linha de troca com pokébolas (acima do HP) */}
@@ -807,7 +1158,7 @@ export default function Battle() {
               {player.hp} / {player.maxHp}
             </div>
           </div>
-          <div className={styles.spriteBox}>
+          <div className={`${styles.spriteBox} ${bossPhase ? styles.bossSprites : ""}`}>
             <div
               className={styles.spriteScale}
               style={{
@@ -912,6 +1263,23 @@ export default function Battle() {
             </>
           )}
 
+          {winner === "enemy" && (
+            <div className={styles.defeatOverlay}>
+              <div className={styles.defeatBox}>
+                <h2>Derrota</h2>
+                <p>Você perdeu a batalha! O que deseja fazer agora?</p>
+                <div className={styles.optionButtons}>
+                  <ConfirmButton onClick={() => startBattle(team[currentIndex])}>
+                    Tentar Novamente
+                  </ConfirmButton>
+                  <ConfirmButton onClick={() => { try { localStorage.setItem("battleProgressRound", "0"); } catch (_) {} window.location.href = "/select-pokemon"; }}>
+                    Voltar a tela de escolha
+                  </ConfirmButton>
+                </div>
+              </div>
+            </div>
+          )}
+
           {winner && (
             <div className={styles.winner}>
               <h3>{winner === "player" ? "Você venceu!" : "Você perdeu!"}</h3>
@@ -920,19 +1288,11 @@ export default function Battle() {
           {winner === "player" && (
             <div className={styles.victoryOverlay}>
               <div className={styles.victoryBox}>
-                <h2>🎉 Vitória! 🎉</h2>
+                <h2>?? Vitória! ??</h2>
                 <p>Você venceu a batalha! O que deseja fazer agora?</p>
                 <div className={styles.optionButtons}>
-                  <ConfirmButton onClick={() => (window.location.href = "/select-pokemon")}>
-                    Mudar Time
-                  </ConfirmButton>
-                  <ConfirmButton
-                    onClick={() => {
-                      // Vai para a tela de seleção de time, mas com o contexto de "nova batalha"
-                      window.location.href = "/select-team?nextBattle=true";
-                    }}
-                  >
-                    Próxima Batalha
+                  <ConfirmButton onClick={() => { try { localStorage.setItem("battleProgressRound", "0"); } catch (_) {} window.location.href = "/select-pokemon"; }}>
+                    Voltar à tela de escolha
                   </ConfirmButton>
                 </div>
               </div>
@@ -959,6 +1319,8 @@ export default function Battle() {
                 }
                 : mv
             )}
+            attackerTypes={player.types || []}
+            defenderTypes={enemy.types || []}
             onSelect={(item) => {
               handleMove(item);
             }}
@@ -986,3 +1348,8 @@ export default function Battle() {
     </div>
   );
 }
+
+
+
+
+

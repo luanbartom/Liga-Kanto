@@ -429,3 +429,15 @@
 .mirror {
   transform: scaleX(-1);
 }
+
+.bossBadge {
+  margin-left: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #b91c1c;
+  background: #ffe4e6;
+  border: 2px solid #b91c1c;
+  border-radius: 10px;
+  padding: 1px 6px;
+}
+

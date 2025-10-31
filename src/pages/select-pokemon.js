@@ -13,23 +13,38 @@ function formatMoveName(mv) {
 }
 
 export default function SelectPokemon() {
+  const TRAINER_ICONS = [
+    '/icon/trainerIcon.png',
+    '/icon/REDIcon.png',
+    '/icon/hildaIcon.png',
+  ];
   const [pokemons, setPokemons] = useState([]);
   const [selected, setSelected] = useState([]);
   const [trainerName, setTrainerName] = useState("");
+  const [trainerId, setTrainerId] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedType, setSelectedType] = useState("");
   const [evolutionStage, setEvolutionStage] = useState("");
-  // Removido paginaÃ§Ã£o por quantidade; mostra todos
+  const [unlockedBossIds, setUnlockedBossIds] = useState(new Set());
+  const [showAchievements, setShowAchievements] = useState(false);
+  const [showBossInfo, setShowBossInfo] = useState(false);
+  const [showRuleModal, setShowRuleModal] = useState(false);
+  const [ruleModalMsg, setRuleModalMsg] = useState("");
+  // Removed trainer icon picker option
   const router = useRouter();
 
   useEffect(() => {
-    // Aplica background de tela especÃƒÂ­fico desta pÃƒÂ¡gina
     try {
       document?.body?.classList?.add("bg-select-pokemon");
-    } catch (e) { }
+    } catch (e) {}
 
     const name = localStorage.getItem("trainerName") || "Treinador";
     setTrainerName(name);
+    try {
+      const storedTrainer = localStorage.getItem("selectedTrainer");
+      const n = parseInt(storedTrainer || "1", 10);
+      if (!Number.isNaN(n)) setTrainerId(n);
+    } catch (e) {}
 
     async function loadPokemons() {
       const data = await getFirstGenPokemons();
@@ -37,22 +52,31 @@ export default function SelectPokemon() {
     }
     loadPokemons();
 
-    // Cleanup: remove o background ao sair da pÃƒÂ¡gina
+    try {
+      const raw = localStorage.getItem("unlockedBosses") || "[]";
+      const arr = Array.isArray(JSON.parse(raw)) ? JSON.parse(raw) : [];
+      setUnlockedBossIds(new Set(arr.map((n) => Number(n))));
+    } catch (e) {}
+
     return () => {
       try {
         document?.body?.classList?.remove("bg-select-pokemon");
-      } catch (e) { }
+      } catch (e) {}
     };
   }, []);
 
-  // Reinicia a paginaÃ§Ã£o quando filtros mudam
-  useEffect(() => { }, [searchTerm, selectedType, evolutionStage]);
+  // Reinicia paginação quando filtros mudam (mantido para compatibilidade)
+  useEffect(() => {}, [searchTerm, selectedType, evolutionStage]);
 
   const toggleSelect = (pokemon) => {
+    if (pokemon?.boss && !unlockedBossIds.has(pokemon.id)) {
+      setShowBossInfo(true);
+      return;
+    }
     if (selected.includes(pokemon)) {
       setSelected(selected.filter((p) => p !== pokemon));
     } else if (selected.length < 3) {
-      // Bloqueia escolhas que inviabilizam completar 1-2-3 estÃƒÂ¡gios
+      // Regra existente de 1-2-3 estágios
       const next = [...selected, pokemon];
       const uniqueStages = new Set(next.map((p) => p.evolutionStage)).size;
       const remaining = 3 - next.length;
@@ -60,9 +84,8 @@ export default function SelectPokemon() {
       if (!feasible) {
         const stages = new Set(selected.map((p) => p.evolutionStage));
         const missing = [1, 2, 3].filter((s) => !stages.has(s));
-        alert(
-          `Para confirmar, selecione 3 Pokemon Ã¢â‚¬â€ um de cada estágio(1, 2 e 3). Faltam: ${missing.join(", ")}.`
-        );
+        setRuleModalMsg(`Para confirmar, selecione 3 Pokémon — um de cada estágio (1, 2 e 3). Faltam: ${missing.join(", ")}.`);
+        setShowRuleModal(true);
         return;
       }
       setSelected(next);
@@ -80,10 +103,14 @@ export default function SelectPokemon() {
       const stages = new Set(selected.map((p) => p.evolutionStage));
       const missing = [1, 2, 3].filter((s) => !stages.has(s));
       const stageName = (s) => `Estágio ${s}`;
-      const msg = selected.length !== 3
-        ? 'Selecione exatamente 3 Pokemon.'
-        : `Sua equipe precisa ter 1 Pokemon de cada estÃ¡gio de evolução: ${missing.map(stageName).join(', ')}.`;
-      alert(msg);
+      const msg =
+        selected.length !== 3
+          ? "Selecione exatamente 3 Pokémon."
+          : `Sua equipe precisa ter 1 Pokémon de cada estágio de evolução: ${missing
+              .map(stageName)
+              .join(", ")}.`;
+      setRuleModalMsg(msg);
+      setShowRuleModal(true);
       return;
     }
     localStorage.setItem("selectedTeam", JSON.stringify(selected));
@@ -92,51 +119,49 @@ export default function SelectPokemon() {
 
   return (
     <div className={styles.container}>
+      <h1 className={styles.title}>Selecione sua Equipe Pokémon</h1>
+      <p className={styles.subtitle}>Escolha até 3 Pokémon para a batalha!</p>
 
-      <h1 className={styles.title}>Selecione sua Equipe Pokemon</h1>
-      <p className={styles.subtitle}>Escolha ate 3 Pokemon para a batalha!</p>
-      {/* Barra flutuante */}
+      {/* Barra de conquistas (treinador + botão) */}
+      <div className={styles.achievementsBar}>
+        <img className={styles.trainerIcon} src={TRAINER_ICONS[(Math.max(1, trainerId) - 1) % TRAINER_ICONS.length]} alt="Treinador" />
+        <div className={styles.trainerNameOnly}>{trainerName}</div>
+        <button type="button" className={styles.achievementsBtn} onClick={() => setShowAchievements(true)}>
+          Conquistas <span className={styles.badgeCount}>{[...unlockedBossIds].length}</span>
+        </button>
+        {/* Icon change option removed */}
+      </div>
+
+      {/* Barra flutuante (somente regras + seleção) */}
       <div className={styles.trainerBar}>
-        <span className={styles.trainerName}>
-          <img
-            className={styles.trainerIcon}
-            src="/trainerIcon.png"
-            alt="Trainer Icon"
-          />
-          {trainerName}
-        </span>
 
         <div className={styles.pokeballs}>
           {[...Array(3)].map((_, index) => (
             <img
               key={index}
-              className={
-                index < selected.length ? styles.filled : styles.empty
-              }
+              className={index < selected.length ? styles.filled : styles.empty}
               src="/sprites/pokeballs/poke-ball.png"
               alt="Pokeball"
             />
           ))}
         </div>
+
         <div className={styles.infoPanel}>
           <p className={styles.ruleHint}>
-            Regra: selecione 3 Pokemon, um de cada estagio de evolucao (1, 2 e 3).
+            Regra: selecione 3 Pokémon, um de cada estágio de evolução (1, 2 e 3).
           </p>
         </div>
-
-        {/* Removido botÃ£o "Exibir mais 30" */}
 
         <ConfirmButton onClick={confirmTeam} disabled={!hasAllEvolutionStages()}>
           Confirmar ({selected.length}/3)
         </ConfirmButton>
       </div>
 
-
-      {/* Ã°Å¸â€Â Filtros de busca e seleÃƒÂ§ÃƒÂ£o */}
+      {/* Filtros */}
       <div className={styles.filterBar}>
         <input
           type="text"
-          placeholder="Buscar Pokemon..."
+          placeholder="Buscar Pokémon..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
           className={styles.searchInput}
@@ -186,72 +211,108 @@ export default function SelectPokemon() {
         </select>
       </div>
 
-      {/* Ã°Å¸Â§Â© Grid de PokÃƒÂ©mons filtrados */}
+      {/* Grid de Pokémons */}
       <div className={styles.pokemonGrid}>
         {pokemons
           .filter(
             (p) =>
-              p.name.toLowerCase().includes(searchTerm) && // busca
-              (selectedType ? p.types.includes(selectedType) : true) && // tipo
-              (evolutionStage
-                ? p.evolutionStage === parseInt(evolutionStage)
-                : true) // estÃƒÂ¡gio
+              p.name.toLowerCase().includes(searchTerm) &&
+              (selectedType ? p.types.includes(selectedType) : true) &&
+              (evolutionStage ? p.evolutionStage === parseInt(evolutionStage) : true)
           )
-          .map((p) => (
-            <div
-              key={p.id}
-              className={`${styles.pokemonCard} ${selected.includes(p) ? styles.selected : ""
-                }`}
-              onClick={() => toggleSelect(p)}
-              onMouseEnter={(e) => {
-                const animated = (p.sprites && p.sprites.animated) || p.animated;
-                e.currentTarget.querySelector("img").src = animated;
-              }}
-              onMouseLeave={(e) => {
-                const front = (p.sprites && p.sprites.front) || p.sprite;
-                e.currentTarget.querySelector("img").src = front;
-              }}
-            >
-              <img
-                className={styles.pokemonImg}
-                src={(p.sprites && p.sprites.front) || p.sprite}
-                alt={p.name}
-              />
-              <h3 className={styles.pokemonName}>
-                {p.name.charAt(0).toUpperCase() + p.name.slice(1)}
-              </h3>
+          .map((p) => {
+            const locked = p.boss && !unlockedBossIds.has(p.id);
+            return (
+              <div
+                key={p.id}
+                className={`${styles.pokemonCard} ${selected.includes(p) ? styles.selected : ""}`}
+                onClick={() => toggleSelect(p)}
+                onMouseEnter={(e) => {
+                  if (locked) return;
+                  const animated = (p.sprites && p.sprites.animated) || p.animated;
+                  e.currentTarget.querySelector("img").src = animated;
+                }}
+                onMouseLeave={(e) => {
+                  const front = (p.sprites && p.sprites.front) || p.sprite;
+                  e.currentTarget.querySelector("img").src = front;
+                }}
+              >
+                <img
+                  className={`${styles.pokemonImg} ${locked ? styles.bossLocked : ""}`}
+                  src={(p.sprites && p.sprites.front) || p.sprite}
+                  alt={p.name}
+                />
+                <h3 className={styles.pokemonName}>
+                  {p.name.charAt(0).toUpperCase() + p.name.slice(1)}
+                </h3>
 
-              <div className={styles.types}>
-                {p.types.map((type, i) => (
-                  <span key={i} className={`${styles.type} ${styles[type]}`}>
-                    {typeLabel(type)}
-                  </span>
-                ))}
+                <div className={styles.types}>
+                  {p.types.map((type, i) => (
+                    <span key={i} className={`${styles.type} ${styles[type]}`}>
+                      {typeLabel(type)}
+                    </span>
+                  ))}
+                </div>
+                <h3 className={styles.golpes}>Golpes</h3>
+
+                <ul className={styles.moves}>
+                  {(p.moves || []).map((move, i) => (
+                    <li key={i}>{formatMoveName(move)}</li>
+                  ))}
+                </ul>
               </div>
-              <h3 className={styles.golpes}>Golpes</h3>
-
-              <ul className={styles.moves}>
-                {(p.moves || []).map((move, i) => (
-                  <li key={i}>{formatMoveName(move)}</li>
-                ))}
-              </ul>
-
-
-            </div>
-          ))}
+            );
+          })}
       </div>
+
+      {showBossInfo && (
+        <div className={styles.infoOverlay}>
+          <div className={styles.infoBox} role="dialog" aria-modal="true">
+            <h2>Pokémon Boss bloqueado</h2>
+            <p>
+              Pokémon marcados como <strong>Boss</strong> aparecem em cinza e não podem ser selecionados ainda.
+              Vença as batalhas estabelecidas para desbloqueá-los e usá-los no seu time.
+            </p>
+            <ConfirmButton onClick={() => setShowBossInfo(false)}>Entendi</ConfirmButton>
+          </div>
+        </div>
+      )}
+
+      {showAchievements && (
+        <div className={styles.infoOverlay}>
+          <div className={styles.infoBox} role="dialog" aria-modal="true">
+            <h2>Conquistas</h2>
+            <p>Vença as batalhas estabelecidas para desbloqueá-los e usá-los no seu time.</p>
+            <div className={styles.achGrid}>
+              {pokemons
+                .filter((p) => p.boss)
+                .map((p) => {
+                  const unlocked = unlockedBossIds.has(p.id);
+                  return (
+                    <div key={`all-ach-${p.id}`} className={`${styles.achCell} ${unlocked ? styles.achUnlocked : styles.achLocked}`} title={p.name}>
+                      <img className={styles.achIconLg} src={p.sprite} alt={p.name} />
+                      <div className={styles.achLabel}>{p.name}</div>
+                    </div>
+                  );
+                })}
+            </div>
+            <ConfirmButton onClick={() => setShowAchievements(false)}>Fechar</ConfirmButton>
+          </div>
+        </div>
+      )}
+      {showRuleModal && (
+        <div className={styles.infoOverlay}>
+          <div className={styles.infoBox} role="dialog" aria-modal="true">
+            <h2>Regras de Seleção</h2>
+            <p>{ruleModalMsg}</p>
+            <ConfirmButton onClick={() => setShowRuleModal(false)}>Ok</ConfirmButton>
+          </div>
+        </div>
+      )}
+
+      {/* Trainer icon picker modal removed */}
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
 
 
