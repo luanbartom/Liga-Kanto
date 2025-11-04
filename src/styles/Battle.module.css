@@ -2,27 +2,27 @@
 
 .battleContainer {
   text-align: center;
-  padding: 40px 20px 180px;
+  padding: 4vh 0vh 18vh;
   /* menos espaço no fundo para subir a arena */
   background: url("/arena.png") center/cover no-repeat fixed;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  background-position: 0px -10px;
+  gap: 1vh;
+  background-position: 0vh -10vh;
 }
 
 .arena {
   flex: 1;
   width: 100%;
-  max-width: 960px;
+  max-width: 130vh;
   display: flex;
   align-items: center;
   /* centraliza verticalmente */
   justify-content: space-between;
-  gap: 40px;
-  margin: 0 auto;
+  gap: 4vh;
+  margin: 0vh auto;
 }
 
 .enemySection,
@@ -33,7 +33,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  min-height: 260px;
+  min-height: 30vh;
   /* padroniza altura para manter esquadro */
   position: relative;
   /* para posicionar HP no mesmo nível */
@@ -43,16 +43,16 @@
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
-  bottom: 56px;
+  bottom: 6vh;
   /* levantado um pouco */
-  width: min(900px, 92%);
-  border: 3px solid #313131;
-  border-radius: 15px;
-  padding: 10px 12px;
-  max-height: 220px;
+  width: min(100vh, 92%);
+  border: 0.6vh solid #313131;
+  border-radius: 2vh;
+  padding: 2vh 2vh;
+  max-height: 25vh;
   overflow-y: auto;
   background: rgba(243, 243, 243, 0.978);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.515);
+  box-shadow: 0 1vh 2vh rgba(0, 0, 0, 0.747);
   cursor: pointer;
 }
 
@@ -88,7 +88,7 @@
 }
 
 .winner {
-  margin-top: 12px;
+  margin-top: 3vh;
 }
 
 /* Sprite animations */
@@ -98,7 +98,7 @@
   }
 
   30% {
-    transform: translateX(calc(-1 * var(--atkDist, 50px))) translateY(-8px) scale(1.25);
+    transform: translateX(calc(-1 * var(--atkDist, 8vh))) translateY(-8vh) scale(1.25);
   }
 
   100% {
@@ -112,7 +112,7 @@
   }
 
   30% {
-    transform: translateX(calc(-1 * var(--atkDist, 50px))) translateY(-8px) scale(1.25);
+    transform: translateX(calc(-1 * var(--atkDist, 8vh))) translateY(-8vh) scale(1.25);
   }
 
   100% {
@@ -128,22 +128,22 @@
   }
 
   20% {
-    transform: translateX(calc(-1 * var(--shakeDist, 4px)));
+    transform: translateX(calc(-1 * var(--shakeDist, 1vh)));
     opacity: 0.25;
   }
 
   40% {
-    transform: translateX(var(--shakeDist, 4px));
+    transform: translateX(var(--shakeDist, 2vh));
     opacity: 1;
   }
 
   60% {
-    transform: translateX(calc(-1 * var(--shakeDist, 4px)));
+    transform: translateX(calc(-1 * var(--shakeDist, 2vh)));
     opacity: 0.25;
   }
 
   80% {
-    transform: translateX(var(--shakeDist, 4px));
+    transform: translateX(var(--shakeDist, 2vh));
     opacity: 1;
   }
 
@@ -175,17 +175,17 @@
   display: inline-flex;
   flex-direction: row;
   align-items: baseline;
-  gap: 4px;
+  gap: 0vh;
   background: rgba(255, 255, 255, 0.9);
-  border: 3px solid #313131;
-  border-radius: 20px;
-  padding: 12px 14px;
-  min-width: 340px;
-  min-height: 82px;
+  border: 0.5vh solid #313131;
+  border-radius: 2vh;
+  padding: 1.5vh 1.6vh;
+  min-width: 42vh;
+  min-height: 10vh;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  bottom: 370px;
+  bottom: 42.5vh;
   /* fixa os HPs sempre acima das sprites maiores */
   z-index: 5;
 }
@@ -195,8 +195,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 4px;
-  min-width: 100px;
+  gap: 1vh;
+  min-width: 10vh;
 }
 
 .hpText {
@@ -205,7 +205,7 @@
 }
 
 .pokeName {
-  margin-top: 6px;
+  margin-top: 3vh;
   text-transform: none;
   color: #1f2937;
 }
@@ -249,11 +249,11 @@
   margin-top: 1vh;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 80vh) {
   .arena {
     flex-direction: column;
     align-items: center;
-    gap: 24px;
+    gap: 2vh;
   }
 
   .enemySection,
@@ -264,33 +264,33 @@
 
 /* Attack menu */
 .attackMenuToggle {
-  margin-top: 10px;
+  margin-top: 1vh;
   background: #ffffff;
-  border: 2px solid #616161;
+  border: 2vh solid #616161;
   color: #2d2d2d;
-  padding: 8px 14px;
-  border-radius: 10px;
+  padding: 8vh 14vh;
+  border-radius: 2vh;
   font-weight: bold;
   cursor: pointer;
 }
 
 .attackMenu {
-  margin-top: 10px;
+  margin-top: 10vh;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(22vh, 1fr));
+  gap: 2vh;
 }
 
 .moveItem {
   text-align: left;
   background: #ffffff;
-  border: 2px solid #e5e7eb;
-  border-radius: 10px;
-  padding: 10px;
+  border: 2vh solid #e5e7eb;
+  border-radius: 2vh;
+  padding: 1vh;
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 1vh;
 }
 
 .moveItem:hover {
@@ -316,11 +316,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 2vh;
   background: #f8fafc;
-  padding: 6px 8px;
-  border-radius: 6px;
-  margin-bottom: 4px;
+  padding: 1vh 3vh;
+  border-radius: 2vh;
+  margin-bottom: 2vh;
 }
 
 .moveName {
@@ -335,7 +335,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 2vh;
 }
 
 .moveMult {
@@ -356,8 +356,8 @@
 
 /* Reuse type badges from switch menu */
 .typeBadge {
-  padding: 2px 8px;
-  border-radius: 8px;
+  padding: 2vh 3vh;
+  border-radius: 2vh;
   font-size: 0.75rem;
   text-transform: capitalize;
   color: #fff;
@@ -365,47 +365,47 @@
 }
 
 .switchTeam {
-  margin-top: 12px;
+  margin-top: 4vh;
 }
 
 .teamBtn {
   /* Override ConfirmButton defaults for compact team buttons */
   min-width: auto !important;
-  height: 34px !important;
-  padding: 0 12px !important;
-  font-size: 12px !important;
-  margin: 4px;
+  height: 5vh !important;
+  padding: 0 3vh !important;
+  font-size: 3vh !important;
+  margin: 0vh;
 }
 
 /* Switch menu (mirrors attack menu) */
 .switchMenuToggle {
-  margin-top: 10px;
+  margin-top: 10vh;
   background: #ffcb05;
-  border: 2px solid #3b4cca;
+  border: 2vh solid #3b4cca;
   color: #3b4cca;
-  padding: 8px 14px;
-  border-radius: 10px;
+  padding: 2vh 3vh;
+  border-radius: 2vh;
   font-weight: bold;
   cursor: pointer;
 }
 
 .switchMenu {
-  margin-top: 10px;
+  margin-top: 3vh;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(30vh, 1fr));
+  gap: 2vh;
 }
 
 .switchItem {
   text-align: left;
   background: #ffffff;
-  border: 2px solid #e5e7eb;
-  border-radius: 10px;
-  padding: 10px;
+  border: 2vh solid #e5e7eb;
+  border-radius: 2vh;
+  padding: 2vh;
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2vh;
 }
 
 .switchItem:hover:not(:disabled) {
@@ -433,16 +433,16 @@
 .switchHeader {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 2vh;
   background: #f8fafc;
-  padding: 6px 8px;
-  border-radius: 6px;
-  margin-bottom: 4px;
+  padding: 2vh 3vh;
+  border-radius: 2vh;
+  margin-bottom: 2vh;
 }
 
 .switchIcon {
-  width: 40px;
-  height: 40px;
+  width: 40vh;
+  height: 40vh;
   image-rendering: pixelated;
 }
 
@@ -555,11 +555,11 @@
 
 /* New compact pokÃ©ball switch row */
 .switchRow {
-  margin-bottom: 60px;
+  margin-bottom: 6.5vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 1vh;
   position: relative;
 }
 
@@ -567,7 +567,7 @@
   position: absolute;
   left: 110%;
   transform: translateX(-50%);
-  bottom: 330px;
+  bottom: 38.5vh;
   z-index: 20;
 }
 
@@ -575,7 +575,7 @@
   position: absolute;
   left: -10%;
   transform: translateX(-50%);
-  bottom: 330px;
+  bottom: 38.5vh;
   /* alinhado com o do jogador */
   z-index: 20;
   pointer-events: none;
@@ -583,12 +583,12 @@
 }
 
 .ballBtn {
-  width: 40px;
-  height: 40px;
+  width: 5vh;
+  height: 5vh;
   border-radius: 50%;
-  padding: 0px;
+  padding: 0vh;
   background: #ffffff;
-  border: 3px solid #313131;
+  border: 0.5vh solid #313131;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -599,20 +599,20 @@
 }
 
 .ballBtn img {
-  width: 50px;
-  height: 50px;
+  width: 6vh;
+  height: 6vh;
   image-rendering: pixelated;
   display: block;
 }
 
 .ballBtn:hover {
   border-color: #facc15;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2vh 8vh rgba(0, 0, 0, 0.603);
 }
 
 .ballActive {
   border-color: #f59e0b;
-  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25);
+  box-shadow: 0 0 0 0.5vh rgba(245, 158, 11, 0.25);
 }
 
 .ballDefeated {
@@ -622,14 +622,14 @@
 
 .ballTooltip {
   position: absolute;
-  bottom: 60px;
+  bottom: 6vh;
   left: 0;
   transform: translateX(0);
   background: rgba(17, 24, 39, 0.95);
   color: #fff;
-  padding: 6px 8px;
-  border-radius: 6px;
-  font-size: 12px;
+  padding: 1vh 2vh;
+  border-radius: 1vh;
+  font-size: 1rem;
   pointer-events: none;
   text-transform: capitalize;
 }
@@ -637,29 +637,29 @@
 /* Confirm container above pokÃ©balls */
 .confirmSwap {
   position: absolute;
-  bottom: -13px;
+  bottom: -0vh;
   /* acima das pokÃ©bolas */
-  left: 190%;
+  left: 180%;
   transform: translateX(-50%);
   background: #ffffff;
-  border: 3px solid #373737;
-  border-radius: 18px;
-  padding: 8px 8px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  min-width: 240px;
+  border: 0.5vh solid #373737;
+  border-radius: 2vh;
+  padding: 2vh 2vh;
+  box-shadow: 0 2vh 2vh rgba(0, 0, 0, 0.623);
+  min-width: 24vh;
   z-index: 30;
 }
 
 .confirmText {
-  font-size: 14px;
+  font-size: 1rem;
   color: #111827;
-  margin-bottom: 8px;
+  margin-bottom: 1vh;
   font-weight: 600;
 }
 
 .confirmActions {
   display: flex;
-  gap: 10px;
+  gap: 1vh;
   justify-content: center;
 }
 
@@ -667,8 +667,8 @@
   background: #10b981;
   color: #fff;
   border: none;
-  padding: 6px 12px;
-  border-radius: 8px;
+  padding: 1vh 2vh;
+  border-radius: 2vh;
   cursor: pointer;
   font-weight: 600;
 }
@@ -681,8 +681,8 @@
   background: #e5e7eb;
   color: #111827;
   border: none;
-  padding: 6px 12px;
-  border-radius: 8px;
+  padding: 2vh 3vh;
+  border-radius: 2vh;
   cursor: pointer;
   font-weight: 600;
 }
@@ -706,14 +706,14 @@
   display: none;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 80vh) {
   .attackSidebar {
     top: auto;
-    right: 8px;
-    bottom: 92px;
+    right: 2%;
+    bottom: 9vh;
     /* acima do log */
     transform: none;
-    width: min(92vw, 360px);
+    width: min(92vh, 40vh);
   }
 }
 
@@ -769,12 +769,12 @@
 
 .victoryBox {
   background: linear-gradient(135deg, #f9f9f9, #d1ffd8);
-  border: 4px solid #3d3d3dc8;
-  border-radius: 20px;
-  box-shadow: 1px 1px 50px rgb(251, 255, 0);
+  border: 1.5vh solid #3d3d3dc8;
+  border-radius: 2vh;
+  box-shadow: 1vh 1vh 5vh rgb(251, 255, 0);
   text-align: center;
-  padding: 40px 60px;
-  max-width: 500px;
+  padding: 4vh 6vh;
+  max-width: 60vh;
   color: #2c3e50;
   animation: scaleUp 0.4s ease-out;
 }
@@ -782,20 +782,20 @@
 .victoryBox h2 {
   font-size: 2rem;
   color: #ffee01;
-  text-shadow: 1px 1px 0px #c1ae00;
-  margin-bottom: 10px;
+  text-shadow: 1vh 1vh 0vh #c1ae00;
+  margin-bottom: 1vh;
 }
 
 .victoryBox p {
   font-size: 1.2rem;
-  margin-bottom: 25px;
+  margin-bottom: 2vh;
 }
 
 .defeatOverlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100vh;
   height: 100vh;
   background: rgba(0, 0, 0, 0.7);
   display: flex;
@@ -820,13 +820,13 @@
 .optionButtons {
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: 2vh;
 }
 
 .confirmBtn,
 .confirmBtnSecondary {
-  padding: 12px 24px;
-  border-radius: 10px;
+  padding: 1vh 2vh;
+  border-radius: 1vh;
   border: none;
   font-weight: bold;
   font-size: 1rem;
@@ -845,7 +845,7 @@
 
 .confirmBtnSecondary {
   background-color: #ffffff;
-  border: 2px solid #4caf50;
+  border: 0.3vh solid #4caf50;
   color: #4caf50;
 }
 
@@ -884,7 +884,7 @@
 /* Battle progress (4 rounds + Boss) */
 .battleProgress {
   position: fixed;
-  top: 12px;
+  top: 1vh;
   left: 50%;
   transform: translateX(-50%);
   z-index: 40;
@@ -893,25 +893,25 @@
 .progressDots {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5vh;
   background: rgba(255, 255, 255, 0.9);
-  border: 3px solid #2f2f2f;
-  border-radius: 999px;
-  padding: 6px 10px;
+  border: 0.5vh solid #2f2f2f;
+  border-radius: 999vh;
+  padding: 0.5vh 1vh;
 }
 
 .progDot {
-  width: 12px;
-  height: 12px;
+  width: 1vh;
+  height: 1vh;
   border-radius: 50%;
   background: #d1d5db;
   /* gray-300 */
-  border: 2px solid #4b5563;
+  border: 0.3vh solid #4b5563;
   /* gray-600 */
 }
 
 .progDotActive {
-  box-shadow: 0 0 0 2px #facc15 inset;
+  box-shadow: 0 0 0 2vh #facc15 inset;
   /* amber-400 */
   background: #fde68a;
   /* amber-200 */
