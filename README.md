@@ -116,3 +116,9 @@ Licença e uso de marca
 Anexo
 - Esboço do projeto no Excalidraw: https://excalidraw.com/#json=mZmnVSHnSAvlVC1l2mtan,jU-CqUw81FNPTI7WA8DEEA
 
+Créditos
+- Principais colboradores do projeto:
+- Luan Bartom Silva e Silva (https://github.com/luanbartom)
+- Ivan Lucas Miorandi (https://github.com/ivanlucasmiorandi)
+
+- Agradecimentos especiais ao professor Matheus Pedro Rebeschini Grolli que nos orientou e nos deu todo o suporte para finalizar o projeto.
