@@ -15,7 +15,7 @@
 @keyframes fadeSlideUp {
   from {
     opacity: 0;
-    transform: translateY(40px) scale(0.97);
+    transform: translateY(4vh) scale(0.97);
   }
 
   to {
@@ -53,29 +53,29 @@
 }
 
 .trainer {
-  width: clamp(200px, 18vh, 220px);
-  height: clamp(200px, 18vh, 220px);
+  width: clamp(20vh, 18vh, 22vh);
+  height: clamp(20vh, 18vh, 22vh);
   object-fit: contain; /* evita cortar cabeça/pés */
   object-position: center bottom; /* ancora nos pés */
   image-rendering: pixelated;
-  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .15));
+  filter: drop-shadow(0 0.2vh 0.2vh rgba(0, 0, 0, .15));
   z-index: 10;
 }
 
 /* Ajuste de escala para o treinador 2, que tem sprite maior */
 .trainerAdjust {
-  transform: translateY(12px) scale(1.12);
+  transform: translateY(1.2vh) scale(1.12);
   transform-origin: center bottom;
 }
 
 /* Painel principal */
 .panel {
   background-color: #ffffffca;
-  border: 3px solid #404040;
+  border: 0.3vh solid #404040;
   border-radius: 3vh;
-  max-width: 98vw;
-  padding: 20px 30px;
-  box-shadow: 0 8px 24px #0000001f;
+  max-width: 195vh;
+  padding: 2vh 3vh;
+  box-shadow: 0 0.8vh 2.4vh #0000001f;
   overflow: visible;
   position: relative;
   top: -4vh;
@@ -94,15 +94,15 @@
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: end;
-  gap: 24px;
-  margin: 8px 0 18px;
+  gap: 2.4vh;
+  margin: 0.8vh 0 1.8vh;
 }
 
 .teamSide {
   display: flex;
   align-items: end;
   justify-content: center;
-  gap: 16px;
+  gap: 1.6vh;
   flex-wrap: wrap;
   opacity: 0;
   animation: fadeSlideUp 0.8s 0.3s ease-out forwards;
@@ -111,7 +111,7 @@
 .vsBlock {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 1.2vh;
 }
 
 /* ======== LINEUP ======== */
@@ -122,7 +122,7 @@
   align-items: baseline;
   gap: 3vh;
   height: 54vh;
-  padding: 185px 7vw 0;
+  padding: 18vh 7vw 0;
   overflow-x: auto;
   overflow-y: visible;
   position: relative;
@@ -186,8 +186,8 @@
   transform-origin: center bottom;
   position: relative;
   z-index: 9999;
-  max-width: clamp(74px, 14vh, 180px);
-  max-height: clamp(74px, 14vh, 180px);
+  max-width: clamp(7.4vh, 14vh, 18vh);
+  max-height: clamp(7.4vh, 14vh, 18vh);
 }
 
 /* Hover apenas na sprite do jogador */
@@ -197,12 +197,12 @@
 }
 
 .pokeThumb:not(.enemy) .sprite:hover.spriteSelected {
-  filter: drop-shadow(0 0 8px #cdbc1e) drop-shadow(0 0 16px #cdc41eaa);
+  filter: drop-shadow(0 0 0.8vh #cdbc1e) drop-shadow(0 0 1.6vh #cdc41eaa);
 }
 
 
 .spriteSelected {
-  filter: drop-shadow(0 0 8px #cdbc1e) drop-shadow(0 0 16px #cdc41eaa);
+  filter: drop-shadow(0 0 0.8vh #cdbc1e) drop-shadow(0 0 1.6vh #cdc41eaa);
 }
 
 /* Meta do Pokémon (nome + tipos) */
@@ -217,14 +217,14 @@
   /* Cores inspiradas na logo Pokémon */
   color: #ffcb05; /* amarelo vivo */
   font-weight: 800;
-  font-size: clamp(12px, 1.4vw, 20px);
+  font-size: clamp(1rem, 1.4vh, 2vh);
   line-height: 1.1;
   text-transform: capitalize;
   letter-spacing: 0.09em; /* mais espaço entre letras */
   /* Borda mais grossa (fallback + stroke) */
-  -webkit-text-stroke: 1px #183755;
+  -webkit-text-stroke: 0.1vh #183755;
   font-family: Impact, "Arial Black", "Segoe UI Black", "Helvetica Neue", Poppins, sans-serif;
-  text-shadow: 0 0 8px rgba(0,0,0,.35);
+  text-shadow: 0 0 0.8vh rgba(0,0,0,.35);
   /* Aumenta a largura visual da fonte */
   display: inline-block;
   font-stretch: expanded; /* suportado por alguns navegadores */
@@ -236,7 +236,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 4px;
+  margin-top: 0.4vh;
 }
 
 /* Inimigos sem hover nem sombra */
@@ -264,11 +264,11 @@
   content: "VS";
   position: relative;
   transform: rotate(-10deg);
-  font-size: clamp(72px, 16vw, 280px);
+  font-size: clamp(50vh, 16vh, 28vh);
   font-weight: 900;
   letter-spacing: 0.02em;
   color: #313131;
-  text-shadow: 0 4px 16px rgba(0, 0, 0, .35), 0 0 32px rgba(30, 205, 151, .35);
+  text-shadow: 0 0.4vh 1.6vh rgba(0, 0, 0, .35), 0 0 3.2vh rgba(30, 205, 151, .35);
   opacity: 0.82;
   white-space: nowrap;
   user-select: none;
@@ -280,141 +280,141 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 4px 12px;
-  margin: 6px 4px; /* mais espaço vertical, menos nas laterais */
+  padding: 0.4vh 1.2vh;
+  margin: 0.6vh 0.4vh; /* mais espaço vertical, menos nas laterais */
   border-radius: 8px;
   color: #fff;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   line-height: 1;
-  text-shadow: 0 1px 0 rgba(0,0,0,.55), 0 0 6px rgba(0,0,0,.35);
-  box-shadow: inset 0 -2px 0 rgba(255,255,255,.25), 0 2px 0 rgba(0,0,0,.15);
+  text-shadow: 0 0.1vh 0 rgba(0,0,0,.55), 0 0 0.6vh rgba(0,0,0,.35);
+  box-shadow: inset 0 -0.2vh 0 rgba(255,255,255,.25), 0 0.2vh 0 rgba(0,0,0,.15);
   user-select: none;
 }
 
 /* Tipos */
 .fire {
   background: #f08030;
-  border-radius: 6px;
+  border-radius: 0.6vh;
 }
 
 .water {
   background: #6890f0;
-  border-radius: 6px;
+  border-radius: 0.6vh;
 }
 
 .grass {
   background: #78c850;
-  border-radius: 6px;
+  border-radius: 0.6vh;
 }
 
 .electric {
   background: #f8d030;
   color: #000;
-  border-radius: 6px;
+  border-radius: 0.6vh;
 }
 
 .bug {
   background: #a8b820;
-  border-radius: 6px;
+  border-radius: 0.6vh;
 }
 
 .normal {
   background: #a8a878;
-  border-radius: 6px;
+  border-radius: 0.6vh;
 }
 
 .poison {
   background: #a040a0;
-  border-radius: 6px;
+  border-radius: 0.6vh;
 }
 
 .flying {
   background: #a890f0;
-  border-radius: 6px;
+  border-radius: 0.6vh;
 }
 
 .ground {
   background: #e0c068;
   color: #572c08;
-  border-radius: 6px;
+  border-radius: 0.6vh;
 }
 
 .psychic {
   background: #f85888;
-  border-radius: 6px;
+  border-radius: 0.6vh;
 }
 
 .rock {
   background: #b8a038;
-  border-radius: 6px;
+  border-radius: 0.6vh;
 }
 
 .ghost {
   background: #705898;
-  border-radius: 6px;
+  border-radius: 0.6vh;
 }
 
 .ice {
   background: #98d8d8;
   color: #000;
-  border-radius: 6px;
+  border-radius: 0.6vh;
 }
 
 .dragon {
   background: #7038f8;
-  border-radius: 6px;
+  border-radius: 0.6vh;
 }
 
 .fighting {
   background: #c03028;
-  border-radius: 6px;
+  border-radius: 0.6vh;
 }
 
 .steel {
   background: #b8b8d0;
   color: #000;
-  border-radius: 6px;
+  border-radius: 0.6vh;
 }
 
 .fairy {
   background: #ee99ac;
   color: #000;
-  border-radius: 6px;
+  border-radius: 0.6vh;
 }
 
 .dark {
   background: #705848;
-  border-radius: 6px;
+  border-radius: 0.6vh;
 }
 
 /* ===== Responsividade ===== */
-@media (max-width: 992px) {
+@media (max-width: 99vh) {
   .panel {
-    padding: 14px 16px;
+    padding: 1.4vh 1.6vh;
   }
 
   .lineup {
     height: 42vh;
-    padding: 64px 3vw 0;
-    gap: 12px;
+    padding: 6.4vh 3vh 0;
+    gap: 1.2vh;
   }
 
   .trainer {
-    width: clamp(84px, 12vh, 160px);
-    height: clamp(84px, 12vh, 160px);
+    width: clamp(8.4vh, 12vh, 16vh);
+    height: clamp(8.4vh, 12vh, 16vh);
   }
 
-  .trainerAdjust { transform: translateY(6px) scale(1.12); }
+  .trainerAdjust { transform: translateY(0.6vh) scale(1.12); }
 
   .sprite {
-    max-width: clamp(52px, 11vh, 120px);
-    max-height: clamp(52px, 11vh, 120px);
+    max-width: clamp(5.2vh, 11vh, 12vh);
+    max-height: clamp(5.2vh, 11vh, 12vh);
   }
 
   .vs::after {
-    font-size: clamp(56px, 13vw, 200px);
+    font-size: clamp(5.6vh, 13vh, 20vh);
   }
 }
 
@@ -431,13 +431,13 @@
 }
 
 .bossBadge {
-  margin-left: 6px;
-  font-size: 11px;
+  margin-left: 0.6vh;
+  font-size: 1rem;
   font-weight: 800;
   color: #b91c1c;
   background: #ffe4e6;
-  border: 2px solid #b91c1c;
-  border-radius: 10px;
-  padding: 1px 6px;
+  border: 0.2vh solid #b91c1c;
+  border-radius: 1vh;
+  padding: 0.1vh 0.6vh;
 }
 

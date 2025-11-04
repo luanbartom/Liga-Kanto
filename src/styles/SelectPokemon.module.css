@@ -5,30 +5,30 @@
   margin: 6rem auto;
   max-width: 150vh;
   background-color: #f8f8f8e3;
-  padding: 30px 50px;
-  border-radius: 20px;
-  border: 3px solid #373737;
-  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.535);
+  padding: 3vh 5vh;
+  border-radius: 2vh;
+  border: 0.5vh solid #373737;
+  box-shadow: 0 1vh 2vh rgba(0, 0, 0, 0.72);
   position: relative;
 }
 
 /* Barra flutuante */
 .trainerBar {
   position: fixed;
-  top: 15px;
+  top: 1.5vh;
   left: 50%;
   transform: translateX(-50%);
   background: rgba(255, 255, 255, 0.9);
-  border: 3px solid #414141b1;
-  border-radius: 12px;
-  padding: 10px 20px;
+  border: 0.5vh solid #414141b1;
+  border-radius: 2vh;
+  padding: 1vh 2vh;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 700px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  width: 70vh;
+  box-shadow: 0 1vh 2vh rgba(0, 0, 0, 0.474);
   z-index: 10;
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(1vh);
 }
 
 .trainerName {
@@ -37,13 +37,13 @@
   font-size: 1.1rem;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 1vh;
 }
 
 .trainerIcon {
   width: 6vh;
   height: 8vh;
-  filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(1vh 1vh 1vh rgba(0, 0, 0, 0.3));
   image-rendering: pixelated;
 
 }
@@ -51,12 +51,12 @@
 /* Pokébolas */
 .pokeballs {
   display: flex;
-  gap: 10px;
+  gap: 1vh;
 }
 
 .pokeballs img {
-  width: 50px;
-  height: 50px;
+  width: 6vh;
+  height: 6vh;
   transition: all 0.3s ease;
   image-rendering: pixelated;
 }
@@ -77,15 +77,15 @@
 /* === BOTÃO CONFIRMAR (estilo verde animado) === */
 .confirmBar {
   outline: none;
-  height: 40px;
+  height: 4vh;
   text-align: center;
-  width: 130px;
-  border-radius: 40px;
+  width: 13vh;
+  border-radius: 4vh;
   background: #fff;
-  border: 2px solid #1ECD97;
+  border: 0.5vh solid #1ECD97;
   color: #1ECD97;
-  letter-spacing: 1px;
-  font-size: 12px;
+  letter-spacing: 1vh;
+  font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.25s ease;
@@ -123,7 +123,7 @@
 
 /* Estado validado (check verde) */
 .validate {
-  font-size: 13px;
+  font-size: 1rem;
   color: #fff;
   background: #1ECD97;
 }
@@ -131,8 +131,8 @@
 .validate::after {
   content: "✔";
   font-weight: bold;
-  font-size: 14px;
-  margin-left: 5px;
+  font-size: 1rem;
+  margin-left: 5vh;
 }
 
 /* Desabilitado */
@@ -157,24 +157,24 @@
 
 /* Títulos */
 .title {
-  margin-top: 10px;
+  margin-top: 1vh;
   color: #2d2d2d;
 }
 
 .subtitle {
-  margin: 12px;
+  margin: 1.2vh;
   color: #000000;
 }
 
 .bossBadge {
-  margin-left: 8px;
-  font-size: 12px;
+  margin-left: 1vh;
+  font-size: 1.2rem;
   font-weight: 800;
   color: #b91c1c;
   background: #ffe4e6;
-  border: 2px solid #b91c1c;
-  border-radius: 10px;
-  padding: 2px 8px;
+  border: 0.5vh solid #b91c1c;
+  border-radius: 1vh;
+  padding: 2vh 8vh;
 }
 
 .bossLocked {
@@ -198,10 +198,25 @@
   border-radius: 2vh;
   padding: 2vh 2vh;
   max-width: 100vh;
-  height: 80vh;
+  height: 20vh;
   display: flex;
   color: #513b11;
-  box-shadow: 0vh 0vh 12vh rgb(255, 224, 71);
+  box-shadow: 0vh 1vh 12vh rgb(255, 224, 71);
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.infoBoxConquistas {
+  background: #fffefb;
+  border: 0.5vh solid #4b4b4b;
+  border-radius: 2vh;
+  padding: 2vh 2vh;
+  max-width: 100vh;
+  height: 80vh;
+  display: flex;
+  color: #000000;
+  box-shadow: 0vh 1vh 12vh rgb(0, 0, 0);
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
@@ -211,31 +226,31 @@
 .pokemonGrid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 15px;
+  gap: 1vh;
   justify-items: center;
   align-items: start;
   margin: 0 auto;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 120vh) {
   .pokemonGrid {
     grid-template-columns: repeat(5, 1fr);
   }
 }
 
-@media (max-width: 992px) {
+@media (max-width: 99vh) {
   .pokemonGrid {
     grid-template-columns: repeat(4, 1fr);
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 76vh) {
   .pokemonGrid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 48vh) {
   .pokemonGrid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -243,12 +258,12 @@
 
 /* Card */
 .pokemonCard {
-  border: 3px solid #a2a2a2;
+  border: 0.5vh solid #a2a2a2;
   border-radius: 1rem;
   padding: 2vh;
   width: 22vh;
   background: linear-gradient(180deg, #ffffff 0%, #f8f8f8 100%);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1vh 2vh rgba(0, 0, 0, 0.12);
   cursor: pointer;
   transition: all 0.25s ease;
   text-align: center;
@@ -261,29 +276,29 @@
 }
 
 .moves {
-  max-height: 110px;
+  max-height: 110vh;
   overflow-y: auto;
-  font-size: 12px;
+  font-size: 1.2rem;
   text-align: left;
 }
 
 .pokemonCard:hover {
   transform: scale(1.1);
   border-color: #facc15;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1vh 2vh rgba(0, 0, 0, 0.2);
   background: linear-gradient(180deg, #fffbe6 0%, #fef3c7 100%);
 }
 
 .selected {
   border-color: #facc15;
   background: #fff8d9;
-  box-shadow: 0 6px 18px rgba(255, 200, 0, 0.4);
+  box-shadow: 0 1vh 3vh rgba(255, 200, 0, 0.622);
 }
 
 /* Imagem, nome, tipos, moves */
 .pokemonImg {
-  width: 120px;
-  height: 120px;
+  width: 12vh;
+  height: 12vh;
   transition: transform 0.25s ease;
   image-rendering: pixelated;
 }
@@ -293,7 +308,7 @@
 }
 
 .pokemonName {
-  margin: 8px 0 4px;
+  margin: 0.8vh 0 0.4vh;
   font-size: 1.1rem;
   text-transform: capitalize;
 }
@@ -302,13 +317,13 @@
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 4px;
-  margin-bottom: 6px;
+  gap: 0.4vh;
+  margin-bottom: 0.6vh;
 }
 
 .type {
-  padding: 2px 8px;
-  border-radius: 8px;
+  padding: 0.2vh 0.8vh;
+  border-radius: 0.5vh;
   font-size: 0.75rem;
   text-transform: capitalize;
   color: #fff;
@@ -319,7 +334,7 @@
   list-style: none;
   /* remove os bullets */
   padding: 0;
-  margin: 6px 0 0;
+  margin: 0.6vh 0 0;
   font-size: 0.8rem;
   text-transform: capitalize;
   color: #444;
@@ -403,16 +418,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 16px;
-  margin: 20px auto 30px;
+  gap: 1.6vh;
+  margin: 2vh auto 3vh;
   flex-wrap: wrap;
 }
 
 .searchInput {
-  padding: 8px 14px;
+  padding: 0.8vh 1.4vh;
   font-size: 1rem;
-  border-radius: 10px;
-  border: 2px solid #ccc;
+  border-radius: 1vh;
+  border: 0.31vh solid #ccc;
   width: 200px;
   transition: 0.3s;
   background-color: #f8f8f8;
@@ -422,12 +437,12 @@
 .searchInput:focus {
   outline: none;
   border-color: #facc15;
-  box-shadow: 0 0 8px rgba(209, 205, 79, 0.6);
+  box-shadow: 0 0 8vh rgba(209, 205, 79, 0.6);
 }
 
 .select {
-  padding: 8px 12px;
-  border-radius: 10px;
+  padding: 0.8vh 1.2vh;
+  border-radius: 1vh;
   border: 2px solid #ccc;
   font-size: 1rem;
   background: #fff;
@@ -437,23 +452,23 @@
 
 .select:focus {
   border-color: #facc15;
-  box-shadow: 0 0 8px rgba(209, 187, 79, 0.6);
+  box-shadow: 0 0 8vh rgba(209, 187, 79, 0.6);
 }
 
 
 /* Painel flutuante a direita (subtitulo + regra) */
 .infoPanel {
   position: fixed;
-  top: 1px;
+  top: 0.5vh;
   right: -39vh;
   width: 36vh;
-  padding: 12px 16px;
+  padding: 1.2vh 1.6vh;
   background: #fff8d9;
   color: #6b5900;
-  border: 3px solid #facc15;
-  border-radius: 14px;
-  box-shadow: 2 4px 10px rgba(252, 231, 41, 0.874);
-  filter: drop-shadow(0 0 12px rgba(255, 200, 0, 0.7));
+  border: 0.3vh solid #facc15;
+  border-radius: 1.4vh;
+  box-shadow: 2 4vh 10vh rgba(252, 231, 41, 0.874);
+  filter: drop-shadow(0 0 1vh rgba(255, 200, 0, 0.7));
   animation: shadowPulse 2s infinite ease-in-out;
   z-index: 11;
 }
@@ -462,15 +477,15 @@
 
 .ruleHint {
   font-weight: 600;
-  font-size: 12px;
+  font-size: 0.2rem;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 124vh) {
   .infoPanel {
     position: static;
     width: auto;
-    max-width: 740px;
-    margin: 8px auto 18px;
+    max-width: 80vh;
+    margin: 0.8vh auto 1.8vh;
   }
 }
 
@@ -484,41 +499,41 @@
   align-items: center;
   gap: 0vh;
   background: rgba(255, 255, 255, 0.92);
-  border: 3px solid #414141b1;
+  border: 0.4vh solid #414141b1;
   border-radius: 2vh;
   padding: 2vh 2vh;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1vh 2vh rgba(0, 0, 0, 0.781);
   z-index: 11;
 }
 
 .trainerNameOnly {
   font-weight: 700;
   color: #1f2937;
-  margin-top: 2px;
+  margin-top: 0.5vh;
 }
 
 .achTitle {
   font-weight: 700;
   color: #374151;
-  font-size: 12px;
-  margin-top: 6px;
+  font-size: 0.2rem;
+  margin-top: 2vh;
 }
 
 .achList {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  max-width: 400px;
+  gap: 1vh;
+  max-width: 40vh;
   flex-wrap: wrap;
 }
 
 .achIcon {
-  width: 28px;
-  height: 28px;
+  width: 28vh;
+  height: 28vh;
   image-rendering: pixelated;
-  border: 2px solid #374151;
-  border-radius: 6px;
+  border: 0.2vh solid #374151;
+  border-radius: 6vh;
   background: #fff;
 }
 
@@ -526,8 +541,8 @@
 .achGrid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 10px;
-  margin: 10px 0 16px;
+  gap: 1vh;
+  margin: 1vh 0 1.6vh;
 }
 
 .achCell {
@@ -535,17 +550,17 @@
 }
 
 .achIconLg {
-  width: 10vh;
-  height: 10vh;
+  max-width: 12vh;
+  max-height: 12vh;
   image-rendering: pixelated;
   border-radius: 2vh;
   background: #ffffff4d;
 }
 
 .achLabel {
-  font-size: 11px;
+  font-size: 0.6rem;
   color: #374151;
-  margin-top: 4px;
+  margin-top: 0.4vh;
   text-transform: capitalize;
 }
 
@@ -560,13 +575,13 @@
 }
 
 .achievementsBtn {
-  margin-top: 6px;
+  margin-top: 1vh;
   background: #ffffff;
-  border: 2px solid #1ECD97;
+  border: 0.3vh solid #1ECD97;
   color: #1ECD97;
   font-weight: 700;
-  border-radius: 10px;
-  padding: 4px 10px;
+  border-radius: 1vh;
+  padding: 0.4vh 0.8vh;
   cursor: pointer;
 }
 
@@ -576,36 +591,10 @@
 }
 
 .badgeCount {
-  margin-left: 6px;
-  background: #1f2937;
+  margin-left: 0.6vh;
+  background: #676767;
   color: #fff;
-  border-radius: 999px;
-  padding: 1px 6px;
-  font-size: 10px;
-}
-
-/* Trainer picker */
-.trainerGrid {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  margin: 12px 0;
-}
-
-.trainerCell {
-  background: #fff;
-  border: 2px solid #374151;
-  border-radius: 12px;
-  padding: 6px;
-  cursor: pointer;
-}
-
-.trainerActive {
-  box-shadow: 0 0 0 3px #facc15 inset;
-}
-
-.trainerPickIcon {
-  width: 64px;
-  height: 64px;
-  image-rendering: pixelated;
+  border-radius: 999vh;
+  padding: 0.1vh 0.6vh;
+  font-size: 0.5rem;
 }

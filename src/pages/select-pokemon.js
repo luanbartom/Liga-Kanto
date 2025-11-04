@@ -280,7 +280,7 @@ export default function SelectPokemon() {
 
       {showAchievements && (
         <div className={styles.infoOverlay}>
-          <div className={styles.infoBox} role="dialog" aria-modal="true">
+          <div className={styles.infoBoxConquistas} role="dialog" aria-modal="true">
             <h2>Conquistas</h2>
             <p>Vença as batalhas estabelecidas para desbloqueá-los e usá-los no seu time.</p>
             <div className={styles.achGrid}>

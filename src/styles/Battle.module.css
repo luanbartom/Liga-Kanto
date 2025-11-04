@@ -14,15 +14,14 @@
 }
 
 .arena {
-  flex: 1;
-  width: 100%;
-  max-width: 130vh;
-  display: flex;
-  align-items: center;
-  /* centraliza verticalmente */
-  justify-content: space-between;
-  gap: 4vh;
-  margin: 0vh auto;
+      flex: 1 1;
+    width: 100%;
+    max-width: 130vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4vh;
+    margin: 0vh 0vh -4vh;
 }
 
 .enemySection,
@@ -98,7 +97,7 @@
   }
 
   30% {
-    transform: translateX(calc(-1 * var(--atkDist, 8vh))) translateY(-8vh) scale(1.25);
+    transform: translateX(calc(-1 * var(--atkDist, 0.8vh))) translateY(-0.8vh) scale(1.25);
   }
 
   100% {
@@ -112,7 +111,7 @@
   }
 
   30% {
-    transform: translateX(calc(-1 * var(--atkDist, 8vh))) translateY(-8vh) scale(1.25);
+    transform: translateX(calc(-1 * var(--atkDist, 0.8vh))) translateY(-0.8vh) scale(1.25);
   }
 
   100% {
@@ -637,16 +636,15 @@
 /* Confirm container above pokÃ©balls */
 .confirmSwap {
   position: absolute;
-  bottom: -0vh;
-  /* acima das pokÃ©bolas */
-  left: 180%;
+  bottom: -17vh;
+  left: 50%;
   transform: translateX(-50%);
   background: #ffffff;
   border: 0.5vh solid #373737;
   border-radius: 2vh;
   padding: 2vh 2vh;
   box-shadow: 0 2vh 2vh rgba(0, 0, 0, 0.623);
-  min-width: 24vh;
+  min-width: 23vh;
   z-index: 30;
 }
 
