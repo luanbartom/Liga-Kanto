@@ -1,3 +1,7 @@
+/*
+  Estilos da página Home: grid de treinadores, título/subtítulo e painel lateral.
+  Classes são usadas em src/pages/index.js
+*/
 /* Container principal */
 .container {
   position: relative;

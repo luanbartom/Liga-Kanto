@@ -1,3 +1,5 @@
+// Página inicial: permite escolher o(a) treinador(a) e definir o nome.
+// Salva as escolhas no localStorage e navega para a seleção de Pokémon.
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import styles from "@/styles/Home.module.css";
@@ -20,11 +22,14 @@ export default function Home() {
     };
   }, []);
 
+  // Lista de treinadores disponíveis (id + imagem)
   const trainers = [
     { id: 1, image: "/images/trainer1.png" },
     { id: 2, image: "/images/trainer2.png" },
   ];
 
+  // Prossegue para a próxima página quando houver um treinador escolhido
+  // e um nome válido preenchido. Persiste no localStorage.
   function handleContinue() {
     if (selectedTrainer && trainerName.trim() !== "") {
       try {

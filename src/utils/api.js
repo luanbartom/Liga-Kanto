@@ -3,6 +3,8 @@
  */
 let cachedPokedex = null;
 import { isBoss } from "./boss";
+// API local: lê dados de pokédex do arquivo em public/pokedex.json
+// e expõe helpers para listar pokémons, obter por id/nome e obter golpes.
 
 async function loadPokedex() {
   if (cachedPokedex) return cachedPokedex;
@@ -64,6 +66,7 @@ export async function getPokemon(nameOrId) {
 export async function getMove(nameOrId) {
   const pokedex = await loadPokedex();
   const key = String(nameOrId).toLowerCase();
+  // Procura pelo golpe percorrendo as entradas do pokedex.json
 
   for (const p of pokedex) {
     const move = (p.moves || []).find(

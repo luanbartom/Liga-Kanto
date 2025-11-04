@@ -69,3 +69,4 @@ body.bg-select-team *::-webkit-scrollbar {
 a { color: inherit; text-decoration: none; }
 
 @media (prefers-color-scheme: dark) { html { color-scheme: dark; } }
+/* Estilos globais mínimos; estilos de páginas estão em CSS Modules */

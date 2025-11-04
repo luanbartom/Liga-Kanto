@@ -9,9 +9,11 @@ import ConfirmButton from "@/components/ui/ConfirmButton";
 import AttackMenu from "@/components/ui/AttackMenu";
 
 // Cache simples para os detalhes de golpes (evita múltiplos fetches do mesmo golpe)
+// Cache simples para os detalhes de golpes (evita requisições repetidas durante a luta)
 const moveCache = new Map();
 
 export default function Battle() {
+  // Estado principal da batalha e controles de UI (menus, logs, animações)
   const [battle, setBattle] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -27,6 +29,7 @@ export default function Battle() {
   const [playerTrainerId, setPlayerTrainerId] = useState(1);
 
   // Ajustes de balanceamento (facilmente tunáveis)
+  // Parâmetros de balanceamento da batalha (fáceis de ajustar)
   const TUNING = {
     LEVEL: 30,
     HP_SCALE: 5, // 90% do HP vanilla para lutas mais dinâmicas
@@ -57,6 +60,7 @@ export default function Battle() {
   const [currentPartyIndex, setCurrentPartyIndex] = useState(0);
   
   // Auto-redirect to Select Pokemon after defeating the Boss
+  // Redireciona automaticamente para a seleção de Pokémon após vencer o Boss
   useEffect(() => {
     if (battle?.winner === "player" && (battle?.bossPhase || bossPhase)) {
       const t = setTimeout(() => {
@@ -67,6 +71,7 @@ export default function Battle() {
     }
   }, [battle?.winner, battle?.bossPhase, bossPhase]);
 
+  // Normaliza e resolve metadados de golpes (poder, precisão, tipo, efeitos)
   async function enrichMoves(moves) {
     // Normaliza golpes vindos como string (ex.: "tackle") ou objeto do pokedex.json
     const normalize = (raw) => {
@@ -180,6 +185,7 @@ export default function Battle() {
   }
 
   // Cálculo de dano
+  // Cálculo principal de dano por turno
   function calcDamage(attacker, defender, move) {
     const attackerIsBoss = !!(attacker && attacker.boss);
     const defenderIsBoss = !!(defender && defender.boss);
@@ -226,6 +232,7 @@ export default function Battle() {
   }
 
   const LEVEL = 30;
+  // Cálculo de HP máximo baseado em atributos base + nível
   function calcMaxHp(baseHp, level = LEVEL) {
     const iv = 15; // baseline de IV
     const ev = 0;  // sem EVs
@@ -241,6 +248,7 @@ export default function Battle() {
   const randIn = (range) =>
     Math.floor(Math.random() * (range[1] - range[0] + 1)) + range[0];
 
+  // Define condição de status (adormecido, congelado, etc.) com duração quando houver
   function setStatus(target, type, logs) {
     if (!type || type === "normal") return;
     if (target.condition && target.condition !== "normal") return;

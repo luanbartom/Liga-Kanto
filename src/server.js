@@ -1,3 +1,4 @@
+// Servidor Express opcional para APIs de Pokémon e Batalha (não requerido pelo Next.js)
 import express from "express";
 import cors from "cors";
 import pokemonRoutes from "./routes/pokemon.js";

@@ -13,6 +13,7 @@ function formatMoveName(mv) {
 }
 
 export default function SelectPokemon() {
+  // Estado local: lista de pokémons, filtros, seleção e modais de informação
   const TRAINER_ICONS = [
     '/icon/trainerIcon.png',
     '/icon/REDIcon.png',
@@ -37,6 +38,7 @@ export default function SelectPokemon() {
     try {
       document?.body?.classList?.add("bg-select-pokemon");
     } catch (e) {}
+    // Carrega preferências do(a) treinador(a) e dataset de pokémons
 
     const name = localStorage.getItem("trainerName") || "Treinador";
     setTrainerName(name);
@@ -69,6 +71,7 @@ export default function SelectPokemon() {
   useEffect(() => {}, [searchTerm, selectedType, evolutionStage]);
 
   const toggleSelect = (pokemon) => {
+    // Bloqueia seleção de Boss se não estiver desbloqueado
     if (pokemon?.boss && !unlockedBossIds.has(pokemon.id)) {
       setShowBossInfo(true);
       return;
@@ -93,12 +96,14 @@ export default function SelectPokemon() {
   };
 
   const hasAllEvolutionStages = () => {
+    // Verifica se a seleção cumpre a regra 1-2-3 estágios
     if (selected.length !== 3) return false;
     const stages = new Set(selected.map((p) => p.evolutionStage));
     return stages.has(1) && stages.has(2) && stages.has(3);
   };
 
   const confirmTeam = () => {
+    // Confirma o time e navega para seleção do inicial
     if (!hasAllEvolutionStages()) {
       const stages = new Set(selected.map((p) => p.evolutionStage));
       const missing = [1, 2, 3].filter((s) => !stages.has(s));

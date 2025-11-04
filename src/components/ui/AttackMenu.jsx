@@ -1,4 +1,5 @@
 "use client";
+// Menu de ataques com tooltip detalhada em portal (document.body)
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import styles from "./AttackMenu.module.css";
@@ -48,6 +49,7 @@ export default function AttackMenu({ moves = [], onSelect, attackerTypes = [], d
   };
   const onLeave = () => setHover({ show: false, mv: null, pos: { top: 0, left: 0 } });
 
+  // Tooltip posicionado próximo ao cursor usando portal
   const Tooltip = ({ children, top, left }) => {
     if (typeof document === "undefined") return null;
     return ReactDOM.createPortal(

@@ -1,3 +1,4 @@
+// Documento HTML customizado do Next.js: permite meta tags globais e body classes
 import { Html, Head, Main, NextScript } from "next/document";
 
 export default function Document() {

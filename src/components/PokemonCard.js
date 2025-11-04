@@ -1,6 +1,8 @@
+// Cartão simples para listar/selecionar um Pokémon com hover para animar sprite
 import styles from "./PokemonCard.module.css";
 
 export default function PokemonCard({ pokemon, selected, onSelect, hovered, setHovered }) {
+  // Ao passar o mouse, alterna sprite estática/animada
   return (
     <div
       className={`${styles.card} ${selected ? styles.selected : ""}`}

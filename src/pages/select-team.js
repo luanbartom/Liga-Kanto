@@ -10,6 +10,8 @@ function PokeThumb({ pokemon, selected = false, onClick, enemy = false }) {
   if (!pokemon) return null;
 
   const baseSize = 96;
+  // Define escala visual das sprites com base em altura e estágio de evolução
+  // para manter proporções coerentes na prévia (apenas visual).
 
   // Escala base a partir da altura (decímetros -> metros)
   let scale = Math.min(Math.max(pokemon.height / 12, 0.8), 2.2);
@@ -72,18 +74,21 @@ function PokeThumb({ pokemon, selected = false, onClick, enemy = false }) {
 
 
 export default function SelectTeam() {
+  // Estado local da tela: time selecionado, quem inicia e pré-visualização do time inimigo
   const [team, setTeam] = useState([]);
   const [starterIndex, setStarterIndex] = useState(null);
   const [enemyPreview, setEnemyPreview] = useState([]);
   const [trainerId, setTrainerId] = useState(1);
   const router = useRouter();
   const nextRound = (router?.query?.nextRound || "1").toString();
+  // nextRound controla quais inimigos são mostrados: rounds 1..4 e 'boss'
 
   useEffect(() => {
     if (!router.isReady) return;
     try {
       document?.body?.classList?.add("bg-select-team");
     } catch (e) { }
+    // Normaliza sprites (PNG estático e GIF animado locais) para os itens carregados
 
     const fixSprites = (arr = []) =>
       arr.map((p) =>
@@ -118,6 +123,7 @@ export default function SelectTeam() {
     (async () => {
       try {
         // Sempre gera um novo time inimigo, ignorando o salvo anteriormente
+        // Regras por round: escolhe somente evoluções finais e tipos permitidos
                 const ENEMIES = 3;
         const all = await getAllPokemons();
         let picks = [];
@@ -227,6 +233,7 @@ export default function SelectTeam() {
     };
   }, [router.isReady, router.query]);
 
+  // Inicia a batalha: persiste o índice inicial e navega para /battle
   const handleStartBattle = () => {
     if (team.length === 0) return alert("Selecione pelo menos 1 Pokémon!");
     if (starterIndex === null) return alert("Escolha com qual Pokémon iniciar!");

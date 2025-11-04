@@ -28,7 +28,8 @@ export function isBossName(name = "") {
 }
 
 export function isBoss(p) {
+  // Usa ID e nome para cobrir tanto checagem direta quanto alias
   if (!p) return false;
   return isBossId(p.id) || isBossName(p.name);
 }
-
+// Utilitários para detectar Pokémon Boss (lendários/míticos) por id ou nome

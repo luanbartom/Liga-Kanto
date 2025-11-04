@@ -95,3 +95,4 @@ export function moveLabel(move) {
 }
 
 export default { typeLabel, statusLabel, moveLabel, moveName };
+// Helpers de internacionalização simples: tipos e status em PT-BR

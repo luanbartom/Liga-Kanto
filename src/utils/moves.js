@@ -153,6 +153,7 @@ const statLabels = {
 };
 
 export function describeMove(mv) {
+  // Concatena informações legíveis sobre o golpe
   if (!mv) return "";
   const name = (mv.display || mv.name || "").toString();
   const type = (mv.type || "normal").toString();
@@ -211,6 +212,9 @@ const TYPE_CHART = {
 };
 
 export function typeMultiplier(moveType, defenderTypes) {
+  // Aplica multiplicadores sucessivos para cada tipo do defensor
   const def = defenderTypes || [];
   return def.reduce((acc, t) => acc * (TYPE_CHART[moveType]?.[t] ?? 1), 1);
 }
+// Utilitários relacionados a golpes: tabela de estágios (buff/debuff),
+// helpers para descrição e efetividade de tipos.
