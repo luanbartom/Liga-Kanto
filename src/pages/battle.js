@@ -386,7 +386,7 @@ export default function Battle() {
   }
 
 
-  // Build a fresh, battle-ready player from a team entry
+  // Cria um treinador pronto para a batalha com base na equipe escolhida.
   async function buildPlayerFrom(base) {
     if (!base) return null;
     let full = base;
