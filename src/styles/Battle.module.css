@@ -564,7 +564,7 @@
 
 .playerSection .switchRow {
   position: absolute;
-  left: 110%;
+  left: 115%;
   transform: translateX(-50%);
   bottom: 38.5vh;
   z-index: 20;

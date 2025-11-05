@@ -459,7 +459,7 @@
 /* Painel flutuante a direita (subtitulo + regra) */
 .infoPanel {
   position: fixed;
-  top: 0.5vh;
+  top: -0.2vh;
   right: -39vh;
   width: 36vh;
   padding: 1.2vh 1.6vh;
@@ -477,7 +477,7 @@
 
 .ruleHint {
   font-weight: 600;
-  font-size: 0.2rem;
+  font-size: 0.8rem;
 }
 
 @media (max-width: 124vh) {
@@ -576,6 +576,7 @@
 
 .achievementsBtn {
   margin-top: 1vh;
+  display: flex;
   background: #ffffff;
   border: 0.3vh solid #1ECD97;
   color: #1ECD97;
@@ -583,6 +584,11 @@
   border-radius: 1vh;
   padding: 0.4vh 0.8vh;
   cursor: pointer;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
 }
 
 .achievementsBtn:hover {
@@ -595,7 +601,7 @@
   background: #676767;
   color: #fff;
   border-radius: 999vh;
-  padding: 0.1vh 0.6vh;
+  padding: 0.2vh 0.4vh;
   font-size: 0.5rem;
 }
 /* Estilos da tela de seleção de Pokémon (filtros, grid e modais) */
