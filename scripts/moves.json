@@ -1,0 +1,3272 @@
+{
+  "normal": [
+    {
+      "name": "explosion",
+      "type": "normal",
+      "power": 250,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "User faints.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "pulverizing-pancake",
+      "type": "normal",
+      "power": 210,
+      "accuracy": null,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "self-destruct",
+      "type": "normal",
+      "power": 200,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "User faints.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "hyper-beam",
+      "type": "normal",
+      "power": 150,
+      "accuracy": 90,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "User foregoes its next turn to recharge.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "giga-impact",
+      "type": "normal",
+      "power": 150,
+      "accuracy": 90,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "User foregoes its next turn to recharge.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "last-resort",
+      "type": "normal",
+      "power": 140,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Can only be used after all of the user’s other moves have been used.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "boomburst",
+      "type": "normal",
+      "power": 140,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Inflicts regular damage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "blood-moon",
+      "type": "normal",
+      "power": 140,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": null,
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "skull-bash",
+      "type": "normal",
+      "power": 130,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Raises the user’s Defense by one stage.  User charges for one turn before attacking.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "mega-kick",
+      "type": "normal",
+      "power": 120,
+      "accuracy": 75,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    }
+  ],
+  "fire": [
+    {
+      "name": "v-create",
+      "type": "fire",
+      "power": 180,
+      "accuracy": 95,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Lowers the user’s Defense, Special Defense, and Speed by one stage each.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "eruption",
+      "type": "fire",
+      "power": 150,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Inflicts more damage when the user has more HP remaining, with a maximum of 150 power.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "blast-burn",
+      "type": "fire",
+      "power": 150,
+      "accuracy": 90,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "User foregoes its next turn to recharge.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "shell-trap",
+      "type": "fire",
+      "power": 150,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": -3,
+      "effect": "Only inflicts damage if the user was hit by a physical move this turn.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "mind-blown",
+      "type": "fire",
+      "power": 150,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Inflicts damage, and the user takes damage equal to half of its max HP, rounded up.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "overheat",
+      "type": "fire",
+      "power": 130,
+      "accuracy": 90,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Lowers the user’s Special Attack by two stages after inflicting damage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "blue-flare",
+      "type": "fire",
+      "power": 130,
+      "accuracy": 85,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has a 20% chance to burn the target.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "burn-up",
+      "type": "fire",
+      "power": 130,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Removes the user’s fire type after inflicting damage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "flare-blitz",
+      "type": "fire",
+      "power": 120,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "User takes 1/3 the damage inflicted in recoil.  Has a 10% chance to burn the target.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": -33,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "pyro-ball",
+      "type": "fire",
+      "power": 120,
+      "accuracy": 90,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Has a 10% chance to burn the target.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    }
+  ],
+  "water": [
+    {
+      "name": "oceanic-operetta",
+      "type": "water",
+      "power": 195,
+      "accuracy": null,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "hydro-cannon",
+      "type": "water",
+      "power": 150,
+      "accuracy": 90,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "User foregoes its next turn to recharge.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "water-spout",
+      "type": "water",
+      "power": 150,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Inflicts more damage when the user has more HP remaining, with a maximum of 150 power.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "wave-crash",
+      "type": "water",
+      "power": 120,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": null,
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "hydro-pump",
+      "type": "water",
+      "power": 110,
+      "accuracy": 80,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "steam-eruption",
+      "type": "water",
+      "power": 110,
+      "accuracy": 95,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has a 30% chance to burn the target.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "origin-pulse",
+      "type": "water",
+      "power": 110,
+      "accuracy": 85,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "crabhammer",
+      "type": "water",
+      "power": 100,
+      "accuracy": 90,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Has an increased chance for a critical hit.",
+      "meta": {
+        "crit_rate": 1,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "surf",
+      "type": "water",
+      "power": 90,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Inflicts regular damage and can hit Dive users.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "muddy-water",
+      "type": "water",
+      "power": 90,
+      "accuracy": 85,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has a 30% chance to lower the target’s accuracy by one stage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    }
+  ],
+  "electric": [
+    {
+      "name": "catastropika",
+      "type": "electric",
+      "power": 210,
+      "accuracy": null,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "10-000-000-volt-thunderbolt",
+      "type": "electric",
+      "power": 195,
+      "accuracy": null,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 2,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "stoked-sparksurfer",
+      "type": "electric",
+      "power": 175,
+      "accuracy": null,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has a 100% chance to paralyze the target.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "bolt-strike",
+      "type": "electric",
+      "power": 130,
+      "accuracy": 85,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Has a 20% chance to paralyze the target.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "electro-shot",
+      "type": "electric",
+      "power": 130,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": null,
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "zap-cannon",
+      "type": "electric",
+      "power": 120,
+      "accuracy": 50,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has a 100% chance to paralyze the target.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "volt-tackle",
+      "type": "electric",
+      "power": 120,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "User takes 1/3 the damage inflicted in recoil.  Has a 10% chance to paralyze the target.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": -33,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "double-shock",
+      "type": "electric",
+      "power": 120,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": null,
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "thunder",
+      "type": "electric",
+      "power": 110,
+      "accuracy": 70,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has a 30% chance to paralyze the target.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "aura-wheel",
+      "type": "electric",
+      "power": 110,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": null,
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    }
+  ],
+  "grass": [
+    {
+      "name": "frenzy-plant",
+      "type": "grass",
+      "power": 150,
+      "accuracy": 90,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "User foregoes its next turn to recharge.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "chloroblast",
+      "type": "grass",
+      "power": 150,
+      "accuracy": 95,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": null,
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "leaf-storm",
+      "type": "grass",
+      "power": 130,
+      "accuracy": 90,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Lowers the user’s Special Attack by two stages after inflicting damage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "solar-blade",
+      "type": "grass",
+      "power": 125,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Requires a turn to charge before attacking.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "solar-beam",
+      "type": "grass",
+      "power": 120,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Requires a turn to charge before attacking.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "petal-dance",
+      "type": "grass",
+      "power": 120,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Hits every turn for 2-3 turns, then confuses the user.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "power-whip",
+      "type": "grass",
+      "power": 120,
+      "accuracy": 85,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "wood-hammer",
+      "type": "grass",
+      "power": 120,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "User receives 1/3 the damage inflicted in recoil.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": -33,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "seed-flare",
+      "type": "grass",
+      "power": 120,
+      "accuracy": 85,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has a 40% chance to lower the target’s Special Defense by two stages.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "sappy-seed",
+      "type": "grass",
+      "power": 100,
+      "accuracy": 90,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    }
+  ],
+  "ice": [
+    {
+      "name": "freeze-shock",
+      "type": "ice",
+      "power": 140,
+      "accuracy": 90,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Requires a turn to charge before attacking.  Has a 30% chance to paralyze the target.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "ice-burn",
+      "type": "ice",
+      "power": 140,
+      "accuracy": 90,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Requires a turn to charge before attacking.  Has a 30% chance to burn the target.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "glacial-lance",
+      "type": "ice",
+      "power": 120,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "blizzard",
+      "type": "ice",
+      "power": 110,
+      "accuracy": 70,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has a 10% chance to freeze the target.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "ice-hammer",
+      "type": "ice",
+      "power": 100,
+      "accuracy": 90,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Lowers user’s Speed by one stage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "freezy-frost",
+      "type": "ice",
+      "power": 100,
+      "accuracy": 90,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "mountain-gale",
+      "type": "ice",
+      "power": 100,
+      "accuracy": 85,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": null,
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "ice-beam",
+      "type": "ice",
+      "power": 90,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has a 10% chance to freeze the target.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "icicle-crash",
+      "type": "ice",
+      "power": 85,
+      "accuracy": 90,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Has a 30% chance to make the target flinch.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "ice-spinner",
+      "type": "ice",
+      "power": 80,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": null,
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    }
+  ],
+  "fighting": [
+    {
+      "name": "focus-punch",
+      "type": "fighting",
+      "power": 150,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": -3,
+      "effect": "If the user takes damage before attacking, the attack is canceled.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "meteor-assault",
+      "type": "fighting",
+      "power": 150,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "User foregoes its next turn to recharge.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "high-jump-kick",
+      "type": "fighting",
+      "power": 130,
+      "accuracy": 90,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "If the user misses, it takes half the damage it would have inflicted in recoil.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "superpower",
+      "type": "fighting",
+      "power": 120,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Lowers the user’s Attack and Defense by one stage after inflicting damage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "close-combat",
+      "type": "fighting",
+      "power": 120,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Lowers the user’s Defense and Special Defense by one stage after inflicting damage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "focus-blast",
+      "type": "fighting",
+      "power": 120,
+      "accuracy": 70,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has a 10% chance to lower the target’s Special Defense by one stage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "axe-kick",
+      "type": "fighting",
+      "power": 120,
+      "accuracy": 90,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": null,
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "jump-kick",
+      "type": "fighting",
+      "power": 100,
+      "accuracy": 95,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "If the user misses, it takes half the damage it would have inflicted in recoil.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "dynamic-punch",
+      "type": "fighting",
+      "power": 100,
+      "accuracy": 50,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Has a 100% chance to confuse the target.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "cross-chop",
+      "type": "fighting",
+      "power": 100,
+      "accuracy": 80,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Has an increased chance for a critical hit.",
+      "meta": {
+        "crit_rate": 1,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    }
+  ],
+  "poison": [
+    {
+      "name": "gunk-shot",
+      "type": "poison",
+      "power": 120,
+      "accuracy": 80,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Has a 30% chance to poison the target.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "belch",
+      "type": "poison",
+      "power": 120,
+      "accuracy": 90,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Can only be used after the user has eaten a berry.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "noxious-torque",
+      "type": "poison",
+      "power": 100,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": null,
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "malignant-chain",
+      "type": "poison",
+      "power": 100,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": null,
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "sludge-wave",
+      "type": "poison",
+      "power": 95,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has a 10% chance to poison the target.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "sludge-bomb",
+      "type": "poison",
+      "power": 90,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has a 30% chance to poison the target.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "shell-side-arm",
+      "type": "poison",
+      "power": 90,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "poison-jab",
+      "type": "poison",
+      "power": 80,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Has a 30% chance to poison the target.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "dire-claw",
+      "type": "poison",
+      "power": 80,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": null,
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "cross-poison",
+      "type": "poison",
+      "power": 70,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Has an increased chance for a critical hit and a 10% chance to poison the target.",
+      "meta": {
+        "crit_rate": 1,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    }
+  ],
+  "ground": [
+    {
+      "name": "precipice-blades",
+      "type": "ground",
+      "power": 120,
+      "accuracy": 85,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "headlong-rush",
+      "type": "ground",
+      "power": 120,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": null,
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "earthquake",
+      "type": "ground",
+      "power": 100,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Inflicts regular damage and can hit Dig users.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "sandsear-storm",
+      "type": "ground",
+      "power": 100,
+      "accuracy": 80,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": null,
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "high-horsepower",
+      "type": "ground",
+      "power": 95,
+      "accuracy": 95,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "earth-power",
+      "type": "ground",
+      "power": 90,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has a 10% chance to lower the target’s Special Defense by one stage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "thousand-arrows",
+      "type": "ground",
+      "power": 90,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Grounds the target, and hits even Flying-type or levitating Pokémon.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "thousand-waves",
+      "type": "ground",
+      "power": 90,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Prevents the target from leaving battle.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "lands-wrath",
+      "type": "ground",
+      "power": 90,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "dig",
+      "type": "ground",
+      "power": 80,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "User digs underground, dodging all attacks, and hits next turn.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    }
+  ],
+  "flying": [
+    {
+      "name": "sky-attack",
+      "type": "flying",
+      "power": 140,
+      "accuracy": 90,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "User charges for one turn before attacking.  Has a 30% chance to make the target flinch.",
+      "meta": {
+        "crit_rate": 1,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "brave-bird",
+      "type": "flying",
+      "power": 120,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "User receives 1/3 the damage inflicted in recoil.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": -33,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "dragon-ascent",
+      "type": "flying",
+      "power": 120,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Lowers the user’s Defense and Special Defense by one stage after inflicting damage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "hurricane",
+      "type": "flying",
+      "power": 110,
+      "accuracy": 70,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has a 30% chance to confuse the target.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "aeroblast",
+      "type": "flying",
+      "power": 100,
+      "accuracy": 95,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has an increased chance for a critical hit.",
+      "meta": {
+        "crit_rate": 1,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "beak-blast",
+      "type": "flying",
+      "power": 100,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": -3,
+      "effect": "Inflicts a burn on any Pokémon that makes contact before the attack.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "bleakwind-storm",
+      "type": "flying",
+      "power": 100,
+      "accuracy": 80,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": null,
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "fly",
+      "type": "flying",
+      "power": 90,
+      "accuracy": 95,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "User flies high into the air, dodging all attacks, and hits next turn.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "floaty-fall",
+      "type": "flying",
+      "power": 90,
+      "accuracy": 95,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "bounce",
+      "type": "flying",
+      "power": 85,
+      "accuracy": 85,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "User bounces high into the air, dodging all attacks, and hits next turn.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    }
+  ],
+  "psychic": [
+    {
+      "name": "light-that-burns-the-sky",
+      "type": "psychic",
+      "power": 200,
+      "accuracy": null,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Inflicts damage using either Attack or Special Attack stat, whichever is higher.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "genesis-supernova",
+      "type": "psychic",
+      "power": 185,
+      "accuracy": null,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Changes the terrain to Psychic Terrain after inflicting damage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "prismatic-laser",
+      "type": "psychic",
+      "power": 160,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "User foregoes its next turn to recharge.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "psycho-boost",
+      "type": "psychic",
+      "power": 140,
+      "accuracy": 90,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Lowers the user’s Special Attack by two stages after inflicting damage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "future-sight",
+      "type": "psychic",
+      "power": 120,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Hits the target two turns later.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "synchronoise",
+      "type": "psychic",
+      "power": 120,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Hits any Pokémon that shares a type with the user.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "dream-eater",
+      "type": "psychic",
+      "power": 100,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Only works on sleeping Pokémon.  Drains half the damage inflicted to heal the user.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 50,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "psystrike",
+      "type": "psychic",
+      "power": 100,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Inflicts damage based on the target’s Defense, not Special Defense.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "photon-geyser",
+      "type": "psychic",
+      "power": 100,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "luster-purge",
+      "type": "psychic",
+      "power": 95,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has a 50% chance to lower the target’s Special Defense by one stage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    }
+  ],
+  "bug": [
+    {
+      "name": "megahorn",
+      "type": "bug",
+      "power": 120,
+      "accuracy": 85,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "bug-buzz",
+      "type": "bug",
+      "power": 90,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has a 10% chance to lower the target’s Special Defense by one stage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "attack-order",
+      "type": "bug",
+      "power": 90,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Has an increased chance for a critical hit.",
+      "meta": {
+        "crit_rate": 1,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "first-impression",
+      "type": "bug",
+      "power": 90,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 2,
+      "effect": "Can only be used as the first move after the user enters battle.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "pollen-puff",
+      "type": "bug",
+      "power": 90,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Damages opponents, but heals allies for 50% of their max HP.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "leech-life",
+      "type": "bug",
+      "power": 80,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Drains half the damage inflicted to heal the user.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 50,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "x-scissor",
+      "type": "bug",
+      "power": 80,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "lunge",
+      "type": "bug",
+      "power": 80,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Lowers the target’s Attack by one stage after inflicting damage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "signal-beam",
+      "type": "bug",
+      "power": 75,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has a 10% chance to confuse the target.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "u-turn",
+      "type": "bug",
+      "power": 70,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "User must switch out after attacking.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    }
+  ],
+  "rock": [
+    {
+      "name": "splintered-stormshards",
+      "type": "rock",
+      "power": 190,
+      "accuracy": null,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Inflicts damage and removes any terrain present on the battlefield.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "rock-wrecker",
+      "type": "rock",
+      "power": 150,
+      "accuracy": 90,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "User foregoes its next turn to recharge.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "head-smash",
+      "type": "rock",
+      "power": 150,
+      "accuracy": 80,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "User receives 1/2 the damage inflicted in recoil.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": -50,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "meteor-beam",
+      "type": "rock",
+      "power": 120,
+      "accuracy": 90,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "stone-edge",
+      "type": "rock",
+      "power": 100,
+      "accuracy": 80,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Has an increased chance for a critical hit.",
+      "meta": {
+        "crit_rate": 1,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "diamond-storm",
+      "type": "rock",
+      "power": 100,
+      "accuracy": 95,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Has a 50% chance to raise the user’s Defense by two stages for each target hit.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "mighty-cleave",
+      "type": "rock",
+      "power": 95,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": null,
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "power-gem",
+      "type": "rock",
+      "power": 80,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "rock-slide",
+      "type": "rock",
+      "power": 75,
+      "accuracy": 90,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Has a 30% chance to make the target flinch.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "stone-axe",
+      "type": "rock",
+      "power": 65,
+      "accuracy": 90,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": null,
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    }
+  ],
+  "ghost": [
+    {
+      "name": "menacing-moonraze-maelstrom",
+      "type": "ghost",
+      "power": 200,
+      "accuracy": null,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Cannot be disrupted by abilities.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "soul-stealing-7-star-strike",
+      "type": "ghost",
+      "power": 195,
+      "accuracy": null,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "sinister-arrow-raid",
+      "type": "ghost",
+      "power": 180,
+      "accuracy": null,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "shadow-force",
+      "type": "ghost",
+      "power": 120,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "User vanishes, dodging all attacks, and hits next turn.  Hits through Protect and Detect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "astral-barrage",
+      "type": "ghost",
+      "power": 120,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "poltergeist",
+      "type": "ghost",
+      "power": 110,
+      "accuracy": 90,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "moongeist-beam",
+      "type": "ghost",
+      "power": 100,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Cannot be disrupted by abilities.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "phantom-force",
+      "type": "ghost",
+      "power": 90,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "User vanishes, dodging all attacks, and hits next turn.  Hits through Protect and Detect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "spectral-thief",
+      "type": "ghost",
+      "power": 90,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Steals the target’s stat increases, then inflicts damage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "shadow-bone",
+      "type": "ghost",
+      "power": 85,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Has a 20% chance to lower the target’s Defense by one stage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    }
+  ],
+  "dragon": [
+    {
+      "name": "clangorous-soulblaze",
+      "type": "dragon",
+      "power": 185,
+      "accuracy": null,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Inflicts damage to all opposing Pokémon and increases the user’s Attack, Defense, Special Attack, Special Defense, and Speed by one stage each.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "eternabeam",
+      "type": "dragon",
+      "power": 160,
+      "accuracy": 90,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "User foregoes its next turn to recharge.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "roar-of-time",
+      "type": "dragon",
+      "power": 150,
+      "accuracy": 90,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "User foregoes its next turn to recharge.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "dragon-energy",
+      "type": "dragon",
+      "power": 150,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "draco-meteor",
+      "type": "dragon",
+      "power": 130,
+      "accuracy": 90,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Lowers the user’s Special Attack by two stages after inflicting damage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "outrage",
+      "type": "dragon",
+      "power": 120,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Hits every turn for 2-3 turns, then confuses the user.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "glaive-rush",
+      "type": "dragon",
+      "power": 120,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": null,
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "clanging-scales",
+      "type": "dragon",
+      "power": 110,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Lowers the user’s Defense by one stage after inflicting damage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "dragon-rush",
+      "type": "dragon",
+      "power": 100,
+      "accuracy": 75,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Has a 20% chance to make the target flinch.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "spacial-rend",
+      "type": "dragon",
+      "power": 100,
+      "accuracy": 95,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has an increased chance for a critical hit.",
+      "meta": {
+        "crit_rate": 1,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    }
+  ],
+  "dark": [
+    {
+      "name": "malicious-moonsault",
+      "type": "dark",
+      "power": 180,
+      "accuracy": null,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "hyperspace-fury",
+      "type": "dark",
+      "power": 100,
+      "accuracy": null,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Ignores and destroys protection effects.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "foul-play",
+      "type": "dark",
+      "power": 95,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Calculates damage with the target’s attacking stat.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "fiery-wrath",
+      "type": "dark",
+      "power": 90,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "night-daze",
+      "type": "dark",
+      "power": 85,
+      "accuracy": 95,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has a 40% chance to lower the target’s accuracy by one stage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "darkest-lariat",
+      "type": "dark",
+      "power": 85,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Ignores the target’s stat modifiers.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "kowtow-cleave",
+      "type": "dark",
+      "power": 85,
+      "accuracy": null,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": null,
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "crunch",
+      "type": "dark",
+      "power": 80,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Has a 20% chance to lower the target’s Defense by one stage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "dark-pulse",
+      "type": "dark",
+      "power": 80,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has a 20% chance to make the target flinch.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "throat-chop",
+      "type": "dark",
+      "power": 80,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Prevents the target from using sound-based moves for two turns.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    }
+  ],
+  "steel": [
+    {
+      "name": "searing-sunraze-smash",
+      "type": "steel",
+      "power": 200,
+      "accuracy": null,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Cannot be disrupted by abilities.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "gigaton-hammer",
+      "type": "steel",
+      "power": 160,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": null,
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "doom-desire",
+      "type": "steel",
+      "power": 140,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Hits the target two turns later.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "steel-beam",
+      "type": "steel",
+      "power": 140,
+      "accuracy": 95,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Inflicts damage, and the user takes damage equal to half of its max HP, rounded up.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "steel-roller",
+      "type": "steel",
+      "power": 130,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "make-it-rain",
+      "type": "steel",
+      "power": 120,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": null,
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "iron-tail",
+      "type": "steel",
+      "power": 100,
+      "accuracy": 75,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Has a 30% chance to lower the target’s Defense by one stage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "sunsteel-strike",
+      "type": "steel",
+      "power": 100,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Cannot be disrupted by abilities.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "behemoth-blade",
+      "type": "steel",
+      "power": 100,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": null,
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "behemoth-bash",
+      "type": "steel",
+      "power": 100,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": null,
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    }
+  ],
+  "fairy": [
+    {
+      "name": "lets-snuggle-forever",
+      "type": "fairy",
+      "power": 190,
+      "accuracy": null,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "light-of-ruin",
+      "type": "fairy",
+      "power": 140,
+      "accuracy": 90,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "User receives 1/2 the damage inflicted in recoil.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": -50,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "fleur-cannon",
+      "type": "fairy",
+      "power": 130,
+      "accuracy": 90,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Lowers the user’s Special Attack by two stages after inflicting damage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "sparkly-swirl",
+      "type": "fairy",
+      "power": 120,
+      "accuracy": 85,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "misty-explosion",
+      "type": "fairy",
+      "power": 100,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "springtide-storm",
+      "type": "fairy",
+      "power": 100,
+      "accuracy": 80,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": null,
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "magical-torque",
+      "type": "fairy",
+      "power": 100,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": null,
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "moonblast",
+      "type": "fairy",
+      "power": 95,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has a 30% chance to lower the target’s Special Attack by one stage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "play-rough",
+      "type": "fairy",
+      "power": 90,
+      "accuracy": 90,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Has a 10% chance to lower the target’s Attack by one stage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "strange-steam",
+      "type": "fairy",
+      "power": 90,
+      "accuracy": 95,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has a 20% chance to confuse the target.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    }
+  ],
+  "signature": [
+    {
+      "name": "frenzy-plant",
+      "type": "grass",
+      "power": 150,
+      "accuracy": 90,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "User foregoes its next turn to recharge.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "blast-burn",
+      "type": "fire",
+      "power": 150,
+      "accuracy": 90,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "User foregoes its next turn to recharge.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "hydro-cannon",
+      "type": "water",
+      "power": 150,
+      "accuracy": 90,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "User foregoes its next turn to recharge.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "v-create",
+      "type": "fire",
+      "power": 180,
+      "accuracy": 95,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Lowers the user’s Defense, Special Defense, and Speed by one stage each.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "blue-flare",
+      "type": "fire",
+      "power": 130,
+      "accuracy": 85,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has a 20% chance to burn the target.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "fusion-bolt",
+      "type": "electric",
+      "power": 100,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "With Fusion Flare, inflicts double damage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "fusion-flare",
+      "type": "fire",
+      "power": 100,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "With Fusion Bolt, inflicts double damage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "bolt-strike",
+      "type": "electric",
+      "power": 130,
+      "accuracy": 85,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Has a 20% chance to paralyze the target.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "doom-desire",
+      "type": "steel",
+      "power": 140,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Hits the target two turns later.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "psystrike",
+      "type": "psychic",
+      "power": 100,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Inflicts damage based on the target’s Defense, not Special Defense.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "origin-pulse",
+      "type": "water",
+      "power": 110,
+      "accuracy": 85,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "precipice-blades",
+      "type": "ground",
+      "power": 120,
+      "accuracy": 85,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Inflicts regular damage with no additional effect.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "dragon-ascent",
+      "type": "flying",
+      "power": 120,
+      "accuracy": 100,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Lowers the user’s Defense and Special Defense by one stage after inflicting damage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "sacred-fire",
+      "type": "fire",
+      "power": 100,
+      "accuracy": 95,
+      "damage_class": "physical",
+      "priority": 0,
+      "effect": "Has a 50% chance to burn the target.  Lets frozen Pokémon thaw themselves.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "aeroblast",
+      "type": "flying",
+      "power": 100,
+      "accuracy": 95,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has an increased chance for a critical hit.",
+      "meta": {
+        "crit_rate": 1,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "luster-purge",
+      "type": "psychic",
+      "power": 95,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has a 50% chance to lower the target’s Special Defense by one stage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "mist-ball",
+      "type": "psychic",
+      "power": 95,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has a 50% chance to lower the target’s Special Attack by one stage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "roar-of-time",
+      "type": "dragon",
+      "power": 150,
+      "accuracy": 90,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "User foregoes its next turn to recharge.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "spacial-rend",
+      "type": "dragon",
+      "power": 100,
+      "accuracy": 95,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has an increased chance for a critical hit.",
+      "meta": {
+        "crit_rate": 1,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "seed-flare",
+      "type": "grass",
+      "power": 120,
+      "accuracy": 85,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Has a 40% chance to lower the target’s Special Defense by two stages.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "judgment",
+      "type": "normal",
+      "power": 100,
+      "accuracy": 100,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "If the user is holding a appropriate plate or drive, the damage inflicted will match it.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    },
+    {
+      "name": "psycho-boost",
+      "type": "psychic",
+      "power": 140,
+      "accuracy": 90,
+      "damage_class": "special",
+      "priority": 0,
+      "effect": "Lowers the user’s Special Attack by two stages after inflicting damage.",
+      "meta": {
+        "crit_rate": 0,
+        "drain": 0,
+        "healing": 0,
+        "min_hits": null,
+        "max_hits": null
+      }
+    }
+  ]
+}

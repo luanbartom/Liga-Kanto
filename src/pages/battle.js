@@ -31,23 +31,23 @@ export default function Battle() {
   // Ajustes de balanceamento (facilmente tunáveis)
   // Parâmetros de balanceamento da batalha (fáceis de ajustar)
   const TUNING = {
-    LEVEL: 30,
-    HP_SCALE: 5, // 90% do HP vanilla para lutas mais dinâmicas
-    STAB: 1.35, // bônus por golpe do mesmo tipo
-    CRIT_RATE: 0.1, // 10% de chance de crítico
-    CRIT_MULT: 1.5, // crítico aumenta dano em 50%
-    RAND_MIN: 0.9, // variação aleatória do dano
-    RAND_MAX: 1.1,
-    CAP_SUPER: 2.0, // limite para super efetivo
-    FLOOR_RESIST: 0.5, // mínimo para pouco efetivo
+    LEVEL: 50,
+    HP_SCALE: 5, // 90% do HP para lutas mais dinâmicas
+    STAB: 1.85, // bônus por golpe do mesmo tipo
+    CRIT_RATE: 0.5, // 10% de chance de crítico
+    CRIT_MULT: 2.5, // crítico aumenta dano em 50%
+    RAND_MIN: 0.1, // variação aleatória do dano
+    RAND_MAX: 0.3,
+    CAP_SUPER: 2.8, // limite para super efetivo
+    FLOOR_RESIST: 0.9, // mínimo para pouco efetivo
     HONOR_IMMUNITIES: true, // manter imunidades (normal->ghost etc.)
     // Buff leve para o jogador
-    PLAYER_ATK_MULT: 1.2,
+    PLAYER_ATK_MULT: 2.9,
     // Boss tuning
-    BOSS_LEVEL: 48, // nível efetivo para Boss
-    BOSS_ATK_MULT: 1.4, // Boss causa mais dano
-    BOSS_DEF_MULT: 1.35, // Boss recebe menos dano
-    BOSS_HP_MULT: 1.45, // Boss tem mais HP
+    BOSS_LEVEL: 100, // nível efetivo para Boss
+    BOSS_ATK_MULT: 3.4, // Boss causa mais dano
+    BOSS_DEF_MULT: 1.85, // Boss recebe menos dano
+    BOSS_HP_MULT: 1.95, // Boss tem mais HP
   };
 
   const ATTACK_GAP_MS = 3200; // intervalo maior para separar turnos
@@ -243,7 +243,7 @@ export default function Battle() {
     return Math.max(1, Math.floor(vanilla * TUNING.HP_SCALE));
   }
 
-  // --- Status helpers (persist/decay) ---
+  // --- Status helpers (persistencia/decaimento) ---
   const STATUS_DURATIONS = { asleep: [2, 3], frozen: [2, 3] };
   const randIn = (range) =>
     Math.floor(Math.random() * (range[1] - range[0] + 1)) + range[0];

@@ -767,7 +767,7 @@
 
 .victoryBox {
   background: linear-gradient(135deg, #f9f9f9, #d1ffd8);
-  border: 1.5vh solid #3d3d3dc8;
+  border: 0.5vh solid #ffd000c8;
   border-radius: 2vh;
   box-shadow: 1vh 1vh 5vh rgb(251, 255, 0);
   text-align: center;
@@ -779,8 +779,8 @@
 
 .victoryBox h2 {
   font-size: 2rem;
-  color: #ffee01;
-  text-shadow: 1vh 1vh 0vh #c1ae00;
+  color: #b3940e;
+  text-shadow: 1vh 1vh 1vh #c1ae00;
   margin-bottom: 1vh;
 }
 
