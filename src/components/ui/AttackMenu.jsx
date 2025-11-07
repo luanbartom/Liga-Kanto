@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import styles from "./AttackMenu.module.css";
-import { typeLabel, moveName } from "@/utils/i18n";
+import { moveName } from "@/utils/i18n";
 import { describeMove, STAGE_MOVES, typeMultiplier } from "@/utils/moves";
 
 // Lista de ataques com tooltip detalhado ao passar o mouse
@@ -22,7 +22,12 @@ export default function AttackMenu({ moves = [], onSelect, attackerTypes = [], d
     ...groups.unknown,
   ];
 
-  const tLabel = (t) => typeLabel(t || "");
+  // Mostrar o tipo sem tradução (rótulo simples em inglês)
+  const tLabel = (t) => {
+    const raw = (t || "").toString();
+    if (!raw) return "";
+    return raw.charAt(0).toUpperCase() + raw.slice(1);
+  };
   const [hover, setHover] = useState({ show: false, mv: null, pos: { top: 0, left: 0 } });
 
   const onEnter = (ev, mv) => {
@@ -73,9 +78,9 @@ export default function AttackMenu({ moves = [], onSelect, attackerTypes = [], d
           >
             <div className={styles.itemLine}>
               <span className={styles.itemName}>{String(moveName(mv) || "")}</span>
-              <span className={`${styles.badge} ${styles[mv.type] || ""}`}>
-                {tLabel(mv.type || "normal")}
-              </span>
+            <span className={`${styles.badge} ${styles[mv.type] || ""}`}>
+              {tLabel(mv.type || "normal")}
+            </span>
             </div>
           </button>
         ))}

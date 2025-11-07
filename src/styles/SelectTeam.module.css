@@ -55,14 +55,14 @@
 .trainer {
   width: clamp(20vh, 18vh, 22vh);
   height: clamp(20vh, 18vh, 22vh);
-  object-fit: contain; /* evita cortar cabeça/pés */
-  object-position: center bottom; /* ancora nos pés */
+  object-fit: contain;
+  object-position: center bottom;
   image-rendering: pixelated;
-  filter: drop-shadow(0 0.2vh 0.2vh rgba(0, 0, 0, .15));
+  filter: drop-shadow(0 0.2vh 0.2vh rgba(0, 0, 0, 0.15));
   z-index: 10;
 }
 
-/* Ajuste de escala para o treinador 2, que tem sprite maior */
+/* Ajuste de escala para o treinador 2 */
 .trainerAdjust {
   transform: translateY(1.2vh) scale(1.12);
   transform-origin: center bottom;
@@ -73,18 +73,18 @@
   background-color: #ffffffca;
   border: 0.3vh solid #404040;
   border-radius: 3vh;
-  max-width: 195vh;
-  padding: 2vh 3vh;
+  max-width: 230vh;
+  padding: 7vh 7vh;
   box-shadow: 0 0.8vh 2.4vh #0000001f;
   overflow: visible;
   position: relative;
-  top: -4vh;
-  animation: fadeSlideUp 0.6s ease-out both;
+  animation: SelectTeam_SelectTeam_fadeSlideUp__qX1X8__mymwJ 0.6s ease-out both;
 }
 
 .panel h1 {
-  font-size: clamp(1.25rem, 2.5vw + 0.5rem, 2.75rem);
-  margin-bottom: 1rem;
+  font-size: clamp(1.25rem, 2.5vw + 0.5rem, 2.25rem);
+  margin-bottom: 3rem;
+  margin-top: -5vh;
   opacity: 0;
   animation: fadeSlideUp 0.8s 0.2s ease-out forwards;
 }
@@ -100,10 +100,10 @@
 
 .teamSide {
   display: flex;
-  align-items: end;
+  flex-direction: row;
+  align-items: flex-end;
   justify-content: center;
-  gap: 1.6vh;
-  flex-wrap: wrap;
+  gap: 4vh;
   opacity: 0;
   animation: fadeSlideUp 0.8s 0.3s ease-out forwards;
 }
@@ -117,14 +117,13 @@
 /* ======== LINEUP ======== */
 .lineup {
   display: flex;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: baseline;
-  gap: 1vh;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8vh;
   height: 54vh;
-  padding: 18vh 7vw 0;
-  overflow-x: auto;
-  overflow-y: visible;
+  padding: 6vh 4vw;
+  overflow: visible;
   position: relative;
   z-index: 5;
   max-width: 100%;
@@ -137,7 +136,12 @@
   display: none;
 }
 
-.lineup .pokeThumb+.pokeThumb {
+.teamSide .pokeThumb+.pokeThumb {
+  margin-left: 6vh;
+}
+
+/* Espaço entre o treinador e o primeiro pokémon da fila */
+.teamSide .trainer+.pokeThumb {
   margin-left: 6vh;
 }
 
@@ -200,12 +204,11 @@
   filter: drop-shadow(0 0 0.8vh #cdbc1e) drop-shadow(0 0 1.6vh #cdc41eaa);
 }
 
-
 .spriteSelected {
   filter: drop-shadow(0 0 0.8vh #cdbc1e) drop-shadow(0 0 1.6vh #cdc41eaa);
 }
 
-/* Meta do Pokémon (nome + tipos) */
+/* Meta do Pokémon */
 .pokeMeta {
   display: flex;
   flex-direction: column;
@@ -214,21 +217,18 @@
 }
 
 .pokeName {
-  /* Cores inspiradas na logo Pokémon */
-  color: #ffcb05; /* amarelo vivo */
+  color: #ffcb05;
   font-weight: 800;
   font-size: clamp(1rem, 1.4vh, 2vh);
   line-height: 1.1;
   text-transform: capitalize;
-  letter-spacing: 0.09em; /* mais espaço entre letras */
-  /* Borda mais grossa (fallback + stroke) */
+  letter-spacing: 0.09em;
   -webkit-text-stroke: 0.1vh #183755;
-  font-family: Impact, "Arial Black", "Segoe UI Black", "Helvetica Neue", Poppins, sans-serif;
-  text-shadow: 0 0 0.8vh rgba(0,0,0,.35);
-  /* Aumenta a largura visual da fonte */
+  font-family: Impact, "Arial Black", Poppins, sans-serif;
+  text-shadow: 0 0 0.8vh rgba(0, 0, 0, 0.35);
   display: inline-block;
-  font-stretch: expanded; /* suportado por alguns navegadores */
-  transform: scaleX(1.30);
+  font-stretch: expanded;
+  transform: scaleX(1.3);
   transform-origin: center;
 }
 
@@ -247,17 +247,15 @@
 
 /* ===== VS ===== */
 .vs {
-  /* Absolute overlay centered relative to the lineup */
-  position:fixed;
-  left: 49%;
-  top: 50%;
+  position: fixed;
+  left: 55%;
+  top: 40%;
   transform: translate(-50%, -50%);
   font-size: 0;
-  /* hide original text */
   line-height: 0;
   pointer-events: none;
-  z-index: 1;
-  rotate: -12deg;
+  z-index: -20;
+  rotate: -22deg;
 }
 
 .vs::after {
@@ -268,125 +266,109 @@
   font-weight: 900;
   letter-spacing: 0.02em;
   color: #313131;
-  text-shadow: 0 0.4vh 1.6vh rgba(0, 0, 0, .35), 0 0 3.2vh rgba(30, 205, 151, .35);
+  text-shadow: 0 0.4vh 1.6vh rgba(0, 0, 0, 0.35),
+    0 0 3.2vh rgba(30, 205, 151, 0.35);
   opacity: 0.82;
   white-space: nowrap;
   user-select: none;
   animation: fadeVs 0.6s 0.6s ease-out both;
 }
 
-/* Rotulagem de tipos (estilo mais "Pokémon") */
+/* ===== TIPOS ===== */
 .type {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 0.4vh 1.2vh;
-  margin: 0.6vh 0.4vh; /* mais espaço vertical, menos nas laterais */
+  margin: 0.6vh 0.4vh;
   border-radius: 8px;
   color: #fff;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   line-height: 1;
-  text-shadow: 0 0.1vh 0 rgba(0,0,0,.55), 0 0 0.6vh rgba(0,0,0,.35);
-  box-shadow: inset 0 -0.2vh 0 rgba(255,255,255,.25), 0 0.2vh 0 rgba(0,0,0,.15);
+  text-shadow: 0 0.1vh 0 rgba(0, 0, 0, 0.55),
+    0 0 0.6vh rgba(0, 0, 0, 0.35);
+  box-shadow: inset 0 -0.2vh 0 rgba(255, 255, 255, 0.25),
+    0 0.2vh 0 rgba(0, 0, 0, 0.15);
   user-select: none;
 }
 
-/* Tipos */
 .fire {
   background: #f08030;
-  border-radius: 0.6vh;
 }
 
 .water {
   background: #6890f0;
-  border-radius: 0.6vh;
 }
 
 .grass {
   background: #78c850;
-  border-radius: 0.6vh;
 }
 
 .electric {
   background: #f8d030;
   color: #000;
-  border-radius: 0.6vh;
 }
 
 .bug {
   background: #a8b820;
-  border-radius: 0.6vh;
 }
 
 .normal {
   background: #a8a878;
-  border-radius: 0.6vh;
 }
 
 .poison {
   background: #a040a0;
-  border-radius: 0.6vh;
 }
 
 .flying {
   background: #a890f0;
-  border-radius: 0.6vh;
 }
 
 .ground {
   background: #e0c068;
   color: #572c08;
-  border-radius: 0.6vh;
 }
 
 .psychic {
   background: #f85888;
-  border-radius: 0.6vh;
 }
 
 .rock {
   background: #b8a038;
-  border-radius: 0.6vh;
 }
 
 .ghost {
   background: #705898;
-  border-radius: 0.6vh;
 }
 
 .ice {
   background: #98d8d8;
   color: #000;
-  border-radius: 0.6vh;
 }
 
 .dragon {
   background: #7038f8;
-  border-radius: 0.6vh;
 }
 
 .fighting {
   background: #c03028;
-  border-radius: 0.6vh;
 }
 
 .steel {
   background: #b8b8d0;
   color: #000;
-  border-radius: 0.6vh;
 }
 
 .fairy {
   background: #ee99ac;
   color: #000;
-  border-radius: 0.6vh;
 }
 
 .dark {
   background: #705848;
-  border-radius: 0.6vh;
 }
 
 /* ===== Responsividade ===== */
@@ -406,7 +388,9 @@
     height: clamp(8.4vh, 12vh, 16vh);
   }
 
-  .trainerAdjust { transform: translateY(0.6vh) scale(1.12); }
+  .trainerAdjust {
+    transform: translateY(0.6vh) scale(1.12);
+  }
 
   .sprite {
     max-width: clamp(5.2vh, 11vh, 12vh);
@@ -419,26 +403,42 @@
 }
 
 .cta {
-  margin-top: 0.5rem;
+  margin-top: 6.6rem;
   transform: scale(1.5);
-  margin-bottom: 0.8rem;
-  
 }
 
-/* Espelhamento para inimigos */
+/* Espelhamento */
 .mirror {
   transform: scaleX(-1);
 }
 
-.bossBadge {
-  margin-left: 0.6vh;
-  font-size: 1rem;
-  font-weight: 800;
-  color: #b91c1c;
-  background: #ffe4e6;
-  border: 0.2vh solid #b91c1c;
-  border-radius: 1vh;
-  padding: 0.1vh 0.6vh;
+/* ===== NOVAS SEÇÕES PARA O NOVO LAYOUT ===== */
+.vsContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Estilos da tela de seleção de inicial/ordem de batalha (select-team) */
+.battleTitle {
+  position: absolute;
+  font-weight: 900;
+  font-size: clamp(0.5rem, 1.5vw, 2rem);
+  color: #252525;
+  text-shadow: 0 0.4vh 1.2vh rgba(131, 131, 131, 0.8);
+  z-index: 3;
+  transform: translateY(-30%);
+  letter-spacing: 0.05em;
+  max-width: 50vh;
+  min-width: 30vh;
+}
+
+.trainerName {
+  font-family: "Pokemon GB", sans-serif;
+  font-weight: 700;
+  color: #222;
+  background: #ffffffc5;
+  padding: 0.4vh 1.2vh;
+  border-radius: 1vh;
+  margin-top: 0.5rem;
+}

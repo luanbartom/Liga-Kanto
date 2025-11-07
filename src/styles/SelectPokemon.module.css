@@ -414,6 +414,11 @@
   color: #000;
 }
 
+/* Faltava o estilo do tipo Sombrio (dark) */
+.dark {
+  background: #705848;
+}
+
 .filterBar {
   display: flex;
   justify-content: center;

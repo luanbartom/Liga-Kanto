@@ -43,6 +43,8 @@ export default function Battle() {
     HONOR_IMMUNITIES: true, // manter imunidades (normal->ghost etc.)
     // Buff leve para o jogador
     PLAYER_ATK_MULT: 2.9,
+    // Novo: buff simétrico para inimigos normais (não-boss)
+    ENEMY_ATK_MULT: 2.9,
     // Boss tuning
     BOSS_LEVEL: 100, // nível efetivo para Boss
     BOSS_ATK_MULT: 3.4, // Boss causa mais dano
@@ -134,9 +136,42 @@ export default function Battle() {
           }
         }
 
-        // Se já é objeto, apenas normaliza (não precisa buscar)
+        // Se já é objeto, normaliza e, se faltar info (tipo/classe/poder), enriquece via getMove
         const normalized = normalize(mv);
-        if (normalized?.name) return normalized;
+        if (normalized?.name) {
+          const missingType = !normalized.type || normalized.type === "";
+          const missingClass = !normalized.damage_class || normalized.damage_class === "unknown";
+          const missingPower = normalized.power == null;
+          const missingAcc = normalized.accuracy == null;
+          if (missingType || missingClass || missingPower || missingAcc) {
+            try {
+              const key = String(normalized.name).toLowerCase();
+              const fetched = await getMove(key);
+              const rich = normalize(fetched) || {};
+              return {
+                ...rich,
+                ...normalized,
+                // Garante preenchimento quando ausente no objeto original
+                type: normalized.type || rich.type || "normal",
+                damage_class: (normalized.damage_class && normalized.damage_class !== "unknown")
+                  ? normalized.damage_class
+                  : (rich.damage_class || "physical"),
+                power: normalized.power ?? rich.power ?? 40,
+                accuracy: normalized.accuracy ?? rich.accuracy ?? 95,
+              };
+            } catch (_) {
+              // fallback seguro caso a busca falhe
+              return {
+                ...normalized,
+                type: normalized.type || "normal",
+                damage_class: (normalized.damage_class && normalized.damage_class !== "unknown") ? normalized.damage_class : "physical",
+                power: normalized.power ?? 40,
+                accuracy: normalized.accuracy ?? 95,
+              };
+            }
+          }
+          return normalized;
+        }
 
         // Fallback muito defensivo
         const name = typeof mv?.name === "string" ? mv.name : "unknown";
@@ -216,7 +251,12 @@ export default function Battle() {
       ? (defender?.stages?.spDefense ?? defender?.stages?.defense ?? 0)
       : (defender?.stages?.defense ?? 0);
     let atk = baseAtk * stageMult(atkStage);
-    if (attackerIsPlayer) atk *= (TUNING.PLAYER_ATK_MULT || 1);
+    if (attackerIsPlayer) {
+      atk *= (TUNING.PLAYER_ATK_MULT || 1);
+    } else if (!attackerIsBoss) {
+      // Inimigo "normal" (não-boss) recebe o mesmo multiplicador do jogador
+      atk *= (TUNING.ENEMY_ATK_MULT || 1);
+    }
     let def = baseDef * stageMult(defStage);
     if (attackerIsBoss) atk *= (TUNING.BOSS_ATK_MULT || 1);
     if (defenderIsBoss) def *= (TUNING.BOSS_DEF_MULT || 1);
@@ -573,6 +613,57 @@ export default function Battle() {
     } finally {
       setLoading(false);
     }
+  }
+
+  // Reinicia a batalha revivendo todo o time do jogador
+  async function restartBattleFullTeam() {
+    // 1) Tenta recarregar o time salvo limpo do localStorage
+    try {
+      const savedTeam = localStorage.getItem("selectedTeam");
+      if (savedTeam) {
+        const parsed = JSON.parse(savedTeam);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const clean = parsed.map((p) => ({
+            ...p,
+            fainted: false,
+            status: null,
+            condition: "normal",
+          }));
+          const idx = Math.min(Math.max(0, currentIndex || 0), clean.length - 1);
+          setTeam(clean);
+          setCurrentIndex(idx);
+          await startBattle(clean[idx]);
+          return;
+        }
+      }
+    } catch (_) {}
+
+    // 2) Fallback: reconstrói o time atual com HP cheio
+    try {
+      const rebuilt = await Promise.all(
+        (Array.isArray(team) ? team : []).map(async (p) => {
+          try {
+            const full = await getPokemon(p.id || p.name);
+            const baseHp = full?.hp ?? p?.hp ?? 50;
+            const max = calcMaxHp(baseHp);
+            return { ...full, hp: max, maxHp: max, fainted: false, status: null, condition: "normal" };
+          } catch (_) {
+            const baseHp = p?.hp ?? 50;
+            const max = calcMaxHp(baseHp);
+            return { ...p, hp: max, maxHp: max, fainted: false, status: null, condition: "normal" };
+          }
+        })
+      );
+      if (rebuilt.length > 0) {
+        setTeam(rebuilt);
+        const idx = Math.min(Math.max(0, currentIndex || 0), rebuilt.length - 1);
+        await startBattle(rebuilt[idx]);
+        return;
+      }
+    } catch (_) {}
+
+    // 3) Último recurso: usa o slot atual
+    await startBattle(team[currentIndex]);
   }
 
   async function handleMove(move) {
@@ -953,7 +1044,7 @@ export default function Battle() {
     return (
       <div className="container" style={{ padding: 20 }}>
         <p>{error}</p>
-        <ConfirmButton onClick={() => startBattle(team[currentIndex])}>
+        <ConfirmButton onClick={() => restartBattleFullTeam()}>
           Tentar novamente
         </ConfirmButton>
       </div>
@@ -1277,7 +1368,7 @@ export default function Battle() {
                 <h2>Derrota</h2>
                 <p>Você perdeu a batalha! O que deseja fazer agora?</p>
                 <div className={styles.optionButtons}>
-                  <ConfirmButton onClick={() => startBattle(team[currentIndex])}>
+                  <ConfirmButton onClick={() => restartBattleFullTeam()}>
                     Tentar Novamente
                   </ConfirmButton>
                   <ConfirmButton onClick={() => { try { localStorage.setItem("battleProgressRound", "0"); } catch (_) {} window.location.href = "/select-pokemon"; }}>
@@ -1356,6 +1447,7 @@ export default function Battle() {
     </div>
   );
 }
+
 
 
 

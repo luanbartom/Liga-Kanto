@@ -110,6 +110,14 @@
   z-index: 3;
 }
 
+/* Garantir espaçamento vertical entre input e botão dentro do form */
+.sidebar form {
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+  align-items: stretch;
+}
+
 /* Campo de nome */
 .trainerName input {
   width: 100%;
@@ -129,7 +137,8 @@
 
 /* Botão */
 .confirmFull {
-  width: 80%;
+  width: 100%;
+  min-width: 0; /* sobrepõe min-width do botão base para alinhar ao input */
 }
 
 /* Responsivo */

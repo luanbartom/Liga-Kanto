@@ -9,6 +9,7 @@ export default function Home() {
   const router = useRouter();
   const [selectedTrainer, setSelectedTrainer] = useState(null);
   const [trainerName, setTrainerName] = useState("");
+  const MAX_NAME = 12;
 
   // Aplica background da Home
   useEffect(() => {
@@ -31,9 +32,14 @@ export default function Home() {
   // Prossegue para a próxima página quando houver um treinador escolhido
   // e um nome válido preenchido. Persiste no localStorage.
   function handleContinue() {
-    if (selectedTrainer && trainerName.trim() !== "") {
+    const cleanName = trainerName
+      .trim()
+      .replace(/[^\p{L}]/gu, "")
+      .slice(0, MAX_NAME);
+
+    if (selectedTrainer && cleanName !== "") {
       try {
-        localStorage.setItem("trainerName", trainerName.trim());
+        localStorage.setItem("trainerName", cleanName);
         localStorage.setItem("selectedTrainer", String(selectedTrainer));
       } catch (e) {}
       router.push("/select-pokemon");
@@ -64,25 +70,35 @@ export default function Home() {
 
         <div className={styles.sidebar}>
           {selectedTrainer && (
-            <>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleContinue();
+              }}
+            >
               <div className={`${styles.trainerName} ${styles.appear}`}>
                 <input
                   type="text"
                   placeholder="Digite um nome"
                   value={trainerName}
-                  onChange={(e) => setTrainerName(e.target.value)}
+                  maxLength={MAX_NAME}
+                  onChange={(e) => {
+                    const onlyLetters = e.target.value.replace(/[^\p{L}]/gu, "");
+                    setTrainerName(onlyLetters.slice(0, MAX_NAME));
+                  }}
                   aria-label="Nome do treinador"
                 />
               </div>
 
               <ConfirmButton
+                type="submit"
                 className={`${styles.confirmFull} ${styles.appearDelayed}`}
-                onClick={handleContinue}
+                style={{ width: "100%", minWidth: 0 }}
                 disabled={!selectedTrainer || trainerName.trim() === ""}
               >
                 VAMOS LA!
               </ConfirmButton>
-            </>
+            </form>
           )}
         </div>
       </div>
