@@ -71,6 +71,7 @@ export default function Home() {
         <div className={styles.sidebar}>
           {selectedTrainer && (
             <form
+              autoComplete="off"
               onSubmit={(e) => {
                 e.preventDefault();
                 handleContinue();
@@ -82,6 +83,13 @@ export default function Home() {
                   placeholder="Digite um nome"
                   value={trainerName}
                   maxLength={MAX_NAME}
+                  name="trainerName"
+                  id="trainerName"
+                  autoComplete="off"
+                  autoCorrect="off"
+                  autoCapitalize="off"
+                  spellCheck={false}
+                  inputMode="text"
                   onChange={(e) => {
                     const onlyLetters = e.target.value.replace(/[^\p{L}]/gu, "");
                     setTrainerName(onlyLetters.slice(0, MAX_NAME));
