@@ -3,7 +3,9 @@
  */
 let cachedPokedex = null;
 let cachedMovesIndex = null; // name -> move details
+let cachedNamesWithNextEvo = null; // Set of names (lowercase) that have a next evolution
 import { isBoss } from "./boss";
+import { ensureFourWeakMoves, WEAK_MOVES_BY_TYPE } from "./moveRules";
 // API local: lê dados de pokédex do arquivo em public/pokedex.json
 // e expõe helpers para listar pokémons, obter por id/nome e obter golpes.
 
@@ -51,29 +53,67 @@ async function loadMovesIndex() {
   return cachedMovesIndex;
 }
 
+// Gera e cacheia o conjunto de nomes que possuem evolução seguinte
+async function ensureNamesWithNextEvo() {
+  if (cachedNamesWithNextEvo) return cachedNamesWithNextEvo;
+  const pokedex = await loadPokedex();
+  const names = new Set(
+    (pokedex || [])
+      .map((p) =>
+        typeof p?.evolves_from === "string" ? p.evolves_from.toLowerCase() : null
+      )
+      .filter(Boolean)
+  );
+  cachedNamesWithNextEvo = names;
+  return cachedNamesWithNextEvo;
+}
+
+function isBasicWithNext(mon, namesWithNext) {
+  const st = Math.min(3, Math.max(1, parseInt(mon?.evolutionStage ?? 1, 10)));
+  const name = String(mon?.name || "").toLowerCase();
+  return st === 1 && !!namesWithNext?.has(name);
+}
+
 /**
  * Retorna todos os Pokémon (usa sprites locais).
  */
 export async function getFirstGenPokemons() {
   const pokedex = await loadPokedex();
-  console.log(pokedex)
-  return pokedex?.map((p) => ({
-    ...p,
-    boss: isBoss(p),
-    sprite: `/sprites/static/${p.id}.png`,
-    animated: `/sprites/gif/${p.id}.gif`,
-  }));
+  const namesWithNext = await ensureNamesWithNextEvo();
+  const movesIndex = await loadMovesIndex().catch(() => null);
+  return pokedex?.map((p) => {
+    const base = {
+      ...p,
+      boss: isBoss(p),
+      sprite: `/sprites/static/${p.id}.png`,
+      animated: `/sprites/gif/${p.id}.gif`,
+    };
+    if (isBasicWithNext(base, namesWithNext)) {
+      const existing = (base.moves || []).map((m) => (typeof m === "string" ? m : m?.name)).filter(Boolean);
+      return { ...base, moves: ensureFourWeakMoves(base, existing, movesIndex) };
+    }
+    return base;
+  });
 }
 
 // Retorna todos os Pokémons disponíveis no pokedex.json (Gens 1–3 neste projeto)
 export async function getAllPokemons() {
   const pokedex = await loadPokedex();
-  return pokedex?.map((p) => ({
-    ...p,
-    boss: isBoss(p),
-    sprite: `/sprites/static/${p.id}.png`,
-    animated: `/sprites/gif/${p.id}.gif`,
-  }));
+  const namesWithNext = await ensureNamesWithNextEvo();
+  const movesIndex = await loadMovesIndex().catch(() => null);
+  return pokedex?.map((p) => {
+    const base = {
+      ...p,
+      boss: isBoss(p),
+      sprite: `/sprites/static/${p.id}.png`,
+      animated: `/sprites/gif/${p.id}.gif`,
+    };
+    if (isBasicWithNext(base, namesWithNext)) {
+      const existing = (base.moves || []).map((m) => (typeof m === "string" ? m : m?.name)).filter(Boolean);
+      return { ...base, moves: ensureFourWeakMoves(base, existing, movesIndex) };
+    }
+    return base;
+  });
 }
 
 /**
@@ -88,12 +128,19 @@ export async function getPokemon(nameOrId) {
     ) || null;
   if (!found) return null;
 
-  return {
+  const namesWithNext = await ensureNamesWithNextEvo();
+  const movesIndex = await loadMovesIndex().catch(() => null);
+  const base = {
     ...found,
     boss: isBoss(found),
     sprite: `/sprites/static/${found.id}.png`,
     animated: `/sprites/gif/${found.id}.gif`,
   };
+  if (isBasicWithNext(base, namesWithNext)) {
+    const existing = (base.moves || []).map((m) => (typeof m === "string" ? m : m?.name)).filter(Boolean);
+    return { ...base, moves: ensureFourWeakMoves(base, existing, movesIndex) };
+  }
+  return base;
 }
 
 /**
@@ -134,6 +181,21 @@ export async function getMove(nameOrId) {
     if (KNOWN_MOVES[key]) return KNOWN_MOVES[key];
   }
 
+  // Nova: se for um dos golpes fracos conhecidos por tipo, define tipo corretamente
+  try {
+    const weakMap = new Map();
+    for (const [t, arr] of Object.entries(WEAK_MOVES_BY_TYPE || {})) {
+      for (const mv of arr) weakMap.set(mv, t);
+    }
+    for (const k of candidates) {
+      const key = k.replace(/\s+/g, "-").replace(/_/g, "-");
+      if (weakMap.has(key)) {
+        const t = weakMap.get(key);
+        return { name: key, display: key.replace(/-/g, " "), type: t, power: 40, accuracy: 95, damage_class: "physical" };
+      }
+    }
+  } catch (_) {}
+
   // Heurística simples: prefixo antes do hífen indica tipo (ex.: fire-blast)
   const prefix = normDash.split("-")[0];
   const VALID_TYPES = new Set([
@@ -142,22 +204,22 @@ export async function getMove(nameOrId) {
   let inferredType = VALID_TYPES.has(prefix) ? prefix : undefined;
   if (!inferredType) {
     const kw = [
-      { t: "fire", words: ["fire", "flame", "lava", "burn"] },
-      { t: "water", words: ["water", "aqua", "hydro", "scald", "bubble"] },
+      { t: "fire", words: ["fire", "flame", "lava", "burn", "ember"] },
+      { t: "water", words: ["water", "aqua", "hydro", "scald", "bubble", "water-gun"] },
       { t: "electric", words: ["electric", "thunder", "volt", "zap", "bolt", "discharge"] },
-      { t: "ice", words: ["ice", "freeze", "icy", "blizzard"] },
+      { t: "ice", words: ["ice", "freeze", "icy", "blizzard", "snow"] },
       { t: "grass", words: ["grass", "leaf", "seed", "spore", "vine", "energy-ball"] },
       { t: "poison", words: ["poison", "toxic", "sludge", "gunk", "acid"] },
-      { t: "ground", words: ["ground", "mud", "sand", "earth", "stomping", "quake"] },
+      { t: "ground", words: ["ground", "mud", "sand", "earth", "stomping", "quake", "bulldoze"] },
       { t: "rock", words: ["rock", "stone", "slide", "edge"] },
-      { t: "bug", words: ["bug", "leech", "string", "web", "sting"] },
+      { t: "bug", words: ["bug", "leech", "string", "web", "sting", "struggle", "bite"] },
       { t: "psychic", words: ["psychic", "psy", "psyshock", "psybeam", "kinesis", "zen"] },
       { t: "ghost", words: ["ghost", "shadow", "hex", "spectral", "phantom", "nightmare"] },
       { t: "dragon", words: ["dragon", "draco"] },
       { t: "dark", words: ["dark", "night", "snarl", "crunch", "foul", "sucker"] },
       { t: "steel", words: ["steel", "metal", "iron", "gear", "bullet", "cannon", "meteor-mash", "flash-cannon", "iron-head"] },
       { t: "fairy", words: ["fairy", "gleam", "kiss", "charm", "dazzling", "draining-kiss", "dazzling-gleam"] },
-      { t: "flying", words: ["flying", "wing", "air", "aerial", "sky"] },
+      { t: "flying", words: ["flying", "wing", "air", "aerial", "sky", "gust", "peck"] },
     ];
     for (const group of kw) {
       if (group.words.some((w) => normDash.includes(w))) {

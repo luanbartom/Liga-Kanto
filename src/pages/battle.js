@@ -2,6 +2,7 @@
 import HPBar from "@/components/HPBar";
 import ConditionBar from "@/components/ConditionBar";
 import { getPokemon, getMove, getAllPokemons } from "@/utils/api";
+import { WEAK_MOVES_BY_TYPE } from "@/utils/moveRules";
 import { STAGE_MOVES } from "@/utils/moves";
 import { typeLabel, moveName } from "@/utils/i18n";
 import styles from "@/styles/Battle.module.css";
@@ -46,7 +47,8 @@ export default function Battle() {
     // Novo: buff simétrico para inimigos normais (não-boss)
     ENEMY_ATK_MULT: 2.9,
     // Boss tuning
-    BOSS_LEVEL: 100, // nível efetivo para Boss
+    BOSS_LEVEL: 100, // nível efetivo para Boss (quando é oponente)
+    PLAYER_BOSS_LEVEL: 60, // nível quando Boss é usado pelo player
     BOSS_ATK_MULT: 3.4, // Boss causa mais dano
     BOSS_DEF_MULT: 1.85, // Boss recebe menos dano
     BOSS_HP_MULT: 1.95, // Boss tem mais HP
@@ -73,8 +75,12 @@ export default function Battle() {
     }
   }, [battle?.winner, battle?.bossPhase, bossPhase]);
 
+  // Cache global simples para nomes que possuem evolução seguinte
+  let namesWithNextEvo = null; // Set<string lowercased>
+
   // Normaliza e resolve metadados de golpes (poder, precisão, tipo, efeitos)
-  async function enrichMoves(moves) {
+  // owner: Pokémon ao qual esses golpes pertencem (usado para regras por estágio)
+  async function enrichMoves(moves, owner = null) {
     // Normaliza golpes vindos como string (ex.: "tackle") ou objeto do pokedex.json
     const normalize = (raw) => {
       if (!raw) return null;
@@ -187,7 +193,82 @@ export default function Battle() {
       })
     );
 
-    return resolved;
+    // Regra: básicos COM evolução (ex.: Charmander) só podem usar golpes fracos
+    // Critério: evolutionStage===1 E tem próxima evolução (deduzida do pokédex)
+    try {
+      if (!namesWithNextEvo) {
+        const all = await getAllPokemons();
+        const set = new Set(
+          (all || [])
+            .map((p) =>
+              typeof p?.evolves_from === "string"
+                ? p.evolves_from.toLowerCase()
+                : null
+            )
+            .filter(Boolean)
+        );
+        namesWithNextEvo = set;
+      }
+    } catch (_) {}
+
+    const ownerName = String(owner?.name || "").toLowerCase();
+    const ownerStage = parseInt(owner?.evolutionStage ?? 1, 10);
+    const hasNext = ownerName ? !!namesWithNextEvo?.has(ownerName) : false;
+    const isBasicWithNext = ownerStage === 1 && hasNext;
+
+    if (!isBasicWithNext) {
+      return resolved;
+    }
+
+    // Mantém apenas golpes fracos e completa para sempre ter 4, priorizando tipo do dono
+    const POWER_CAP = 60;
+    const byName = (m) => String(m?.name || "").toLowerCase();
+    let filtered = resolved.filter((m) => {
+      const pw = Number.isFinite(m?.power) ? m.power : 0;
+      return pw <= POWER_CAP;
+    });
+
+    // Completa até 4 golpes com candidatos fracos por tipo
+    if (filtered.length < 4) {
+      const types = Array.isArray(owner?.types) ? owner.types : [];
+      const candidates = [];
+      for (const t of types) {
+        const key = String(t || "").toLowerCase();
+        if (WEAK_MOVES_BY_TYPE[key]) candidates.push(...WEAK_MOVES_BY_TYPE[key]);
+      }
+      // sempre incluir alguns normais fracos como fallback
+      candidates.push("tackle", "quick-attack", "scratch", "pound", "swift");
+
+      const have = new Set(filtered.map(byName));
+      for (const name of candidates) {
+        if (filtered.length >= 4) break;
+        if (have.has(name)) continue;
+        try {
+          const fetched = await getMove(name);
+          // normaliza de leve para manter shape esperado
+          const mv = {
+            name: fetched?.name || name,
+            display: (fetched?.display || name).replace(/-/g, " "),
+            type: String(fetched?.type || "normal").toLowerCase(),
+            damage_class: String(fetched?.damage_class || "physical").toLowerCase(),
+            power: fetched?.power ?? 40,
+            accuracy: fetched?.accuracy ?? 95,
+            effects: Array.isArray(fetched?.effects) ? fetched.effects : [],
+          };
+          if ((mv.power ?? 0) <= POWER_CAP) {
+            filtered.push(mv);
+            have.add(name);
+          }
+        } catch (_) {}
+      }
+    }
+
+    // Garante exatamente 4 retornos
+    if (filtered.length > 4) filtered = filtered.slice(0, 4);
+    while (filtered.length < 4) {
+      filtered.push({ name: "tackle", display: "tackle", type: "normal", damage_class: "physical", power: 40, accuracy: 95, effects: [] });
+    }
+    return filtered;
   }
 
   function typeMultiplier(moveType, defenderTypes = []) {
@@ -225,7 +306,10 @@ export default function Battle() {
     const attackerIsBoss = !!(attacker && attacker.boss);
     const defenderIsBoss = !!(defender && defender.boss);
     const attackerIsPlayer = !!(attacker && attacker.isPlayer);
-    const level = attackerIsBoss ? (TUNING.BOSS_LEVEL || TUNING.LEVEL) : TUNING.LEVEL;
+    const defenderIsPlayer = !!(defender && defender.isPlayer);
+    const level = attackerIsBoss
+      ? (attackerIsPlayer ? (TUNING.PLAYER_BOSS_LEVEL || TUNING.LEVEL) : (TUNING.BOSS_LEVEL || TUNING.LEVEL))
+      : TUNING.LEVEL;
     const isStatusMove = (move?.damage_class || "").toLowerCase() === "status" || (move?.power ?? 0) <= 0;
     if (isStatusMove) {
       return { dmg: 0, effectiveness: 1 };
@@ -258,8 +342,9 @@ export default function Battle() {
       atk *= (TUNING.ENEMY_ATK_MULT || 1);
     }
     let def = baseDef * stageMult(defStage);
-    if (attackerIsBoss) atk *= (TUNING.BOSS_ATK_MULT || 1);
-    if (defenderIsBoss) def *= (TUNING.BOSS_DEF_MULT || 1);
+    // Multiplicadores de Boss só quando o Boss é oponente
+    if (attackerIsBoss && !attackerIsPlayer) atk *= (TUNING.BOSS_ATK_MULT || 1);
+    if (defenderIsBoss && !defenderIsPlayer) def *= (TUNING.BOSS_DEF_MULT || 1);
 
     const power = Math.max(1, move?.power ?? 40);
     const stab = move?.type && (attacker?.types || []).includes(move.type) ? TUNING.STAB : 1;
@@ -446,7 +531,7 @@ export default function Battle() {
       condition: "normal",
       status: null,
       stages: { attack: 0, defense: 0, spAttack: 0, spDefense: 0, speed: 0, accuracy: 0, evasion: 0 },
-      moves: await enrichMoves((full.moves || []).slice(0, 4)),
+      moves: await enrichMoves((full.moves || []).slice(0, 4), full),
     };
   }
 
@@ -521,7 +606,7 @@ export default function Battle() {
       isPlayer: true,
       maxHp: calcMaxHp(playerFull.hp || 50),
       hp: calcMaxHp(playerFull.hp || 50),
-      moves: await enrichMoves((playerFull.moves || []).slice(0, 4)),
+      moves: await enrichMoves((playerFull.moves || []).slice(0, 4), playerFull),
       status: null,
       condition: "normal",
       stages: { attack: 0, defense: 0, spAttack: 0, spDefense: 0, speed: 0, accuracy: 0, evasion: 0 },
@@ -547,7 +632,7 @@ export default function Battle() {
                   maxHp: boostedMax,
                   hp: boostedMax,
                   condition: "normal",
-                  moves: await enrichMoves((enemyData.moves || []).slice(0, 4)),
+                  moves: await enrichMoves((enemyData.moves || []).slice(0, 4), enemyData),
                   status: null,
                   stages: { attack: 0, defense: 0, spAttack: 0, spDefense: 0, speed: 0, accuracy: 0, evasion: 0 },
                 });
@@ -582,7 +667,7 @@ export default function Battle() {
             maxHp: (() => { const base = calcMaxHp(enemyData.hp || 50); return enemyData?.boss ? Math.floor(base * (TUNING.BOSS_HP_MULT || 1)) : base; })(),
             hp: (() => { const base = calcMaxHp(enemyData.hp || 50); return enemyData?.boss ? Math.floor(base * (TUNING.BOSS_HP_MULT || 1)) : base; })(),
             condition: "normal",
-            moves: await enrichMoves((enemyData.moves || []).slice(0, 4)),
+            moves: await enrichMoves((enemyData.moves || []).slice(0, 4), enemyData),
             status: null,
             stages: { attack: 0, defense: 0, spAttack: 0, spDefense: 0, speed: 0, accuracy: 0, evasion: 0 },
           };
@@ -599,7 +684,7 @@ export default function Battle() {
         name: "Bulbasaur",
         hp: calcMaxHp(45),
         maxHp: calcMaxHp(45),
-        moves: await enrichMoves(["tackle", "vine-whip", "growl", "sleep-powder"]),
+        moves: await enrichMoves(["tackle", "vine-whip", "growl", "sleep-powder"], { name: "Bulbasaur", evolutionStage: 1 }),
         animated:
           "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/25.gif",
         condition: "normal",

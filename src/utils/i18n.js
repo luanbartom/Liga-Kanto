@@ -1,74 +1,31 @@
-﻿// ========================================================
-// i18n helpers (versão simplificada — nomes de golpes em inglês)
+// ========================================================
+// i18n helpers (versão sem tradução - usa valores originais)
 // ========================================================
 
-// ---------- TIPOS ----------
-const TYPE_PT = {
-  normal: "Normal",
-  fire: "Fogo",
-  water: "Água",
-  grass: "Planta",
-  electric: "Elétrico",
-  ice: "Gelo",
-  fighting: "Lutador",
-  poison: "Venenoso",
-  ground: "Terra",
-  flying: "Voador",
-  psychic: "Psíquico",
-  bug: "Inseto",
-  rock: "Pedra",
-  ghost: "Fantasma",
-  dragon: "Dragão",
-  dark: "Sombrio",
-  steel: "Aço",
-  fairy: "Fada",
-};
-
-// ---------- STATUS ----------
-const STATUS_PT = {
-  asleep: "Adormecido",
-  frozen: "Congelado",
-  burned: "Queimado",
-  poisoned: "Envenenado",
-  paralyzed: "Paralisado",
-  confused: "Confuso",
-};
-
-// ========================================================
-// Funções auxiliares básicas
-// ========================================================
-
-function titleCase(str = "") {
-  return String(str)
-    .split(" ")
-    .map((w) => (w ? w[0].toUpperCase() + w.slice(1) : w))
-    .join(" ");
-}
+// Sem mapas de tradução: retorna os valores originais (EN)
 
 export function typeLabel(type) {
-  return TYPE_PT[type] || titleCase(type || "");
+  if (type == null) return "";
+  return typeof type === "string" ? type : String(type);
 }
 
 export function statusLabel(status) {
-  return STATUS_PT[status] || titleCase(status || "");
+  if (status == null) return "";
+  return typeof status === "string" ? status : String(status);
 }
 
-// ========================================================
-// Simplificação — nomes de golpes sempre originais
-// ========================================================
-
-// Retorna o nome puro do golpe (sem tradução)
+// Nomes de golpes sempre originais (já era assim)
 export function moveName(move) {
   if (!move) return "";
   if (typeof move === "string") return move;
   return move.display || move.name || move.move || move.id || "";
 }
 
-// Retorna JSX formatado (para telas que mostram tipo junto)
+// Rótulo para UI: mantém chip de tipo usando valor original
 export function moveLabel(move) {
   if (!move) return "";
   const name = moveName(move);
-  const type = (move && (move.type || move.element)) ? String(move.type || move.element).toLowerCase() : "";
+  const type = (move && (move.type || move.element)) ? String(move.type || move.element) : "";
 
   return (
     <span>
@@ -95,4 +52,5 @@ export function moveLabel(move) {
 }
 
 export default { typeLabel, statusLabel, moveLabel, moveName };
-// Helpers de internacionalização simples: tipos e status em PT-BR
+// Helpers sem tradução: usa valores originais (EN)
+

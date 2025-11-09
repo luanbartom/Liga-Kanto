@@ -15,7 +15,7 @@
 /* Barra flutuante */
 .trainerBar {
   position: fixed;
-  top: 1.5vh;
+  top: 2vh;
   left: 50%;
   transform: translateX(-50%);
   background: rgba(255, 255, 255, 0.9);
@@ -28,6 +28,7 @@
   width: 70vh;
   box-shadow: 0 1vh 2vh rgba(0, 0, 0, 0.474);
   z-index: 10;
+  -webkit-backdrop-filter: blur(1vh);
   backdrop-filter: blur(1vh);
 }
 
@@ -464,9 +465,9 @@
 /* Painel flutuante a direita (subtitulo + regra) */
 .infoPanel {
   position: fixed;
-  top: -0.2vh;
-  right: -39vh;
-  width: 36vh;
+  top: 0vh;
+  right: -47vh;
+  width: 40vh;
   padding: 1.2vh 1.6vh;
   background: #fff8d9;
   color: #6b5900;
@@ -474,7 +475,7 @@
   border-radius: 1.4vh;
   box-shadow: 2 4vh 10vh rgba(252, 231, 41, 0.874);
   filter: drop-shadow(0 0 1vh rgba(255, 200, 0, 0.7));
-  animation: shadowPulse 2s infinite ease-in-out;
+  animation: SelectPokemon_shadowPulse__arYef 2s infinite ease-in-out;
   z-index: 11;
 }
 
@@ -609,4 +610,5 @@
   padding: 0.2vh 0.4vh;
   font-size: 0.5rem;
 }
+
 /* Estilos da tela de seleção de Pokémon (filtros, grid e modais) */
