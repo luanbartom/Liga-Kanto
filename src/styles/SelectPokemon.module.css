@@ -46,7 +46,6 @@
   height: 8vh;
   filter: drop-shadow(1vh 1vh 1vh rgba(0, 0, 0, 0.3));
   image-rendering: pixelated;
-
 }
 
 /* Pokébolas */
@@ -73,7 +72,6 @@
   transform: scale(1.15);
 }
 
-
 /* Botão confirmar na barra */
 /* === BOTÃO CONFIRMAR (estilo verde animado) === */
 .confirmBar {
@@ -83,8 +81,8 @@
   width: 13vh;
   border-radius: 4vh;
   background: #fff;
-  border: 0.5vh solid #1ECD97;
-  color: #1ECD97;
+  border: 0.5vh solid #1ecd97;
+  color: #1ecd97;
   letter-spacing: 1vh;
   font-size: 1rem;
   font-weight: bold;
@@ -96,7 +94,7 @@
 
 .confirmBar:hover:not(:disabled) {
   color: #fff;
-  background: #1ECD97;
+  background: #1ecd97;
 }
 
 .confirmBar:active {
@@ -109,16 +107,16 @@
   border-color: #bbbbbb;
   border-width: 3px;
   font-size: 0;
-  border-left-color: #1ECD97;
+  border-left-color: #1ecd97;
   animation: rotating 2s 0.25s linear infinite;
 }
 
 .onclic::after {
-  content: "";
+  content: '';
 }
 
 .onclic:hover {
-  color: #1ECD97;
+  color: #1ecd97;
   background: #fff;
 }
 
@@ -126,11 +124,11 @@
 .validate {
   font-size: 1rem;
   color: #fff;
-  background: #1ECD97;
+  background: #1ecd97;
 }
 
 .validate::after {
-  content: "✔";
+  content: '✔';
   font-weight: bold;
   font-size: 1rem;
   margin-left: 5vh;
@@ -154,7 +152,6 @@
     transform: rotate(360deg);
   }
 }
-
 
 /* Títulos */
 .title {
@@ -461,7 +458,6 @@
   box-shadow: 0 0 8vh rgba(209, 187, 79, 0.6);
 }
 
-
 /* Painel flutuante a direita (subtitulo + regra) */
 .infoPanel {
   position: fixed;
@@ -478,8 +474,6 @@
   animation: SelectPokemon_shadowPulse__arYef 2s infinite ease-in-out;
   z-index: 11;
 }
-
-
 
 .ruleHint {
   font-weight: 600;
@@ -584,8 +578,8 @@
   margin-top: 1vh;
   display: flex;
   background: #ffffff;
-  border: 0.3vh solid #1ECD97;
-  color: #1ECD97;
+  border: 0.3vh solid #1ecd97;
+  color: #1ecd97;
   font-weight: 700;
   border-radius: 1vh;
   padding: 0.4vh 0.8vh;
@@ -598,7 +592,7 @@
 }
 
 .achievementsBtn:hover {
-  background: #1ECD97;
+  background: #1ecd97;
   color: #fff;
 }
 

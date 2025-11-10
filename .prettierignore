@@ -1,0 +1,9 @@
+node_modules/
+.next/
+out/
+build/
+coverage/
+dist/
+*.log
+package-lock.json
+scripts/cache/

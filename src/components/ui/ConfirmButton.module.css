@@ -6,8 +6,8 @@
   padding: 0 20px;
   border-radius: 40px;
   background: #fff;
-  border: 3px solid #1ECD97;
-  color: #1ECD97;
+  border: 3px solid #1ecd97;
+  color: #1ecd97;
   letter-spacing: 0.5px;
   font-size: 18px;
   font-weight: bold;
@@ -23,7 +23,7 @@
 
 .confirm:hover:not(:disabled) {
   color: #fff;
-  background: #1ECD97;
+  background: #1ecd97;
 }
 
 .confirm:active {

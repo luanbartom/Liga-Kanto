@@ -4,7 +4,7 @@
   text-align: center;
   padding: 4vh 0vh 18vh;
   /* menos espaço no fundo para subir a arena */
-  background: url("/arena.png") center/cover no-repeat fixed;
+  background: url('/arena.png') center/cover no-repeat fixed;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -14,14 +14,14 @@
 }
 
 .arena {
-      flex: 1 1;
-    width: 100%;
-    max-width: 130vh;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 4vh;
-    margin: 0vh 0vh -4vh;
+  flex: 1 1;
+  width: 100%;
+  max-width: 130vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4vh;
+  margin: 0vh 0vh -4vh;
 }
 
 .enemySection,
@@ -237,7 +237,6 @@
 }
 
 /* --- Attack effects overlay --- */
-
 
 /* Primary actions under player sprite */
 .attackMenuToggle {

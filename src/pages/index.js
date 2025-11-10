@@ -1,32 +1,32 @@
 // Página inicial: permite escolher o(a) treinador(a) e definir o nome.
 // Salva as escolhas no localStorage e navega para a seleção de Pokémon.
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-import styles from "@/styles/Home.module.css";
-import ConfirmButton from "@/components/ui/ConfirmButton";
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import styles from '@/styles/Home.module.css';
+import ConfirmButton from '@/components/ui/ConfirmButton';
+import { MAX_TRAINER_NAME_LEN } from '@/constants';
 
 export default function Home() {
   const router = useRouter();
   const [selectedTrainer, setSelectedTrainer] = useState(null);
-  const [trainerName, setTrainerName] = useState("");
-  const MAX_NAME = 12;
+  const [trainerName, setTrainerName] = useState('');
 
   // Aplica background da Home
   useEffect(() => {
     try {
-      document?.body?.classList?.add("bg-home");
+      document?.body?.classList?.add('bg-home');
     } catch (e) {}
     return () => {
       try {
-        document?.body?.classList?.remove("bg-home");
+        document?.body?.classList?.remove('bg-home');
       } catch (e) {}
     };
   }, []);
 
   // Lista de treinadores disponíveis (id + imagem)
   const trainers = [
-    { id: 1, image: "/images/trainer1.png" },
-    { id: 2, image: "/images/trainer2.png" },
+    { id: 1, image: '/images/trainer1.png' },
+    { id: 2, image: '/images/trainer2.png' },
   ];
 
   // Prossegue para a próxima página quando houver um treinador escolhido
@@ -34,15 +34,15 @@ export default function Home() {
   function handleContinue() {
     const cleanName = trainerName
       .trim()
-      .replace(/[^\p{L}]/gu, "")
-      .slice(0, MAX_NAME);
+      .replace(/[^\p{L}]/gu, '')
+      .slice(0, MAX_TRAINER_NAME_LEN);
 
-    if (selectedTrainer && cleanName !== "") {
+    if (selectedTrainer && cleanName !== '') {
       try {
-        localStorage.setItem("trainerName", cleanName);
-        localStorage.setItem("selectedTrainer", String(selectedTrainer));
+        localStorage.setItem('trainerName', cleanName);
+        localStorage.setItem('selectedTrainer', String(selectedTrainer));
       } catch (e) {}
-      router.push("/select-pokemon");
+      router.push('/select-pokemon');
     }
   }
 
@@ -58,7 +58,7 @@ export default function Home() {
               <div
                 key={trainer.id}
                 className={`${styles.trainerCard} ${
-                  selectedTrainer === trainer.id ? styles.selected : ""
+                  selectedTrainer === trainer.id ? styles.selected : ''
                 }`}
                 onClick={() => setSelectedTrainer(trainer.id)}
               >
@@ -82,7 +82,7 @@ export default function Home() {
                   type="text"
                   placeholder="Digite um nome"
                   value={trainerName}
-                  maxLength={MAX_NAME}
+                  maxLength={MAX_TRAINER_NAME_LEN}
                   name="trainerName"
                   id="trainerName"
                   autoComplete="off"
@@ -91,8 +91,8 @@ export default function Home() {
                   spellCheck={false}
                   inputMode="text"
                   onChange={(e) => {
-                    const onlyLetters = e.target.value.replace(/[^\p{L}]/gu, "");
-                    setTrainerName(onlyLetters.slice(0, MAX_NAME));
+                    const onlyLetters = e.target.value.replace(/[^\p{L}]/gu, '');
+                    setTrainerName(onlyLetters.slice(0, MAX_TRAINER_NAME_LEN));
                   }}
                   aria-label="Nome do treinador"
                 />
@@ -101,8 +101,8 @@ export default function Home() {
               <ConfirmButton
                 type="submit"
                 className={`${styles.confirmFull} ${styles.appearDelayed}`}
-                style={{ width: "100%", minWidth: 0 }}
-                disabled={!selectedTrainer || trainerName.trim() === ""}
+                style={{ width: '100%', minWidth: 0 }}
+                disabled={!selectedTrainer || trainerName.trim() === ''}
               >
                 VAMOS LA!
               </ConfirmButton>

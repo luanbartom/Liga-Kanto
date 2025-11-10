@@ -1,19 +1,19 @@
-import fs from "fs";
-import path from "path";
-import fetch from "node-fetch";
+import fs from 'fs';
+import path from 'path';
+import fetch from 'node-fetch';
 
-const INPUT = path.resolve("./public/data/pokedex_with_moves.json");
-const OUTPUT = path.resolve("./public/data/pokedex_full_dataset.json");
-const CACHE_DIR = path.resolve("./scripts/cache");
+const INPUT = path.resolve('./public/data/pokedex_with_moves.json');
+const OUTPUT = path.resolve('./public/data/pokedex_full_dataset.json');
+const CACHE_DIR = path.resolve('./scripts/cache');
 if (!fs.existsSync(CACHE_DIR)) fs.mkdirSync(CACHE_DIR, { recursive: true });
 
 const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
 // ========== FUNÇÕES BASE DE API ========== //
 async function safeFetch(url, cacheKey) {
-  const cacheFile = path.join(CACHE_DIR, cacheKey + ".json");
+  const cacheFile = path.join(CACHE_DIR, cacheKey + '.json');
   if (fs.existsSync(cacheFile)) {
-    return JSON.parse(fs.readFileSync(cacheFile, "utf8"));
+    return JSON.parse(fs.readFileSync(cacheFile, 'utf8'));
   }
   try {
     const res = await fetch(url);
@@ -23,14 +23,17 @@ async function safeFetch(url, cacheKey) {
     await delay(120);
     return data;
   } catch (err) {
-    console.error("Erro ao buscar:", url, err.message);
+    console.error('Erro ao buscar:', url, err.message);
     return null;
   }
 }
 
 // ========== FUNÇÕES DE EXTRAÇÃO ========== //
 async function getPokemonDetails(idOrName) {
-  const data = await safeFetch(`https://pokeapi.co/api/v2/pokemon/${idOrName}`, `pokemon_${idOrName}`);
+  const data = await safeFetch(
+    `https://pokeapi.co/api/v2/pokemon/${idOrName}`,
+    `pokemon_${idOrName}`,
+  );
   if (!data) return null;
 
   return {
@@ -53,7 +56,10 @@ async function getPokemonDetails(idOrName) {
 }
 
 async function getSpeciesData(name) {
-  const data = await safeFetch(`https://pokeapi.co/api/v2/pokemon-species/${name}`, `species_${name}`);
+  const data = await safeFetch(
+    `https://pokeapi.co/api/v2/pokemon-species/${name}`,
+    `species_${name}`,
+  );
   if (!data) return {};
 
   const evoChainUrl = data.evolution_chain?.url;
@@ -74,7 +80,8 @@ async function getSpeciesData(name) {
     evoStage = findStage(chain, name, 1) || 1;
   }
 
-  const flavor = (data.flavor_text_entries || []).find((f) => f.language.name === "en")?.flavor_text || null;
+  const flavor =
+    (data.flavor_text_entries || []).find((f) => f.language.name === 'en')?.flavor_text || null;
 
   return { evolutionStage: evoStage, evolves_from: evolvesFrom, flavor_text: flavor };
 }
@@ -82,19 +89,20 @@ async function getSpeciesData(name) {
 async function getMoveData(moveName) {
   const key = `move_${moveName}`;
   const data = await safeFetch(`https://pokeapi.co/api/v2/move/${moveName}`, key);
-  if (!data) return {
-    name: moveName,
-    type: "normal",
-    damage_class: "physical",
-    power: 40,
-    accuracy: 100,
-    pp: 35,
-    priority: 0,
-    effect: null
-  };
+  if (!data)
+    return {
+      name: moveName,
+      type: 'normal',
+      damage_class: 'physical',
+      power: 40,
+      accuracy: 100,
+      pp: 35,
+      priority: 0,
+      effect: null,
+    };
 
   const effect =
-    data.meta?.ailment?.name !== "none"
+    data.meta?.ailment?.name !== 'none'
       ? { type: data.meta.ailment.name, chance: data.meta.ailment_chance || 0 }
       : null;
 
@@ -119,8 +127,24 @@ async function getMoveData(moveName) {
 
 async function getTypeChart() {
   const types = [
-    "normal", "fire", "water", "electric", "grass", "ice", "fighting", "poison",
-    "ground", "flying", "psychic", "bug", "rock", "ghost", "dragon", "dark", "steel", "fairy"
+    'normal',
+    'fire',
+    'water',
+    'electric',
+    'grass',
+    'ice',
+    'fighting',
+    'poison',
+    'ground',
+    'flying',
+    'psychic',
+    'bug',
+    'rock',
+    'ghost',
+    'dragon',
+    'dark',
+    'steel',
+    'fairy',
   ];
 
   const chart = {};
@@ -142,10 +166,10 @@ async function getTypeChart() {
 
 // ========== SCRIPT PRINCIPAL ========== //
 async function main() {
-  const base = JSON.parse(fs.readFileSync(INPUT, "utf8"));
+  const base = JSON.parse(fs.readFileSync(INPUT, 'utf8'));
   const full = [];
 
-  console.log("🔹 Gerando dataset completo...");
+  console.log('🔹 Gerando dataset completo...');
 
   for (const [i, mon] of base.entries()) {
     console.log(`→ ${i + 1}/${base.length} ${mon.name}`);
@@ -154,7 +178,7 @@ async function main() {
 
     const moveData = [];
     for (const mv of mon.moves || []) {
-      const moveName = typeof mv === "string" ? mv : mv.name;
+      const moveName = typeof mv === 'string' ? mv : mv.name;
       const md = await getMoveData(moveName);
       moveData.push(md);
       await delay(80);
@@ -168,11 +192,11 @@ async function main() {
     });
   }
 
-  console.log("📘 Gerando tabela de tipos...");
+  console.log('📘 Gerando tabela de tipos...');
   const typeChart = await getTypeChart();
 
   const output = { pokedex: full, type_chart: typeChart };
-  fs.writeFileSync(OUTPUT, JSON.stringify(output, null, 2), "utf8");
+  fs.writeFileSync(OUTPUT, JSON.stringify(output, null, 2), 'utf8');
   console.log(`✅ Dataset completo salvo em ${OUTPUT}`);
 }
 

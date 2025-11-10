@@ -1,6 +1,6 @@
 // Barra de HP com animação de dano (shake/flash) baseada em mudanças de valor.
-import { useEffect, useRef, useState } from "react";
-import styles from "./HPBar.module.css";
+import { useEffect, useRef, useState } from 'react';
+import styles from './HPBar.module.css';
 
 export default function HPBar({ hp, maxHp, color }) {
   // currentHp espelha a prop hp para animar transições de largura
@@ -27,13 +27,13 @@ export default function HPBar({ hp, maxHp, color }) {
   const hpPercent = (currentHp / maxHp) * 100;
 
   return (
-    <div className={`${styles.container} ${damaged ? styles.shake : ""}`}>
+    <div className={`${styles.container} ${damaged ? styles.shake : ''}`}>
       <div
-        className={`${styles.fill} ${damaged ? styles.damage : ""}`}
+        className={`${styles.fill} ${damaged ? styles.damage : ''}`}
         style={{
           width: `${hpPercent}%`,
           backgroundColor: color,
-          transition: "width 1.4s ease-in-out",
+          transition: 'width 1.4s ease-in-out',
         }}
       ></div>
     </div>

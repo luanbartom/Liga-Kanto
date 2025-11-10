@@ -1,13 +1,13 @@
 // Botão de confirmação reutilizável, com estilos e disabled suportados
-import React from "react";
-import styles from "./ConfirmButton.module.css";
+import React from 'react';
+import styles from './ConfirmButton.module.css';
 
 export default function ConfirmButton({
   children,
   onClick,
   disabled = false,
-  type = "button",
-  className = "",
+  type = 'button',
+  className = '',
   ...props
 }) {
   // Encapsula um <button> estilizado e acessível
@@ -23,4 +23,3 @@ export default function ConfirmButton({
     </button>
   );
 }
-

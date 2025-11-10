@@ -51,7 +51,6 @@
   z-index: 1;
 }
 
-
 /* Cada treinador */
 .trainerCard {
   width: clamp(20vh, 30vh, 30vh);
@@ -93,7 +92,6 @@
     filter: drop-shadow(0 0 1vh rgba(255, 200, 0, 0.5));
   }
 }
-
 
 /* Painel lateral fixo à direita */
 .sidebar {
