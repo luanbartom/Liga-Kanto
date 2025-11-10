@@ -32,6 +32,9 @@ export default function SelectPokemon() {
   const [ruleModalMsg, setRuleModalMsg] = useState("");
   const router = useRouter();
 
+  // Limite de caracteres para a busca
+  const MAX_SEARCH_LEN = 20;
+
   useEffect(() => {
     try {
       document?.body?.classList?.add("bg-select-pokemon");
@@ -183,7 +186,10 @@ export default function SelectPokemon() {
           type="text"
           placeholder="Buscar Pokémon..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value.toLowerCase())}
+          maxLength={MAX_SEARCH_LEN}
+          onChange={(e) =>
+            setSearchTerm(e.target.value.slice(0, MAX_SEARCH_LEN).toLowerCase())
+          }
           className={styles.searchInput}
         />
 
