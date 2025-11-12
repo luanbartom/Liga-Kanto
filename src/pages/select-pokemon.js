@@ -130,7 +130,7 @@ export default function SelectPokemon() {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Selecione sua Equipe Pokémon</h1>
-      <p className={styles.subtitle}>Escolha até 5 Pokémon para a batalha!</p>
+      <p className={styles.subtitle}>Escolha 5 Pokémons para a batalha!</p>
 
       {/* Barra de conquistas (treinador + botão) */}
       <div className={styles.achievementsBar}>
@@ -167,7 +167,7 @@ export default function SelectPokemon() {
 
         <ConfirmButton
           onClick={confirmTeam}
-          disabled={!hasAllEvolutionStages() || selected.length < 3}
+          disabled={!hasAllEvolutionStages() || selected.length < 5}
         >
           Confirmar ({selected.length}/5)
         </ConfirmButton>
