@@ -5,33 +5,28 @@
   background: #ccc;
   border-radius: 5px;
   margin: 5px auto;
+
+  /* melhora animações de transform */
+  will-change: transform;
 }
 
 .fill {
   height: 100%;
   border-radius: 5px;
+
+  /* deixa claro que o JS controla tudo */
+  transition: none;
+  will-change: width, filter;
 }
 
 /* Damage animation: slight shake + flash */
 @keyframes hpShake {
-  0% {
-    transform: translateX(0);
-  }
-  20% {
-    transform: translateX(-2px);
-  }
-  40% {
-    transform: translateX(2px);
-  }
-  60% {
-    transform: translateX(-2px);
-  }
-  80% {
-    transform: translateX(2px);
-  }
-  100% {
-    transform: translateX(0);
-  }
+  0%   { transform: translateX(0); }
+  20%  { transform: translateX(-2px); }
+  40%  { transform: translateX(2px); }
+  60%  { transform: translateX(-2px); }
+  80%  { transform: translateX(2px); }
+  100% { transform: translateX(0); }
 }
 
 .shake {
@@ -39,15 +34,10 @@
 }
 
 @keyframes hpFlash {
-  0% {
-    filter: brightness(1.3) saturate(1.2);
-  }
-  100% {
-    filter: none;
-  }
+  0%   { filter: brightness(1.3) saturate(1.2); }
+  100% { filter: none; }
 }
 
 .damage {
   animation: hpFlash 1.1s ease;
 }
-/* Estilos da barra de HP com animações de dano */

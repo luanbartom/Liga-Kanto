@@ -22,6 +22,8 @@
   justify-content: space-between;
   gap: 4vh;
   margin: 0vh 0vh -4vh;
+  /* para o screen shake ficar suave */
+  will-change: transform;
 }
 
 .enemySection,
@@ -551,7 +553,7 @@
   background: #705848;
 }
 
-/* New compact pokÃ©ball switch row */
+/* New compact pokéball switch row */
 .switchRow {
   margin-bottom: 6.5vh;
   display: flex;
@@ -632,7 +634,7 @@
   text-transform: capitalize;
 }
 
-/* Confirm container above pokÃ©balls */
+/* Confirm container above pokéballs */
 .confirmSwap {
   position: absolute;
   bottom: -17vh;
@@ -697,7 +699,7 @@
   z-index: 25;
 }
 
-/* Esconde o menu dentro da seÃ§Ã£o do player para evitar duplicidade */
+/* Esconde o menu dentro da seção do player para evitar duplicidade */
 .playerSection .attackMenuToggle,
 .playerSection .attackMenu {
   display: none;
@@ -739,8 +741,6 @@
   transform: scaleX(-1) translateY(-2vh);
   image-rendering: pixelated;
   margin-bottom: 4vh;
-
-  /* espelha e ajusta posição vertical */
 }
 
 .trainerEnemy {
@@ -840,13 +840,13 @@
   background-color: #45a049;
 }
 
-.confirmBtnSecondary {
+.confirmBtnSecondaryAlt {
   background-color: #ffffff;
   border: 0.3vh solid #4caf50;
   color: #4caf50;
 }
 
-.confirmBtnSecondary:hover {
+.confirmBtnSecondaryAlt:hover {
   background-color: #e8ffe8;
 }
 
@@ -954,6 +954,60 @@
   border-color: #10b981;
   /* emerald-500 */
 }
+
+/* --- Reward card (liberação de carta do boss) --- */
+
+.cardReward {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.cardRewardInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.cardFrame {
+  position: relative;
+  width: 180px;
+  padding: 12px;
+  border-radius: 12px;
+  background: radial-gradient(circle at top, #ffd27f, #9b5bff);
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.6);
+  border: 2px solid #f5e3b3;
+}
+
+.cardSprite {
+  display: block;
+  width: 96px;
+  height: 96px;
+  margin: 0 auto 8px;
+  image-rendering: pixelated;
+}
+
+.cardName {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.cardTypes {
+  margin-top: 6px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.cardHint {
+  font-size: 0.8rem;
+  color: #ddd;
+  max-width: 260px;
+}
+
 /*
   Estilos da página de Batalha: arena, sprites, animações, painel de HP e menus.
   Classes referenciadas em src/pages/battle.js

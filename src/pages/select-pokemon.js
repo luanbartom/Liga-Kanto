@@ -1,19 +1,11 @@
-﻿import { useEffect, useState } from 'react';
+﻿import { useEffect, useMemo, useState } from 'react';
 import { getFirstGenPokemons } from '../utils/api';
 import { useRouter } from 'next/router';
 import styles from '../styles/SelectPokemon.module.css';
 import { MAX_SEARCH_LEN } from '@/constants';
-import { typeLabel } from '@/utils/i18n';
 import ConfirmButton from '@/components/ui/ConfirmButton';
 import FilterBar from '@/components/select/FilterBar';
 import PokemonGrid from '@/components/select/PokemonGrid';
-
-// Exibe o nome bruto do golpe (sem tradução), apenas formatando para leitura
-function formatMoveName(mv) {
-  const raw = typeof mv === 'string' ? mv : (mv && mv.name) || '';
-  if (!raw) return '';
-  return raw.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
-}
 
 // Retorna o ícone correto conforme o treinador escolhido
 function getTrainerIcon(id) {
@@ -22,20 +14,24 @@ function getTrainerIcon(id) {
 
 export default function SelectPokemon() {
   const [pokemons, setPokemons] = useState([]);
-  const [selected, setSelected] = useState([]);
+
+  // Guardamos apenas os IDs selecionados
+  const [selectedIds, setSelectedIds] = useState([]);
+
   const [trainerName, setTrainerName] = useState('');
   const [trainerId, setTrainerId] = useState(1);
+
+  // Filtros
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedType, setSelectedType] = useState('');
-  const [evolutionStage, setEvolutionStage] = useState('');
+  const [selectedType, setSelectedType] = useState('');      // '' ou 'all' = todos
+  const [evolutionStage, setEvolutionStage] = useState('');  // '' ou 'all' = todos
+
   const [unlockedBossIds, setUnlockedBossIds] = useState(new Set());
   const [showAchievements, setShowAchievements] = useState(false);
   const [showBossInfo, setShowBossInfo] = useState(false);
   const [showRuleModal, setShowRuleModal] = useState(false);
   const [ruleModalMsg, setRuleModalMsg] = useState('');
   const router = useRouter();
-
-  // Limite de caracteres para a busca (em constants)
 
   useEffect(() => {
     try {
@@ -71,7 +67,51 @@ export default function SelectPokemon() {
     };
   }, []);
 
-  useEffect(() => {}, [searchTerm, selectedType, evolutionStage]);
+  // Lista de pokémons selecionados derivada dos IDs
+  const selected = useMemo(
+    () => pokemons.filter((p) => selectedIds.includes(p.id)),
+    [pokemons, selectedIds],
+  );
+
+  // Lista filtrada por nome, tipo e estágio
+  const filteredPokemons = useMemo(() => {
+    const name = searchTerm.trim().toLowerCase();
+
+    return pokemons.filter((p) => {
+      // Filtro por nome
+      if (name && !p.name.toLowerCase().includes(name)) return false;
+
+      // Filtro por tipo
+      if (selectedType && selectedType !== 'all') {
+        const types = Array.isArray(p.types)
+          ? p.types
+          : [p.type].filter(Boolean);
+        if (!types.includes(selectedType)) return false;
+      }
+
+      // Filtro por estágio
+      if (evolutionStage && evolutionStage !== 'all') {
+        if (String(p.evolutionStage) !== String(evolutionStage)) return false;
+      }
+
+      return true;
+    });
+  }, [pokemons, searchTerm, selectedType, evolutionStage]);
+
+  // Lista final exibida:
+  // 1) todos os selecionados no topo (independente do filtro)
+  // 2) depois os pokémons filtrados que não estão selecionados
+  const finalPokemonList = useMemo(() => {
+    const selectedSet = new Set(selectedIds);
+
+    const selectedOnTop = pokemons.filter((p) => selectedSet.has(p.id));
+
+    const nonSelectedFiltered = filteredPokemons.filter(
+      (p) => !selectedSet.has(p.id),
+    );
+
+    return [...selectedOnTop, ...nonSelectedFiltered];
+  }, [pokemons, filteredPokemons, selectedIds]);
 
   const toggleSelect = (pokemon) => {
     if (pokemon?.boss && !unlockedBossIds.has(pokemon.id)) {
@@ -79,19 +119,25 @@ export default function SelectPokemon() {
       return;
     }
 
-    if (selected.includes(pokemon)) {
-      setSelected(selected.filter((p) => p !== pokemon));
+    const isSelected = selectedIds.includes(pokemon.id);
+
+    // Se já está selecionado, remove pelo ID
+    if (isSelected) {
+      setSelectedIds((prev) => prev.filter((id) => id !== pokemon.id));
       return;
     }
 
-    if (selected.length < 5) {
-      const next = [...selected, pokemon];
-      const stages = new Set(next.map((p) => p.evolutionStage));
+    // Limite de 5 pokémon
+    if (selectedIds.length < 5) {
+      const nextIds = [...selectedIds, pokemon.id];
+      setSelectedIds(nextIds);
+
+      // Monta time completo depois da inclusão pra checar estágios
+      const nextTeam = pokemons.filter((p) => nextIds.includes(p.id));
+      const stages = new Set(nextTeam.map((p) => p.evolutionStage));
       const hasAll = stages.has(1) && stages.has(2) && stages.has(3);
 
-      setSelected(next);
-
-      if (next.length === 5 && !hasAll) {
+      if (nextTeam.length === 5 && !hasAll) {
         const missing = [1, 2, 3].filter((s) => !stages.has(s));
         setRuleModalMsg(
           `Você pode escolher até 5 Pokémon, mas precisa ter pelo menos um de cada estágio (1, 2 e 3). Faltam: ${missing.join(', ')}.`,
@@ -123,8 +169,15 @@ export default function SelectPokemon() {
       return;
     }
 
+    // Salvamos os objetos completos selecionados
     localStorage.setItem('selectedTeam', JSON.stringify(selected));
     router.push('/select-team');
+  };
+
+  // Limite de caracteres na busca
+  const handleSearchChange = (value) => {
+    const trimmed = value.slice(0, MAX_SEARCH_LEN);
+    setSearchTerm(trimmed);
   };
 
   return (
@@ -145,7 +198,7 @@ export default function SelectPokemon() {
         </button>
       </div>
 
-      {/* Barra flutuante (somente regras + seleção) */}
+      {/* Barra flutuante (regras + contagem de equipe) */}
       <div className={styles.trainerBar}>
         <div className={styles.pokeballs}>
           {[...Array(5)].map((_, index) => (
@@ -176,19 +229,17 @@ export default function SelectPokemon() {
       {/* Filtros */}
       <FilterBar
         searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
+        setSearchTerm={handleSearchChange}
         selectedType={selectedType}
         setSelectedType={setSelectedType}
         evolutionStage={evolutionStage}
         setEvolutionStage={setEvolutionStage}
       />
 
-      {/* Grid de Pokémons */}
+      {/* Grid de Pokémons – já com selecionados no topo + filtro aplicado.
+          ⚠️ Repara que NÃO mando mais searchTerm / selectedType / evolutionStage pro grid. */}
       <PokemonGrid
-        pokemons={pokemons}
-        searchTerm={searchTerm}
-        selectedType={selectedType}
-        evolutionStage={evolutionStage}
+        pokemons={finalPokemonList}
         unlockedBossIds={unlockedBossIds}
         selected={selected}
         toggleSelect={toggleSelect}
