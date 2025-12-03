@@ -55,6 +55,7 @@
   background: rgba(243, 243, 243, 0.978);
   box-shadow: 0 1vh 2vh rgba(0, 0, 0, 0.747);
   cursor: pointer;
+  z-index: 50; /* abaixo do overlay de derrota/vitória */
 }
 
 /* collapsed view: show only the latest entry */
@@ -752,16 +753,16 @@
 
 .victoryOverlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.7);
+  top: -5vh;
+  left: -47vh;
+  width: 110vw;
+  height: 110vh;
+  background: rgba(0, 0, 0, 0.781);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999;
-  animation: fadeIn 0.5s ease-in-out;
+  z-index: 2000;
+  animation: Battle_fadeIn__KlcAD 0.5s ease-in-out;
 }
 
 .victoryBox {
@@ -790,34 +791,39 @@
 
 .defeatOverlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.7);
+  top: -5vh;
+  left: -47vh;
+  width: 110vw;
+  height: 101vh;
+  background: rgba(0, 0, 0, 0.781);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999;
-  animation: fadeIn 0.5s ease-in-out;
+  z-index: 2000;
+  animation: Battle_fadeIn__KlcAD 0.5s ease-in-out;
 }
 
 .defeatBox {
-  background: linear-gradient(135deg, #f9f9f9, #ffd1d1);
-  border: 4px solid #3d3d3dc8;
-  border-radius: 20px;
-  box-shadow: 1px 1px 50px rgba(255, 0, 0, 0.65);
+  background: linear-gradient(135deg, #f8f8f8, #ffffff);
+  border: 4px solid #ff0000c8;
+  border-radius: 2vh;
+  box-shadow: 0vh 0vh 50vh rgb(255 0 0 / 93%);
   text-align: center;
-  padding: 40px 60px;
+  font-size: 1.5rem;
+  padding: 40px 50px;          /* mais espaço interno */
   max-width: 500px;
-  color: #2c3e50;
-  animation: scaleUp 0.4s ease-out;
+  color: #8b0000;
+  animation: Battle_scaleUp__g0JEk 0.4s ease-out;
+  display: flex;               /* organiza verticalmente */
+  flex-direction: column;
+  gap: 24px;                   /* espaço entre título, texto e botões */
 }
 
 .optionButtons {
   display: flex;
   justify-content: center;
-  gap: 2vh;
+  gap: 24px;                   /* mais espaço entre os botões */
+  margin-top: 12px;            /* distância extra entre texto e botões */
 }
 
 .confirmBtn,

@@ -1389,7 +1389,7 @@ export default function Battle() {
             <div className={styles.defeatOverlay}>
               <div className={styles.defeatBox}>
                 <h2>Derrota</h2>
-                <p>Você perdeu a batalha! O que deseja fazer agora?</p>
+                <p>Você perdeu a batalha!</p>
                 <div className={styles.optionButtons}>
                   <ConfirmButton onClick={() => restartBattleFullTeam()}>
                     Tentar Novamente
@@ -1402,7 +1402,7 @@ export default function Battle() {
                       window.location.href = '/select-pokemon';
                     }}
                   >
-                    Voltar a tela de escolha
+                    Voltar ao início
                   </ConfirmButton>
                 </div>
               </div>
@@ -1467,7 +1467,7 @@ export default function Battle() {
                       window.location.href = '/select-pokemon';
                     }}
                   >
-                    Voltar à tela de escolha
+                    Voltar ao início
                   </ConfirmButton>
                 </div>
               </div>
@@ -1502,23 +1502,25 @@ export default function Battle() {
         </div>
       )}
 
-      {/* Log no rodapé */}
-      <div
-        className={`${styles.battleLogBottom} ${!logExpanded ? styles.collapsed : ''}`}
-        role="button"
-        tabIndex={0}
-        onClick={() => setLogExpanded((v) => !v)}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') setLogExpanded((v) => !v);
-        }}
-        title={logExpanded ? 'Ocultar histórico' : 'Mostrar histórico'}
-      >
-        <ul>
-          {log.map((entry, idx) => (
-            <li key={idx}>{entry}</li>
-          ))}
-        </ul>
-      </div>
+            {/* Log no rodapé – some quando a batalha termina */}
+            {!winner && (
+        <div
+          className={`${styles.battleLogBottom} ${!logExpanded ? styles.collapsed : ''}`}
+          role="button"
+          tabIndex={0}
+          onClick={() => setLogExpanded((v) => !v)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') setLogExpanded((v) => !v);
+          }}
+          title={logExpanded ? 'Ocultar histórico' : 'Mostrar histórico'}
+        >
+          <ul>
+            {log.map((entry, idx) => (
+              <li key={idx}>{entry}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
